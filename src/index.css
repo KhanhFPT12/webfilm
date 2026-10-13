@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/* ============ PINK CINEMA — design tokens ============ */
+@theme {
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-blush: #fff5fa; /* hồng nền sáng */
+  --color-pastel: #fce7f3; /* hồng pastel */
+  --color-rose: #f472b6; /* hồng chủ đạo */
+  --color-accent: #ec4899; /* hồng nhấn */
+  --color-deep: #db2777; /* hồng đậm */
+  --color-deeper: #be185d; /* hover của hồng đậm */
+  --color-ink: #3d2435; /* chữ chính */
+  --color-muted: #8b7282; /* chữ phụ */
+  --color-line: #f3d6e5; /* border */
+
+  /* Khu vực rạp chiếu (trang xem phim) */
+  --color-plum-950: #1a0a14;
+  --color-plum-900: #24101d;
+  --color-plum-800: #331827;
+  --color-plum-700: #4a2539;
+  --color-plum-300: #d9b8ca;
+
+  --shadow-card: 0 1px 2px rgb(61 36 53 / 0.06), 0 4px 14px -6px rgb(219 39 119 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(61 36 53 / 0.06), 0 14px 28px -12px rgb(219 39 119 / 0.35);
+
+  --radius-card: 0.625rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-blush font-sans text-ink antialiased;
+    font-feature-settings: "ss01";
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: var(--color-rose);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-deep);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .theater :focus-visible {
+    outline-color: var(--color-rose);
+  }
+  img {
+    color: transparent; /* ẩn alt text xấu khi ảnh đang tải */
+  }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-8;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors duration-150 select-none disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-deep text-white shadow-sm hover:bg-deeper active:bg-[#9d174d] disabled:hover:bg-deep;
+}
+@utility btn-secondary {
+  @apply btn border border-line bg-white text-deep hover:border-rose hover:bg-pastel active:bg-[#f9d3e7];
+}
+@utility btn-ghost {
+  @apply btn text-ink hover:bg-pastel hover:text-deep active:bg-[#f9d3e7];
+}
+@utility btn-icon {
+  @apply inline-flex size-10 items-center justify-center rounded-lg text-ink transition-colors hover:bg-pastel hover:text-deep active:bg-[#f9d3e7] disabled:opacity-40;
+}
+
+@utility chip {
+  @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-pastel px-3.5 py-1.5 text-sm font-medium text-ink transition-colors hover:border-rose hover:text-deep;
+}
+@utility chip-active {
+  @apply border-deep bg-deep text-white hover:text-white;
+}
+
+@utility badge {
+  @apply inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] leading-4 font-semibold tracking-wide;
+}
+
+@utility input {
+  @apply h-11 w-full rounded-lg border border-line bg-white px-3.5 text-sm text-ink placeholder:text-muted transition-colors outline-none focus:border-rose focus:ring-2 focus:ring-pastel;
+}
+
+@utility section-title {
+  @apply text-xl font-bold tracking-tight text-ink sm:text-2xl;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility scrollbar-pink {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-plum-700) transparent;
+}
+
+/* Skeleton: 1 hiệu ứng duy nhất, nhẹ nhàng */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.skeleton {
+  background: linear-gradient(90deg, #fce7f3 0%, #fdf1f8 50%, #fce7f3 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+.theater .skeleton {
+  background: linear-gradient(90deg, #2b1422 0%, #3a1d2e 50%, #2b1422 100%);
+  background-size: 200% 100%;
+}
