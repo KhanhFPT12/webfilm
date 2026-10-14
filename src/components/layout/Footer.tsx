@@ -6,7 +6,19 @@ const linkCls = "rounded text-sm text-pastel/90 transition-colors hover:text-whi
 
 export function Footer() {
   return (
-    <footer className="mt-16 bg-deep text-white">
+    <footer className="relative mt-24 bg-deep text-white">
+      {/* Viền gợn sóng dễ thương phía trên footer */}
+      <svg
+        className="absolute bottom-full left-0 h-6 w-full text-deep sm:h-8"
+        viewBox="0 0 1440 40"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M0 40V20C60 4 120 4 180 20s120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0 120 16 180 0V40z"
+          fill="currentColor"
+        />
+      </svg>
       <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <Logo tone="light" />
@@ -95,7 +107,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/20">
-        <div className="container-page flex flex-col gap-2 py-5 text-xs text-pastel/90 sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-page flex flex-col gap-2 pt-5 pb-20 sm:pr-20 sm:pb-5 text-xs text-pastel/90 sm:flex-row sm:items-center sm:justify-between">
           <p>
             Dữ liệu phim từ API công khai NguonC. Đây là website cá nhân, <strong className="font-semibold text-white">không phải</strong>{" "}
             sản phẩm hay dịch vụ của Sony Corporation.

@@ -1,5 +1,5 @@
-import { Compass, Play, Star } from "lucide-react";
-import { useState } from "react";
+import { Compass, Play, Sparkles, Star } from "lucide-react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import type { Movie } from "../../types/movie";
 import { truncate } from "../../utils/formatters";
@@ -14,41 +14,104 @@ interface Props {
   onRetry: () => void;
 }
 
-/** Trái tim nhỏ trang trí — chỉ đặt ở rìa, không che nội dung. */
-function HeartDeco({ className }: { className: string }) {
+const ROTATE_MS = 7000;
+
+function HeartShape({ className, style }: { className: string; style?: CSSProperties }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+    <svg viewBox="0 0 24 24" className={className} style={style} aria-hidden="true">
       <path d="M12 21s-8-4.9-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 6.1-8 11-8 11z" fill="currentColor" />
     </svg>
   );
 }
 
+/** Đồ trang trí trôi nhẹ — chỉ ở rìa, không che nội dung. */
+const DECOS: { kind: "heart" | "star"; className: string; style: CSSProperties }[] = [
+  {
+    kind: "heart",
+    className: "top-6 left-[44%] hidden size-5 text-rose/50 lg:block",
+    style: { "--d": "6s", "--r": "-12deg" } as CSSProperties,
+  },
+  {
+    kind: "heart",
+    className: "bottom-8 left-3 size-4 text-rose/40",
+    style: { "--d": "7s", "--delay": "-2s", "--r": "10deg" } as CSSProperties,
+  },
+  {
+    kind: "star",
+    className: "top-8 right-5 hidden size-5 text-rose/50 lg:block",
+    style: { "--d": "8s", "--delay": "-1s" } as CSSProperties,
+  },
+  {
+    kind: "heart",
+    className: "top-1/2 right-2 hidden size-3 text-accent/40 xl:block",
+    style: { "--d": "5s", "--delay": "-3s", "--r": "20deg" } as CSSProperties,
+  },
+  {
+    kind: "star",
+    className: "bottom-6 left-[40%] hidden size-3.5 text-rose/40 lg:block",
+    style: { "--d": "9s", "--delay": "-4s" } as CSSProperties,
+  },
+];
+
 export function HeroBanner({ movies, loading, error, onRetry }: Props) {
   // Chỉ chọn phim nổi bật có đủ ảnh ngang + mô tả từ dữ liệu thật.
   const picks = (movies ?? []).filter((m) => m.backdrop && m.description).slice(0, 5);
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
   const featured = picks[index] ?? picks[0] ?? movies?.[0];
+
+  // Tự chuyển phim nổi bật; dừng khi rê chuột / focus, hoặc khi người dùng giảm chuyển động.
+  const reduceMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const autoplay = picks.length > 1 && !paused && !reduceMotion;
+  useEffect(() => {
+    if (!autoplay) return;
+    const t = setTimeout(() => setIndex((i) => (i + 1) % picks.length), ROTATE_MS);
+    return () => clearTimeout(t);
+  }, [autoplay, index, picks.length]);
 
   const meta = featured ? [featured.year, featured.quality, featured.currentEpisode, featured.time].filter(Boolean) : [];
 
   return (
-    <section className="relative overflow-hidden border-b border-line bg-pastel" aria-labelledby="hero-title">
-      <HeartDeco className="absolute top-6 left-[46%] hidden size-4 text-rose/50 lg:block" />
-      <HeartDeco className="absolute bottom-10 left-4 size-3 text-rose/40" />
-      <Star className="absolute top-10 right-6 hidden size-4 fill-rose/30 text-rose/40 lg:block" aria-hidden="true" />
+    <section
+      className="bg-dots relative overflow-hidden border-b border-line bg-pastel"
+      aria-labelledby="hero-title"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      {DECOS.map((d, i) =>
+        d.kind === "heart" ? (
+          <HeartShape key={i} className={`animate-float absolute ${d.className}`} style={d.style} />
+        ) : (
+          <Star key={i} className={`animate-float absolute fill-current ${d.className}`} style={d.style} aria-hidden="true" />
+        ),
+      )}
 
-      <div className="container-page grid items-center gap-8 py-8 sm:py-12 lg:grid-cols-[1fr_1.15fr] lg:gap-12 lg:py-14">
+      <div className="container-page relative grid items-center gap-8 py-8 sm:py-12 lg:grid-cols-[1fr_1.15fr] lg:gap-12 lg:py-16">
         {/* Cột chữ */}
         <div className="order-2 min-w-0 lg:order-1">
-          <p className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-semibold text-deep ring-1 ring-line">
-            <Star className="size-3.5 fill-deep" aria-hidden="true" /> Rạp hồng hôm nay
+          <p className="animate-rise inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-semibold text-deep shadow-sm ring-1 ring-line">
+            <Sparkles className="size-3.5" aria-hidden="true" /> Rạp hồng hôm nay
           </p>
-          <h1 id="hero-title" className="mt-4 text-[28px] leading-tight font-extrabold tracking-tight text-ink sm:text-4xl lg:text-[44px]">
-            Một bộ phim, một chút yêu thương <span aria-hidden="true">💗</span>
+          <h1
+            id="hero-title"
+            className="animate-rise mt-4 text-[28px] leading-tight font-extrabold tracking-tight text-ink sm:text-4xl lg:text-[46px]"
+            style={{ ["--i" as string]: 1 }}
+          >
+            Một bộ phim, <span className="text-deep">một chút yêu thương</span>{" "}
+            <span className="animate-heartbeat inline-block" aria-hidden="true">
+              💗
+            </span>
           </h1>
-          <p className="mt-3 text-base text-muted sm:text-lg">Tìm bộ phim dành cho tâm trạng hôm nay của bạn.</p>
+          <p className="animate-rise mt-3 text-base text-muted sm:text-lg" style={{ ["--i" as string]: 2 }}>
+            Tìm bộ phim dành cho tâm trạng hôm nay của bạn.
+          </p>
 
-          <div className="mt-6 border-l-[3px] border-deep pl-4">
+          <div
+            className="animate-rise mt-6 rounded-2xl bg-white/80 p-4 shadow-[var(--shadow-card)] ring-1 ring-line"
+            style={{ ["--i" as string]: 3 }}
+          >
             {loading && !featured ? (
               <div className="space-y-2.5" aria-hidden="true">
                 <div className="skeleton h-6 w-2/3 rounded" />
@@ -56,14 +119,16 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
                 <div className="skeleton h-14 w-full rounded" />
               </div>
             ) : featured ? (
-              <>
-                <p className="text-xs font-semibold tracking-wider text-deep uppercase">Phim nổi bật</p>
+              <div key={featured.slug} className="animate-fade">
+                <p className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-deep uppercase">
+                  <HeartShape className="size-3" /> Phim nổi bật
+                </p>
                 <h2 className="mt-1 line-clamp-2 text-xl font-bold text-ink sm:text-2xl">{featured.name}</h2>
                 {featured.originalName && <p className="mt-0.5 truncate text-sm text-muted">{featured.originalName}</p>}
                 {meta.length > 0 && (
                   <div className="mt-2.5 flex flex-wrap gap-1.5">
                     {meta.map((m) => (
-                      <span key={m} className="badge bg-white text-ink ring-1 ring-line">
+                      <span key={m} className="badge rounded-full bg-pastel px-2 text-deep">
                         {m}
                       </span>
                     ))}
@@ -72,11 +137,11 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
                 {featured.description && (
                   <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-ink/80">{truncate(featured.description, 260)}</p>
                 )}
-              </>
+              </div>
             ) : null}
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="animate-rise mt-6 flex flex-wrap gap-3" style={{ ["--i" as string]: 4 }}>
             {featured ? (
               <>
                 <Link to={`/xem-phim/${featured.slug}`} className="btn-primary h-12 px-6 text-[15px]">
@@ -98,14 +163,20 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
         </div>
 
         {/* Cột ảnh */}
-        <div className="order-1 min-w-0 lg:order-2">
+        <div className="animate-rise order-1 min-w-0 lg:order-2" style={{ ["--i" as string]: 2 }}>
           {error && !featured ? (
             <ErrorState error={error} onRetry={onRetry} compact />
           ) : (
             <div className="relative">
-              <div className="relative aspect-video overflow-hidden rounded-xl border-4 border-white bg-white shadow-[var(--shadow-lift)]">
+              <div className="relative aspect-video overflow-hidden rounded-2xl border-4 border-white bg-white shadow-[var(--shadow-lift)] lg:rotate-1">
                 {featured ? (
-                  <Link to={`/phim/${featured.slug}`} tabIndex={-1} aria-hidden="true">
+                  <Link
+                    key={featured.slug}
+                    to={`/phim/${featured.slug}`}
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    className="animate-zoom-fade absolute inset-0"
+                  >
                     <PosterImage
                       src={featured.backdrop}
                       fallback={featured.backdropFallback ?? featured.posterFallback}
@@ -122,13 +193,16 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
 
               {/* Poster dọc chồng góc — chỉ desktop */}
               {featured && (
-                <div className="absolute -bottom-6 -left-6 hidden w-28 overflow-hidden rounded-lg border-4 border-white shadow-[var(--shadow-lift)] xl:block">
+                <div
+                  key={`p-${featured.slug}`}
+                  className="animate-rise absolute -bottom-6 -left-6 hidden w-28 -rotate-6 overflow-hidden rounded-xl border-4 border-white shadow-[var(--shadow-lift)] xl:block"
+                >
                   <PosterImage src={featured.poster} fallback={featured.posterFallback} alt="" eager className="aspect-[2/3] w-full" />
                 </div>
               )}
 
               {picks.length > 1 && (
-                <div className="mt-4 flex justify-end gap-2" role="group" aria-label="Chọn phim nổi bật">
+                <div className="mt-5 flex justify-end gap-2" role="group" aria-label="Chọn phim nổi bật">
                   {picks.map((m, i) => (
                     <button
                       key={m.slug}
@@ -136,11 +210,21 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
                       onClick={() => setIndex(i)}
                       aria-label={`Hiển thị ${m.name}`}
                       aria-pressed={i === index}
-                      className={`h-14 w-10 overflow-hidden rounded-md border-2 transition-[border-color,opacity] sm:h-16 sm:w-11 ${
-                        i === index ? "border-deep" : "border-white opacity-70 hover:opacity-100"
+                      className={`relative h-14 w-10 overflow-hidden rounded-lg border-2 transition-all duration-300 [transition-timing-function:var(--ease-bounce)] sm:h-16 sm:w-11 ${
+                        i === index
+                          ? "-translate-y-1 border-deep shadow-md"
+                          : "border-white opacity-70 hover:-translate-y-0.5 hover:opacity-100"
                       }`}
                     >
                       <PosterImage src={m.poster} fallback={m.posterFallback} alt="" className="size-full" />
+                      {/* Thanh tiến trình tự chuyển */}
+                      {i === index && autoplay && (
+                        <span
+                          key={`bar-${index}`}
+                          className="absolute inset-x-0 bottom-0 h-1 origin-left bg-deep"
+                          style={{ animation: `progress ${ROTATE_MS}ms linear forwards` }}
+                        />
+                      )}
                     </button>
                   ))}
                 </div>

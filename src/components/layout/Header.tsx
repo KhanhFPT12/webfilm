@@ -11,6 +11,14 @@ export function Header() {
   const { pathname } = useLocation();
   const { favorites } = useFavorites();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
@@ -31,7 +39,9 @@ export function Header() {
   );
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white/95 supports-[backdrop-filter]:bg-white/95">
+    <header
+      className={`sticky top-0 z-40 border-b border-line bg-white/95 transition-shadow duration-300 ${scrolled ? "shadow-[0_6px_20px_-12px_rgb(219_39_119/0.45)]" : ""}`}
+    >
       <div className="container-page flex h-16 items-center gap-4 lg:h-[72px]">
         <Logo />
 

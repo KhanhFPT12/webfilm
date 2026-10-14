@@ -50,6 +50,22 @@ Base URL: `https://phim.nguonc.com/api` — CORS `Access-Control-Allow-Origin: *
 - Chi tiết có `category` dạng `{ "1": { group: { name: "Định dạng" | "Thể loại" | "Năm" | "Quốc gia" }, list: [{ name }] } }` — **không có slug**, nên tên được ánh xạ sang slug đã xác minh trong [src/utils/catalog.ts](src/utils/catalog.ts); tên không ánh xạ được thì hiển thị dạng chữ, không gắn link.
 - `episodes: [{ server_name, items: [{ name, slug, embed }] }]`. Một số tập có `embed` rỗng/không hợp lệ → hiển thị thông báo, không tự tạo URL.
 
+## Tự bỏ qua quảng cáo (tuỳ chọn, cài trên trình duyệt người xem)
+
+Website không thể bấm nút "Bỏ qua quảng cáo" vì trình phát thuộc tên miền khác. Script
+[extras/sony-auto-skip-ad.user.js](extras/sony-auto-skip-ad.user.js) chạy **bên trong** trang trình phát
+(`*.streamc.xyz`): khi nút bỏ qua của JW Player (`.jw-skip.jw-skippable`) xuất hiện, script chờ 3 giây;
+nếu người xem chưa bấm thì tự bấm.
+
+1. Cài tiện ích **Tampermonkey** cho Chrome/Edge/Firefox (từ cửa hàng tiện ích chính thức).
+2. Chrome/Edge: vào `chrome://extensions`, bật **Developer mode** (Tampermonkey cần để chạy script).
+3. Bấm biểu tượng Tampermonkey → **Create a new script…**, xoá nội dung mẫu, dán toàn bộ nội dung file
+   `extras/sony-auto-skip-ad.user.js`, bấm **File → Save** (Ctrl+S).
+   Hoặc mở link raw của file trên GitHub (`.../raw/main/extras/sony-auto-skip-ad.user.js`), Tampermonkey sẽ hiện nút **Install**.
+4. Tải lại trang xem phim. Muốn đổi thời gian chờ, sửa `DELAY_MS` (mili giây).
+
+Script chỉ bấm nút bỏ qua mà trình phát đã cho phép bấm; nếu nhà cung cấp đổi giao diện trình phát, script có thể ngừng hoạt động.
+
 ## Giới hạn của API & cách xử lý
 
 - **Nguồn phát chỉ là trang embed** (`https://embedN.streamc.xyz/embed.php?hash=...`), không có link `.m3u8`/`.mp4` trực tiếp. Trình phát nhúng bằng `<iframe>` đúng như nhà cung cấp đưa ra. `VideoPlayer` vẫn nhận diện được HLS (tải `hls.js` động) và file MP4 nếu sau này API trả về.

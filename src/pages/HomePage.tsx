@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { EmptyState } from "../components/common/EmptyState";
 import { PosterImage } from "../components/common/PosterImage";
+import { Reveal } from "../components/common/Reveal";
 import { SectionHeader } from "../components/common/SectionHeader";
 import { HeroBanner } from "../components/movie/HeroBanner";
 import { MovieCard } from "../components/movie/MovieCard";
@@ -27,7 +28,7 @@ const GENRE_ICONS: Record<string, LucideIcon> = {
 function GenreExplorer() {
   const genres = FEATURED_GENRES.map((slug) => GENRES.find((g) => g.slug === slug)!).filter(Boolean);
   return (
-    <section aria-labelledby="genres-title">
+    <Reveal as="section" labelledBy="genres-title">
       <SectionHeader
         id="genres-title"
         title="Khám phá theo thể loại"
@@ -36,15 +37,16 @@ function GenreExplorer() {
         linkLabel="Tất cả thể loại"
       />
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        {genres.map((g) => {
+        {genres.map((g, i) => {
           const Icon = GENRE_ICONS[g.slug] ?? Heart;
           return (
             <Link
               key={g.slug}
               to={`/the-loai/${g.slug}`}
-              className="group flex items-center gap-3 rounded-xl border border-line bg-pastel/70 px-4 py-3.5 transition-[background-color,border-color,transform] hover:-translate-y-0.5 hover:border-rose hover:bg-pastel"
+              className="group animate-rise flex items-center gap-3 rounded-2xl border border-line bg-pastel/70 px-4 py-3.5 transition-[background-color,border-color,transform,box-shadow] duration-300 [transition-timing-function:var(--ease-bounce)] hover:-translate-y-1 hover:border-rose hover:bg-white hover:shadow-[var(--shadow-lift)]"
+              style={{ ["--i" as string]: i }}
             >
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white text-deep shadow-sm">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-deep shadow-sm group-hover:animate-wiggle">
                 <Icon className="size-5" />
               </span>
               <span className="min-w-0">
@@ -55,7 +57,7 @@ function GenreExplorer() {
           );
         })}
       </div>
-    </section>
+    </Reveal>
   );
 }
 
@@ -64,14 +66,14 @@ function ContinueWatching() {
   const items = history.slice(0, 4);
   if (!items.length) return null;
   return (
-    <section aria-labelledby="continue-title">
+    <Reveal as="section" labelledBy="continue-title">
       <SectionHeader id="continue-title" title="Xem tiếp nhé" to="/lich-su" linkLabel="Lịch sử xem" />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((h) => (
           <Link
             key={h.slug}
             to={h.episodeSlug ? watchUrl(h.slug, h.episodeSlug, h.serverIndex ?? 0) : `/xem-phim/${h.slug}`}
-            className="group flex items-center gap-3 rounded-xl border border-line bg-white p-2.5 shadow-[var(--shadow-card)] transition-colors hover:border-rose"
+            className="group flex items-center gap-3 rounded-2xl border border-line bg-white p-2.5 shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-1 hover:border-rose hover:shadow-[var(--shadow-lift)]"
           >
             <div className="relative h-20 w-14 shrink-0 overflow-hidden rounded-md">
               <PosterImage src={h.poster} fallback={h.posterFallback} alt="" className="size-full" />
@@ -87,14 +89,14 @@ function ContinueWatching() {
           </Link>
         ))}
       </div>
-    </section>
+    </Reveal>
   );
 }
 
 function FavoritesCorner() {
   const { favorites } = useFavorites();
   return (
-    <section aria-labelledby="fav-title" className="rounded-2xl border border-line bg-white p-5 sm:p-7">
+    <Reveal as="section" labelledBy="fav-title" className="bg-dots rounded-3xl border border-line bg-white p-5 sm:p-7">
       <SectionHeader
         id="fav-title"
         title={
@@ -132,7 +134,7 @@ function FavoritesCorner() {
           ))}
         </div>
       )}
-    </section>
+    </Reveal>
   );
 }
 

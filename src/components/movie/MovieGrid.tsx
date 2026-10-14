@@ -16,7 +16,7 @@ export function MovieGrid({ movies, loading, skeletonCount = 20, className = GRI
   return (
     <div className={`${className} ${loading ? "opacity-60 transition-opacity" : ""}`} aria-busy={loading || undefined}>
       {movies?.map((m, i) => (
-        <MovieCard key={m.slug} movie={m} eager={i < 4} />
+        <MovieCard key={m.slug} movie={m} eager={i < 4} index={i} />
       ))}
     </div>
   );

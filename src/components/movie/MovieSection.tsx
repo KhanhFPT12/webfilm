@@ -4,6 +4,7 @@ import { EmptyState } from "../common/EmptyState";
 import { ErrorState } from "../common/ErrorState";
 import { CardSkeleton } from "../common/LoadingSkeleton";
 import { SectionHeader } from "../common/SectionHeader";
+import { Reveal } from "../common/Reveal";
 import { MovieCard } from "./MovieCard";
 
 interface Props {
@@ -30,7 +31,7 @@ const ITEM =
 
 export function MovieSection({ id, title, subtitle, to, movies, loading, error, onRetry, className = "" }: Props) {
   return (
-    <section aria-labelledby={id} className={className}>
+    <Reveal as="section" labelledBy={id} className={className}>
       <SectionHeader id={id} title={title} subtitle={subtitle} to={to} />
       {error ? (
         <ErrorState error={error} onRetry={onRetry} compact />
@@ -47,13 +48,13 @@ export function MovieSection({ id, title, subtitle, to, movies, loading, error, 
         <EmptyState title="Chưa có phim nào ở đây" description="Máy chủ chưa trả về phim cho mục này. Bạn quay lại sau nhé." />
       ) : (
         <div className={ROW}>
-          {movies.slice(0, 10).map((m) => (
+          {movies.slice(0, 10).map((m, i) => (
             <div key={m.slug} className={ITEM}>
-              <MovieCard movie={m} />
+              <MovieCard movie={m} index={i} />
             </div>
           ))}
         </div>
       )}
-    </section>
+    </Reveal>
   );
 }

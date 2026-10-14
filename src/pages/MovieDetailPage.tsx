@@ -101,7 +101,7 @@ export function MovieDetailPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-line bg-pastel">
+      <section className="bg-dots relative overflow-hidden border-b border-line bg-pastel">
         {/* Ảnh ngang mờ nhạt làm nền phía phải, không blur */}
         {movie.backdrop && (
           <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 lg:block" aria-hidden="true">
@@ -111,7 +111,7 @@ export function MovieDetailPage() {
         )}
 
         <div className="container-page relative grid gap-7 py-8 sm:py-10 md:grid-cols-[240px_1fr] md:gap-10 lg:grid-cols-[280px_1fr]">
-          <div className="mx-auto w-48 sm:w-56 md:w-full">
+          <div className="animate-rise mx-auto w-48 sm:w-56 md:w-full">
             <div className="relative aspect-[2/3] overflow-hidden rounded-xl border-4 border-white bg-white shadow-[var(--shadow-lift)]">
               <PosterImage
                 src={movie.poster}
@@ -123,7 +123,7 @@ export function MovieDetailPage() {
             </div>
           </div>
 
-          <div className="min-w-0">
+          <div className="animate-rise min-w-0" style={{ ["--i" as string]: 1 }}>
             <nav aria-label="Breadcrumb" className="mb-3 text-sm text-muted">
               <Link to="/" className="rounded hover:text-deep">
                 Trang chủ

@@ -11,7 +11,7 @@ interface Props {
 /** Dải tiêu đề trang nền hồng pastel. */
 export function PageHeader({ title, description, crumbs, children }: Props) {
   return (
-    <div className="border-b border-line bg-pastel">
+    <div className="bg-dots border-b border-line bg-pastel">
       <div className="container-page py-7 sm:py-9">
         {crumbs && crumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-2 text-sm text-muted">
@@ -32,9 +32,17 @@ export function PageHeader({ title, description, crumbs, children }: Props) {
             </ol>
           </nav>
         )}
-        <h1 className="text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{title}</h1>
-        {description && <div className="mt-1.5 text-sm text-muted sm:text-base">{description}</div>}
-        {children && <div className="mt-5">{children}</div>}
+        <h1 className="animate-rise text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{title}</h1>
+        {description && (
+          <div className="animate-rise mt-1.5 text-sm text-muted sm:text-base" style={{ ["--i" as string]: 1 }}>
+            {description}
+          </div>
+        )}
+        {children && (
+          <div className="animate-rise mt-5" style={{ ["--i" as string]: 2 }}>
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );

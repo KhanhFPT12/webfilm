@@ -10,9 +10,9 @@ interface Props {
 /** Trạng thái trống: minh hoạ ô vé có trái tim, nhẹ nhàng. */
 export function EmptyState({ title, description, action, icon }: Props) {
   return (
-    <div className="flex flex-col items-center rounded-xl border border-dashed border-line bg-white/70 px-6 py-12 text-center">
+    <div className="bg-dots animate-fade flex flex-col items-center rounded-3xl border-2 border-dashed border-line bg-white/80 px-6 py-12 text-center">
       {icon ?? (
-        <svg viewBox="0 0 96 64" className="h-16 w-24" aria-hidden="true">
+        <svg viewBox="0 0 96 64" className="animate-float h-16 w-24" style={{ ["--r" as string]: "-4deg" }} aria-hidden="true">
           <path
             d="M8 10a4 4 0 0 1 4-4h72a4 4 0 0 1 4 4v14a8 8 0 0 0 0 16v14a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V40a8 8 0 0 0 0-16z"
             fill="#FCE7F3"

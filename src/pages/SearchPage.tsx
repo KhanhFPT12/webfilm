@@ -57,7 +57,7 @@ export function SearchPage() {
 
   return (
     <>
-      <div className="border-b border-line bg-pastel">
+      <div className="bg-dots border-b border-line bg-pastel">
         <div className="container-page py-8 sm:py-10">
           <h1 className="text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">Phim dành cho bạn</h1>
           <p className="mt-1.5 text-muted">Tìm theo tên tiếng Việt hoặc tên gốc của phim.</p>

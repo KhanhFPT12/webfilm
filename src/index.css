@@ -24,7 +24,9 @@
   --shadow-card: 0 1px 2px rgb(61 36 53 / 0.06), 0 4px 14px -6px rgb(219 39 119 / 0.18);
   --shadow-lift: 0 2px 4px rgb(61 36 53 / 0.06), 0 14px 28px -12px rgb(219 39 119 / 0.35);
 
-  --radius-card: 0.625rem;
+  --radius-card: 0.875rem;
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
@@ -60,6 +62,7 @@
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
@@ -71,23 +74,43 @@
 }
 
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors duration-150 select-none disabled:cursor-not-allowed disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold whitespace-nowrap select-none disabled:cursor-not-allowed disabled:opacity-50;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.25s,
+    transform 0.25s var(--ease-bounce);
+  &:not(:disabled):active {
+    transform: scale(0.95);
+  }
 }
 @utility btn-primary {
-  @apply btn bg-deep text-white shadow-sm hover:bg-deeper active:bg-[#9d174d] disabled:hover:bg-deep;
+  @apply btn relative overflow-hidden bg-deep text-white shadow-[0_6px_16px_-6px_rgb(219_39_119/0.6)] hover:-translate-y-0.5 hover:bg-deeper hover:shadow-[0_10px_22px_-8px_rgb(219_39_119/0.7)] active:bg-[#9d174d] disabled:hover:translate-y-0 disabled:hover:bg-deep;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.35) 50%, transparent 65%);
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+  &:not(:disabled):hover::after {
+    animation: shine 0.9s var(--ease-soft);
+  }
 }
 @utility btn-secondary {
-  @apply btn border border-line bg-white text-deep hover:border-rose hover:bg-pastel active:bg-[#f9d3e7];
+  @apply btn border border-line bg-white text-deep hover:-translate-y-0.5 hover:border-rose hover:bg-pastel active:bg-[#f9d3e7];
 }
 @utility btn-ghost {
   @apply btn text-ink hover:bg-pastel hover:text-deep active:bg-[#f9d3e7];
 }
 @utility btn-icon {
-  @apply inline-flex size-10 items-center justify-center rounded-lg text-ink transition-colors hover:bg-pastel hover:text-deep active:bg-[#f9d3e7] disabled:opacity-40;
+  @apply inline-flex size-10 items-center justify-center rounded-xl text-ink transition-[background-color,color,transform] duration-200 hover:bg-pastel hover:text-deep active:scale-90 active:bg-[#f9d3e7] disabled:opacity-40;
 }
 
 @utility chip {
-  @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-pastel px-3.5 py-1.5 text-sm font-medium text-ink transition-colors hover:border-rose hover:text-deep;
+  @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-pastel px-3.5 py-1.5 text-sm font-medium text-ink transition-[color,border-color,background-color,transform] duration-200 hover:-translate-y-0.5 hover:border-rose hover:text-deep active:scale-95;
 }
 @utility chip-active {
   @apply border-deep bg-deep text-white hover:text-white;
@@ -98,7 +121,7 @@
 }
 
 @utility input {
-  @apply h-11 w-full rounded-lg border border-line bg-white px-3.5 text-sm text-ink placeholder:text-muted transition-colors outline-none focus:border-rose focus:ring-2 focus:ring-pastel;
+  @apply h-11 w-full rounded-xl border border-line bg-white px-3.5 text-sm text-ink placeholder:text-muted transition-colors outline-none focus:border-rose focus:ring-2 focus:ring-pastel;
 }
 
 @utility section-title {
@@ -115,6 +138,167 @@
 @utility scrollbar-pink {
   scrollbar-width: thin;
   scrollbar-color: var(--color-plum-700) transparent;
+}
+
+/* Nền chấm bi hồng dễ thương */
+@utility bg-dots {
+  background-image: radial-gradient(rgb(244 114 182 / 0.22) 1.2px, transparent 1.4px);
+  background-size: 18px 18px;
+}
+
+/* ================= Animation ================= */
+@keyframes shine {
+  to {
+    transform: translateX(120%);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes zoom-fade {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(calc(var(--r, 0deg) + 8deg));
+  }
+}
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.22);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.14);
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.35);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes burst {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--a)) translateY(0) scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--a)) translateY(-26px) scale(1);
+  }
+}
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-12deg);
+  }
+  75% {
+    transform: rotate(12deg);
+  }
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.9);
+  }
+}
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@utility animate-rise {
+  animation: rise 0.6s var(--ease-soft) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+@utility animate-page {
+  animation: rise 0.45s var(--ease-soft) both;
+}
+@utility animate-fade {
+  animation: fade-in 0.5s ease both;
+}
+@utility animate-zoom-fade {
+  animation: zoom-fade 0.8s var(--ease-soft) both;
+}
+@utility animate-float {
+  animation: float var(--d, 6s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+@utility animate-heartbeat {
+  animation: heartbeat 1.6s ease-in-out infinite;
+}
+@utility animate-pop {
+  animation: pop 0.45s var(--ease-bounce);
+}
+@utility animate-wiggle {
+  animation: wiggle 0.5s ease-in-out;
+}
+@utility animate-toast {
+  animation: toast-in 0.4s var(--ease-bounce) both;
+}
+
+/* Hiện dần khi cuộn tới (Reveal component) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s var(--ease-soft),
+    transform 0.7s var(--ease-soft);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Card trong vùng chưa hiện thì chờ, hiện ra mới lần lượt trồi lên */
+.reveal:not(.is-visible) .animate-rise {
+  animation-play-state: paused;
 }
 
 /* Skeleton: 1 hiệu ứng duy nhất, nhẹ nhàng */
