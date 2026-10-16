@@ -12,6 +12,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://img.nguonc.com" />
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+      // Áp chế độ sáng/tối trước khi vẽ trang để không bị nháy màu.
+      (function () {
+        try {
+          var t = localStorage.getItem("sony.theme");
+          var dark = t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+          if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+          if (dark) document.querySelector("meta[name=theme-color]").setAttribute("content", "#160a12");
+        } catch (e) {}
+      })();
+    </script>
     <title>SONY · Nơi xem phim của Sony</title>
   </head>
   <body>

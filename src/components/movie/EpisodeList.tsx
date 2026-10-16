@@ -57,7 +57,7 @@ export function EpisodeList({ slug, servers, serverIndex, onServerChange, active
                   ? "border-deep bg-deep text-white"
                   : dark
                     ? "border-plum-700 text-plum-300 hover:border-rose hover:text-white"
-                    : "border-line bg-white text-ink hover:border-rose hover:text-deep"
+                    : "border-line bg-surface text-ink hover:border-rose hover:text-deep"
               }`}
             >
               {s.name}
@@ -104,7 +104,7 @@ export function EpisodeList({ slug, servers, serverIndex, onServerChange, active
                     ? "border-deep bg-deep text-white"
                     : dark
                       ? "border-plum-700 bg-plum-900 text-plum-300 hover:border-rose hover:text-white"
-                      : "border-line bg-white text-ink hover:border-rose hover:bg-pastel hover:text-deep"
+                      : "border-line bg-surface text-ink hover:border-rose hover:bg-pastel hover:text-deep"
                 }`}
               >
                 {episodeLabel(ep.name)}

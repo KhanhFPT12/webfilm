@@ -21,7 +21,7 @@ export function ErrorState({ error, onRetry, title, compact = false, tone = "lig
     <div
       role="alert"
       className={`flex flex-col items-center rounded-xl border text-center ${
-        dark ? "border-plum-700 bg-plum-900 text-pastel" : "border-line bg-white"
+        dark ? "border-plum-700 bg-plum-900 text-pastel" : "border-line bg-surface"
       } ${compact ? "gap-2 px-4 py-6" : "gap-3 px-6 py-12"}`}
     >
       <span className={`flex size-12 items-center justify-center rounded-full ${dark ? "bg-plum-800 text-rose" : "bg-pastel text-deep"}`}>

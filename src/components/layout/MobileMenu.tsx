@@ -5,6 +5,7 @@ import { FEATURED_GENRES, GENRES } from "../../utils/catalog";
 import { Logo } from "../common/Logo";
 import { NAV_ITEMS, isNavActive } from "./nav";
 import { SearchBox } from "./SearchBox";
+import { ThemeSwitcher } from "./ThemeToggle";
 
 interface Props {
   open: boolean;
@@ -48,13 +49,13 @@ export function MobileMenu({ open, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 lg:hidden" id="mobile-menu">
-      <button type="button" className="absolute inset-0 bg-ink/40" aria-label="Đóng menu" onClick={onClose} tabIndex={-1} />
+      <button type="button" className="absolute inset-0 bg-black/50" aria-label="Đóng menu" onClick={onClose} tabIndex={-1} />
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
-        className="absolute inset-y-0 right-0 flex w-[min(86vw,360px)] flex-col overflow-y-auto bg-white shadow-xl"
+        className="absolute inset-y-0 right-0 flex w-[min(86vw,360px)] flex-col overflow-y-auto bg-surface shadow-xl"
       >
         <div className="flex items-center justify-between border-b border-line px-4 py-3">
           <Logo onClick={onClose} />
@@ -100,7 +101,12 @@ export function MobileMenu({ open, onClose }: Props) {
           </Link>
         </div>
 
-        <div className="px-4 pt-3 pb-6">
+        <div className="px-4 pt-3">
+          <p className="mb-2 text-xs font-semibold tracking-wider text-muted uppercase">Giao diện</p>
+          <ThemeSwitcher />
+        </div>
+
+        <div className="px-4 pt-5 pb-6">
           <p className="mb-2 text-xs font-semibold tracking-wider text-muted uppercase">Thể loại nổi bật</p>
           <div className="flex flex-wrap gap-2">
             {genres.map((g) => (

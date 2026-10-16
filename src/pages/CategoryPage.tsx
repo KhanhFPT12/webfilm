@@ -34,7 +34,7 @@ function ChipRow({ items, active, label }: { items: { to: string; label: string 
             <Link
               to={it.to}
               aria-current={it.to === active ? "page" : undefined}
-              className={`chip ${it.to === active ? "chip-active" : "bg-white"}`}
+              className={`chip ${it.to === active ? "chip-active" : "bg-surface"}`}
             >
               {it.label}
             </Link>

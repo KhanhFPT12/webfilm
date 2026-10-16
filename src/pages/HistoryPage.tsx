@@ -53,7 +53,10 @@ export function HistoryPage() {
               {history.map((h) => {
                 const resume = h.episodeSlug ? watchUrl(h.slug, h.episodeSlug, h.serverIndex ?? 0) : `/xem-phim/${h.slug}`;
                 return (
-                  <li key={h.slug} className="flex gap-3.5 rounded-xl border border-line bg-white p-3 shadow-[var(--shadow-card)] sm:gap-4">
+                  <li
+                    key={h.slug}
+                    className="flex gap-3.5 rounded-xl border border-line bg-surface p-3 shadow-[var(--shadow-card)] sm:gap-4"
+                  >
                     <Link
                       to={`/phim/${h.slug}`}
                       className="relative h-28 w-[75px] shrink-0 overflow-hidden rounded-lg sm:h-32 sm:w-[86px]"

@@ -24,7 +24,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toast && (
           <div
             key={toast.id}
-            className="animate-toast pointer-events-auto flex items-center gap-2.5 rounded-full bg-white py-2 pr-5 pl-2 text-sm font-semibold text-ink shadow-[var(--shadow-lift)] ring-1 ring-line"
+            className="animate-toast pointer-events-auto flex items-center gap-2.5 rounded-full bg-surface py-2 pr-5 pl-2 text-sm font-semibold text-ink shadow-[var(--shadow-lift)] ring-1 ring-line"
           >
             <span className="flex size-7 items-center justify-center rounded-full bg-pastel text-deep">
               <Heart className="animate-heartbeat size-4 fill-deep" />

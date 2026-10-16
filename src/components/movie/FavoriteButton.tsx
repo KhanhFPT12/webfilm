@@ -76,7 +76,7 @@ export function FavoriteButton({ movie, variant = "overlay", className = "" }: P
       aria-pressed={active}
       aria-label={label}
       title={active ? "Bỏ yêu thích" : "Yêu thích"}
-      className={`flex size-9 items-center justify-center rounded-full bg-white/95 shadow-md ring-1 ring-black/5 transition-[transform,color] duration-200 hover:scale-110 active:scale-90 ${
+      className={`flex size-9 items-center justify-center rounded-full bg-surface/95 shadow-md ring-1 ring-black/5 transition-[transform,color] duration-200 hover:scale-110 active:scale-90 ${
         active ? "text-deep" : "text-muted hover:text-deep"
       } ${className}`}
     >

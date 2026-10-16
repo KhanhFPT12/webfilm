@@ -43,10 +43,10 @@ function GenreExplorer() {
             <Link
               key={g.slug}
               to={`/the-loai/${g.slug}`}
-              className="group animate-rise flex items-center gap-3 rounded-2xl border border-line bg-pastel/70 px-4 py-3.5 transition-[background-color,border-color,transform,box-shadow] duration-300 [transition-timing-function:var(--ease-bounce)] hover:-translate-y-1 hover:border-rose hover:bg-white hover:shadow-[var(--shadow-lift)]"
+              className="group animate-rise flex items-center gap-3 rounded-2xl border border-line bg-pastel/70 px-4 py-3.5 transition-[background-color,border-color,transform,box-shadow] duration-300 [transition-timing-function:var(--ease-bounce)] hover:-translate-y-1 hover:border-rose hover:bg-surface hover:shadow-[var(--shadow-lift)]"
               style={{ ["--i" as string]: i }}
             >
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-deep shadow-sm group-hover:animate-wiggle">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface text-deep shadow-sm group-hover:animate-wiggle">
                 <Icon className="size-5" />
               </span>
               <span className="min-w-0">
@@ -73,7 +73,7 @@ function ContinueWatching() {
           <Link
             key={h.slug}
             to={h.episodeSlug ? watchUrl(h.slug, h.episodeSlug, h.serverIndex ?? 0) : `/xem-phim/${h.slug}`}
-            className="group flex items-center gap-3 rounded-2xl border border-line bg-white p-2.5 shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-1 hover:border-rose hover:shadow-[var(--shadow-lift)]"
+            className="group flex items-center gap-3 rounded-2xl border border-line bg-surface p-2.5 shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-1 hover:border-rose hover:shadow-[var(--shadow-lift)]"
           >
             <div className="relative h-20 w-14 shrink-0 overflow-hidden rounded-md">
               <PosterImage src={h.poster} fallback={h.posterFallback} alt="" className="size-full" />
@@ -96,7 +96,7 @@ function ContinueWatching() {
 function FavoritesCorner() {
   const { favorites } = useFavorites();
   return (
-    <Reveal as="section" labelledBy="fav-title" className="bg-dots rounded-3xl border border-line bg-white p-5 sm:p-7">
+    <Reveal as="section" labelledBy="fav-title" className="bg-dots rounded-3xl border border-line bg-surface p-5 sm:p-7">
       <SectionHeader
         id="fav-title"
         title={

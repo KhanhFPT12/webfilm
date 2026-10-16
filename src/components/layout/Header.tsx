@@ -6,6 +6,7 @@ import { Logo } from "../common/Logo";
 import { MobileMenu } from "./MobileMenu";
 import { NAV_ITEMS, isNavActive } from "./nav";
 import { SearchBox } from "./SearchBox";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
   const { pathname } = useLocation();
@@ -31,7 +32,7 @@ export function Header() {
     >
       {icon}
       {!!badge && (
-        <span className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-deep px-1 text-[10px] font-bold text-white ring-2 ring-white">
+        <span className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-deep px-1 text-[10px] font-bold text-white ring-2 ring-surface">
           {badge > 99 ? "99+" : badge}
         </span>
       )}
@@ -40,7 +41,7 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-40 border-b border-line bg-white/95 transition-shadow duration-300 ${scrolled ? "shadow-[0_6px_20px_-12px_rgb(219_39_119/0.45)]" : ""}`}
+      className={`sticky top-0 z-40 border-b border-line bg-surface/95 transition-shadow duration-300 ${scrolled ? "shadow-[0_6px_20px_-12px_rgb(219_39_119/0.45)]" : ""}`}
     >
       <div className="container-page flex h-16 items-center gap-4 lg:h-[72px]">
         <Logo />
@@ -70,6 +71,7 @@ export function Header() {
             <Search className="size-5" />
           </Link>
           {iconLink("/yeu-thich", "Danh sách yêu thích", <Heart className="size-5" />, favorites.length)}
+          <ThemeToggle />
           <span className="hidden sm:contents">{iconLink("/lich-su", "Lịch sử xem", <History className="size-5" />)}</span>
           <button
             type="button"

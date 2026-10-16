@@ -27,11 +27,11 @@ export function MovieCard({ movie, eager = false, index = 0 }: Props) {
           />
           {/* Lớp hồng mỏng + nút play khi rê chuột */}
           <div className="absolute inset-0 flex items-center justify-center bg-deep/0 transition-colors duration-300 group-hover:bg-deep/20">
-            <span className="flex size-12 scale-50 items-center justify-center rounded-full bg-white/95 text-deep opacity-0 shadow-lg transition-all duration-300 [transition-timing-function:var(--ease-bounce)] group-hover:scale-100 group-hover:opacity-100">
+            <span className="flex size-12 scale-50 items-center justify-center rounded-full bg-surface/95 text-deep opacity-0 shadow-lg transition-all duration-300 [transition-timing-function:var(--ease-bounce)] group-hover:scale-100 group-hover:opacity-100">
               <Play className="ml-0.5 size-5 fill-deep" />
             </span>
           </div>
-          {movie.quality && <span className="badge absolute top-2 left-2 bg-white/95 text-deep shadow-sm">{movie.quality}</span>}
+          {movie.quality && <span className="badge absolute top-2 left-2 bg-surface/95 text-deep shadow-sm">{movie.quality}</span>}
           {movie.currentEpisode && (
             <span className="badge absolute bottom-2 left-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-deep px-2 text-white shadow-sm">
               {movie.currentEpisode}

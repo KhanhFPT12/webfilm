@@ -91,7 +91,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
       <div className="container-page relative grid items-center gap-8 py-8 sm:py-12 lg:grid-cols-[1fr_1.15fr] lg:gap-12 lg:py-16">
         {/* Cột chữ */}
         <div className="order-2 min-w-0 lg:order-1">
-          <p className="animate-rise inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-semibold text-deep shadow-sm ring-1 ring-line">
+          <p className="animate-rise inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold text-deep shadow-sm ring-1 ring-line">
             <Sparkles className="size-3.5" aria-hidden="true" /> Rạp hồng hôm nay
           </p>
           <h1
@@ -109,7 +109,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
           </p>
 
           <div
-            className="animate-rise mt-6 rounded-2xl bg-white/80 p-4 shadow-[var(--shadow-card)] ring-1 ring-line"
+            className="animate-rise mt-6 rounded-2xl bg-surface/80 p-4 shadow-[var(--shadow-card)] ring-1 ring-line"
             style={{ ["--i" as string]: 3 }}
           >
             {loading && !featured ? (
@@ -168,7 +168,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
             <ErrorState error={error} onRetry={onRetry} compact />
           ) : (
             <div className="relative">
-              <div className="relative aspect-video overflow-hidden rounded-2xl border-4 border-white bg-white shadow-[var(--shadow-lift)] lg:rotate-1">
+              <div className="relative aspect-video overflow-hidden rounded-2xl border-4 border-surface bg-surface shadow-[var(--shadow-lift)] lg:rotate-1">
                 {featured ? (
                   <Link
                     key={featured.slug}
@@ -195,7 +195,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
               {featured && (
                 <div
                   key={`p-${featured.slug}`}
-                  className="animate-rise absolute -bottom-6 -left-6 hidden w-28 -rotate-6 overflow-hidden rounded-xl border-4 border-white shadow-[var(--shadow-lift)] xl:block"
+                  className="animate-rise absolute -bottom-6 -left-6 hidden w-28 -rotate-6 overflow-hidden rounded-xl border-4 border-surface shadow-[var(--shadow-lift)] xl:block"
                 >
                   <PosterImage src={featured.poster} fallback={featured.posterFallback} alt="" eager className="aspect-[2/3] w-full" />
                 </div>
@@ -213,7 +213,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
                       className={`relative h-14 w-10 overflow-hidden rounded-lg border-2 transition-all duration-300 [transition-timing-function:var(--ease-bounce)] sm:h-16 sm:w-11 ${
                         i === index
                           ? "-translate-y-1 border-deep shadow-md"
-                          : "border-white opacity-70 hover:-translate-y-0.5 hover:opacity-100"
+                          : "border-surface opacity-70 hover:-translate-y-0.5 hover:opacity-100"
                       }`}
                     >
                       <PosterImage src={m.poster} fallback={m.posterFallback} alt="" className="size-full" />

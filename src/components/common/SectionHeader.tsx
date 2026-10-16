@@ -25,7 +25,7 @@ export function SectionHeader({ title, subtitle, to, linkLabel = "Xem tất cả
       {to && (
         <Link
           to={to}
-          className="group inline-flex shrink-0 items-center gap-0.5 rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-deep ring-1 ring-line transition-all hover:bg-deep hover:text-white hover:ring-deep"
+          className="group inline-flex shrink-0 items-center gap-0.5 rounded-full bg-surface px-3 py-1.5 text-sm font-semibold text-deep ring-1 ring-line transition-all hover:bg-deep hover:text-white hover:ring-deep"
         >
           {linkLabel}
           <ChevronRight className="size-4 transition-transform group-hover:translate-x-0.5" />

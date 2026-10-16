@@ -106,13 +106,13 @@ export function MovieDetailPage() {
         {movie.backdrop && (
           <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 lg:block" aria-hidden="true">
             <PosterImage src={movie.backdrop} fallback={movie.backdropFallback} alt="" eager className="size-full opacity-[0.16]" />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,#FCE7F3_0%,rgba(252,231,243,0.3)_100%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-pastel)_0%,color-mix(in_srgb,var(--color-pastel)_30%,transparent)_100%)]" />
           </div>
         )}
 
         <div className="container-page relative grid gap-7 py-8 sm:py-10 md:grid-cols-[240px_1fr] md:gap-10 lg:grid-cols-[280px_1fr]">
           <div className="animate-rise mx-auto w-48 sm:w-56 md:w-full">
-            <div className="relative aspect-[2/3] overflow-hidden rounded-xl border-4 border-white bg-white shadow-[var(--shadow-lift)]">
+            <div className="relative aspect-[2/3] overflow-hidden rounded-xl border-4 border-surface bg-surface shadow-[var(--shadow-lift)]">
               <PosterImage
                 src={movie.poster}
                 fallback={movie.posterFallback}
@@ -142,7 +142,7 @@ export function MovieDetailPage() {
             {badges.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {badges.map((b) => (
-                  <span key={b} className="badge bg-white px-2 py-1 text-xs text-ink ring-1 ring-line">
+                  <span key={b} className="badge bg-surface px-2 py-1 text-xs text-ink ring-1 ring-line">
                     {b}
                   </span>
                 ))}
@@ -170,7 +170,7 @@ export function MovieDetailPage() {
               <ShareButton movie={movie} />
             </div>
 
-            <dl className="mt-6 divide-y divide-line/70 rounded-xl border border-line bg-white/80 px-4 py-1">
+            <dl className="mt-6 divide-y divide-line/70 rounded-xl border border-line bg-surface/80 px-4 py-1">
               {movie.genres.length > 0 && (
                 <InfoRow icon={<Tags className="size-4" />} label="Thể loại">
                   <TaxonomyLinks items={movie.genres} base="/the-loai" />
@@ -244,7 +244,7 @@ export function MovieDetailPage() {
                   activeEpisode={resume?.serverIndex === serverIndex ? resume?.episodeSlug : undefined}
                 />
               ) : (
-                <p className="rounded-xl border border-dashed border-line bg-white px-4 py-6 text-center text-sm text-muted">
+                <p className="rounded-xl border border-dashed border-line bg-surface px-4 py-6 text-center text-sm text-muted">
                   API chưa cung cấp nguồn phát cho phim này. Bạn quay lại sau nhé.
                 </p>
               )}

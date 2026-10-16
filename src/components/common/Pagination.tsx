@@ -23,7 +23,7 @@ export function Pagination({ page, totalPages, onChange }: Props) {
     <nav className="mt-10 flex flex-wrap items-center justify-center gap-1.5" aria-label="Phân trang">
       <button
         type="button"
-        className="btn-icon border border-line bg-white"
+        className="btn-icon border border-line bg-surface"
         disabled={page <= 1}
         onClick={() => onChange(page - 1)}
         aria-label="Trang trước"
@@ -43,7 +43,7 @@ export function Pagination({ page, totalPages, onChange }: Props) {
             aria-current={p === page ? "page" : undefined}
             aria-label={`Trang ${p}`}
             className={`h-10 min-w-10 rounded-lg px-2 text-sm font-semibold transition-colors ${
-              p === page ? "bg-deep text-white" : "border border-line bg-white text-ink hover:border-rose hover:text-deep"
+              p === page ? "bg-deep text-white" : "border border-line bg-surface text-ink hover:border-rose hover:text-deep"
             }`}
           >
             {p}
@@ -52,7 +52,7 @@ export function Pagination({ page, totalPages, onChange }: Props) {
       )}
       <button
         type="button"
-        className="btn-icon border border-line bg-white"
+        className="btn-icon border border-line bg-surface"
         disabled={page >= totalPages}
         onClick={() => onChange(page + 1)}
         aria-label="Trang sau"

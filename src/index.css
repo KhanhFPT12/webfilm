@@ -13,6 +13,7 @@
   --color-ink: #3d2435; /* chữ chính */
   --color-muted: #8b7282; /* chữ phụ */
   --color-line: #f3d6e5; /* border */
+  --color-surface: #ffffff; /* nền thẻ / hộp (đổi theo chế độ sáng tối) */
 
   /* Khu vực rạp chiếu (trang xem phim) */
   --color-plum-950: #1a0a14;
@@ -23,10 +24,45 @@
 
   --shadow-card: 0 1px 2px rgb(61 36 53 / 0.06), 0 4px 14px -6px rgb(219 39 119 / 0.18);
   --shadow-lift: 0 2px 4px rgb(61 36 53 / 0.06), 0 14px 28px -12px rgb(219 39 119 / 0.35);
+  --dot-color: rgb(244 114 182 / 0.22);
 
   --radius-card: 0.875rem;
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ================= Chế độ tối =================
+ * data-theme="dark" (người dùng chọn) hoặc theo hệ điều hành khi chưa chọn.
+ * Chỉ đổi giá trị biến màu — mọi component dùng chung token nên tự đổi theo. */
+@layer theme {
+  :root[data-theme="dark"] {
+    --color-blush: #160a12;
+    --color-pastel: #26111f;
+    --color-surface: #1f0e1a;
+    --color-ink: #fbe8f2;
+    --color-muted: #c9a7b9;
+    --color-line: #43223a;
+    --color-deeper: #f0609f;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 18px -8px rgb(0 0 0 / 0.6);
+    --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.45), 0 16px 32px -12px rgb(219 39 119 / 0.45);
+    --dot-color: rgb(244 114 182 / 0.12);
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-blush: #160a12;
+      --color-pastel: #26111f;
+      --color-surface: #1f0e1a;
+      --color-ink: #fbe8f2;
+      --color-muted: #c9a7b9;
+      --color-line: #43223a;
+      --color-deeper: #f0609f;
+      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 18px -8px rgb(0 0 0 / 0.6);
+      --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.45), 0 16px 32px -12px rgb(219 39 119 / 0.45);
+      --dot-color: rgb(244 114 182 / 0.12);
+      color-scheme: dark;
+    }
+  }
 }
 
 @layer base {
@@ -36,6 +72,9 @@
   }
   body {
     @apply bg-blush font-sans text-ink antialiased;
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease;
     font-feature-settings: "ss01";
     overflow-x: hidden;
   }
@@ -100,13 +139,13 @@
   }
 }
 @utility btn-secondary {
-  @apply btn border border-line bg-white text-deep hover:-translate-y-0.5 hover:border-rose hover:bg-pastel active:bg-[#f9d3e7];
+  @apply btn border border-line bg-surface text-deep hover:-translate-y-0.5 hover:border-rose hover:bg-pastel active:bg-line;
 }
 @utility btn-ghost {
-  @apply btn text-ink hover:bg-pastel hover:text-deep active:bg-[#f9d3e7];
+  @apply btn text-ink hover:bg-pastel hover:text-deep active:bg-line;
 }
 @utility btn-icon {
-  @apply inline-flex size-10 items-center justify-center rounded-xl text-ink transition-[background-color,color,transform] duration-200 hover:bg-pastel hover:text-deep active:scale-90 active:bg-[#f9d3e7] disabled:opacity-40;
+  @apply inline-flex size-10 items-center justify-center rounded-xl text-ink transition-[background-color,color,transform] duration-200 hover:bg-pastel hover:text-deep active:scale-90 active:bg-line disabled:opacity-40;
 }
 
 @utility chip {
@@ -121,7 +160,7 @@
 }
 
 @utility input {
-  @apply h-11 w-full rounded-xl border border-line bg-white px-3.5 text-sm text-ink placeholder:text-muted transition-colors outline-none focus:border-rose focus:ring-2 focus:ring-pastel;
+  @apply h-11 w-full rounded-xl border border-line bg-surface px-3.5 text-sm text-ink placeholder:text-muted transition-colors outline-none focus:border-rose focus:ring-2 focus:ring-pastel;
 }
 
 @utility section-title {
@@ -142,7 +181,7 @@
 
 /* Nền chấm bi hồng dễ thương */
 @utility bg-dots {
-  background-image: radial-gradient(rgb(244 114 182 / 0.22) 1.2px, transparent 1.4px);
+  background-image: radial-gradient(var(--dot-color) 1.2px, transparent 1.4px);
   background-size: 18px 18px;
 }
 
@@ -311,7 +350,12 @@
   }
 }
 .skeleton {
-  background: linear-gradient(90deg, #fce7f3 0%, #fdf1f8 50%, #fce7f3 100%);
+  background: linear-gradient(
+    90deg,
+    var(--color-pastel) 0%,
+    color-mix(in srgb, var(--color-pastel) 55%, var(--color-surface)) 50%,
+    var(--color-pastel) 100%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }

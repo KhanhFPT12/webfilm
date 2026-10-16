@@ -23,10 +23,10 @@ export function TaxonomyPage({ kind }: Props) {
         description={isGenre ? "Hôm nay bạn muốn cười, khóc hay hồi hộp?" : "Đi vòng quanh thế giới qua màn ảnh."}
       >
         <div className="flex flex-wrap gap-2">
-          <Link to="/the-loai" aria-current={isGenre ? "page" : undefined} className={`chip ${isGenre ? "chip-active" : "bg-white"}`}>
+          <Link to="/the-loai" aria-current={isGenre ? "page" : undefined} className={`chip ${isGenre ? "chip-active" : "bg-surface"}`}>
             <Tags className="size-4" /> Thể loại
           </Link>
-          <Link to="/quoc-gia" aria-current={!isGenre ? "page" : undefined} className={`chip ${!isGenre ? "chip-active" : "bg-white"}`}>
+          <Link to="/quoc-gia" aria-current={!isGenre ? "page" : undefined} className={`chip ${!isGenre ? "chip-active" : "bg-surface"}`}>
             <Globe2 className="size-4" /> Quốc gia
           </Link>
         </div>
@@ -42,7 +42,7 @@ export function TaxonomyPage({ kind }: Props) {
               <li key={c.slug}>
                 <Link
                   to={`/${isGenre ? "the-loai" : "quoc-gia"}/${c.slug}`}
-                  className="group flex h-full flex-col justify-center rounded-xl border border-line bg-white px-4 py-4 shadow-[var(--shadow-card)] transition-[border-color,transform] hover:-translate-y-0.5 hover:border-rose"
+                  className="group flex h-full flex-col justify-center rounded-xl border border-line bg-surface px-4 py-4 shadow-[var(--shadow-card)] transition-[border-color,transform] hover:-translate-y-0.5 hover:border-rose"
                 >
                   <span className="font-semibold text-ink group-hover:text-deep">{c.name}</span>
                   {c.note && <span className="mt-0.5 line-clamp-2 text-xs text-muted">{c.note}</span>}
