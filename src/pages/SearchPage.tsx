@@ -21,12 +21,10 @@ export function SearchPage() {
   const debounced = useDebounce(input, 450);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // URL đổi từ bên ngoài (header, back/forward) -> cập nhật ô nhập.
   useEffect(() => {
     setInput((cur) => (cur.trim() === urlQuery.trim() ? cur : urlQuery));
   }, [urlQuery]);
 
-  // Gõ xong (debounce) -> đồng bộ lên URL, về trang 1.
   useEffect(() => {
     const q = debounced.trim();
     if (q === urlQuery.trim()) return;
@@ -57,13 +55,13 @@ export function SearchPage() {
 
   return (
     <>
-      <div className="bg-dots border-b border-line bg-pastel">
+      <div className="border-b border-line bg-sub/60">
         <div className="container-page py-8 sm:py-10">
-          <h1 className="text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">Phim dành cho bạn</h1>
-          <p className="mt-1.5 text-muted">Tìm theo tên tiếng Việt hoặc tên gốc của phim.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">Tìm kiếm phim</h1>
+          <p className="mt-1.5 text-xs sm:text-sm text-muted">Tìm theo tên tiếng Việt hoặc tên gốc của bộ phim.</p>
           <form
             role="search"
-            className="relative mt-5 max-w-2xl"
+            className="relative mt-5 max-w-xl"
             onSubmit={(e) => {
               e.preventDefault();
               const q = input.trim();
@@ -73,17 +71,17 @@ export function SearchPage() {
             <label htmlFor="search-page" className="sr-only">
               Từ khoá tìm kiếm
             </label>
-            <Search className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted" />
+            <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4.5 -translate-y-1/2 text-muted" />
             <input
               id="search-page"
               ref={inputRef}
               type="search"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ví dụ: Yêu như lần đầu, Love Again…"
+              placeholder="Nhập tên phim cần tìm…"
               autoComplete="off"
               enterKeyHint="search"
-              className="input h-13 rounded-xl pr-12 pl-12 text-base shadow-[var(--shadow-card)] [&::-webkit-search-cancel-button]:hidden"
+              className="h-11 w-full rounded-lg border border-line bg-surface pr-10 pl-10 text-sm text-ink placeholder:text-muted/80 shadow-xs transition-colors outline-none focus:border-deep focus:ring-1 focus:ring-deep [&::-webkit-search-cancel-button]:hidden"
             />
             {input && (
               <button
@@ -93,10 +91,10 @@ export function SearchPage() {
                   setParams({}, { replace: true });
                   inputRef.current?.focus();
                 }}
-                className="absolute top-1/2 right-2.5 flex size-8 -translate-y-1/2 items-center justify-center rounded-lg text-muted hover:bg-pastel hover:text-deep"
+                className="absolute top-1/2 right-2 flex size-7 -translate-y-1/2 items-center justify-center rounded text-muted hover:text-deep"
                 aria-label="Xoá từ khoá"
               >
-                <X className="size-5" />
+                <X className="size-4" />
               </button>
             )}
           </form>
@@ -106,22 +104,22 @@ export function SearchPage() {
       <div className="container-page py-8 sm:py-10" aria-live="polite">
         {!keyword ? (
           <EmptyState
-            title="Bạn muốn xem gì hôm nay?"
-            description="Gõ tên phim vào ô phía trên, hoặc bắt đầu từ một thể loại quen thuộc."
+            title="Bạn muốn tìm phim gì hôm nay?"
+            description="Nhập từ khoá vào ô tìm kiếm ở trên hoặc duyệt nhanh qua các thể loại phổ biến dưới đây."
             action={GENRES.filter((g) => FEATURED_GENRES.includes(g.slug)).map((g) => (
-              <Link key={g.slug} to={`/the-loai/${g.slug}`} className="chip">
+              <Link key={g.slug} to={`/the-loai/${g.slug}`} className="chip text-xs hover:border-deep/40 hover:text-deep">
                 {g.name}
               </Link>
             ))}
           />
         ) : tooShort ? (
-          <EmptyState title="Từ khoá hơi ngắn" description={`Hãy nhập ít nhất ${MIN_LENGTH} ký tự để tìm phim nhé.`} />
+          <EmptyState title="Từ khoá quá ngắn" description={`Hãy nhập tối thiểu ${MIN_LENGTH} ký tự để tìm kiếm chính xác hơn.`} />
         ) : error ? (
           <ErrorState error={error} onRetry={reload} />
         ) : !loading && data && data.items.length === 0 ? (
           <EmptyState
-            title={`Không tìm thấy phim nào cho “${keyword}”`}
-            description="Thử kiểm tra chính tả, bỏ dấu hoặc tìm theo tên gốc (tiếng Anh, tiếng Hàn…)."
+            title={`Không tìm thấy phim phù hợp với “${keyword}”`}
+            description="Hãy thử kiểm tra lại chính tả hoặc tìm theo tên gốc tiếng Anh."
             action={
               <Link to="/phim-moi" className="btn-secondary">
                 Xem phim mới cập nhật
@@ -130,12 +128,12 @@ export function SearchPage() {
           />
         ) : (
           <>
-            <p className="mb-5 text-sm text-muted">
+            <p className="mb-5 text-xs text-muted">
               {loading && !data ? (
-                "Đang tìm…"
+                "Đang tìm kiếm…"
               ) : data ? (
                 <>
-                  Tìm thấy <strong className="text-deep">{formatNumber(data.totalItems)}</strong> phim cho “{keyword}”
+                  Tìm thấy <strong className="font-semibold text-deep">{formatNumber(data.totalItems)}</strong> phim cho “{keyword}”
                   {data.totalPages > 1 && ` · Trang ${page}/${formatNumber(data.totalPages)}`}
                 </>
               ) : null}

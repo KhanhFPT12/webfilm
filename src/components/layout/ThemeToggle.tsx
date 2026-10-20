@@ -1,7 +1,7 @@
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme, type ThemePref } from "../../hooks/useTheme";
 
-/** Nút tròn đổi sáng ↔ tối: mặt trời xoay đi, mặt trăng xoay vào. */
+/** Nút đổi giao diện Sáng ↔ Tối */
 export function ThemeToggle() {
   const { theme, toggle } = useTheme();
   const dark = theme === "dark";
@@ -9,18 +9,18 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="btn-icon relative overflow-hidden"
+      className="btn-icon relative size-9 rounded-lg overflow-hidden"
       aria-label={dark ? "Chuyển sang chế độ sáng" : "Chuyển sang chế độ tối"}
       title={dark ? "Chế độ sáng" : "Chế độ tối"}
     >
       <Sun
-        className={`absolute size-5 transition-all duration-500 [transition-timing-function:var(--ease-bounce)] ${
-          dark ? "translate-y-6 rotate-90 opacity-0" : "translate-y-0 rotate-0 opacity-100"
+        className={`absolute size-4.5 transition-all duration-200 ${
+          dark ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100"
         }`}
       />
       <Moon
-        className={`absolute size-5 transition-all duration-500 [transition-timing-function:var(--ease-bounce)] ${
-          dark ? "translate-y-0 rotate-0 fill-rose/30 text-rose opacity-100" : "-translate-y-6 -rotate-90 opacity-0"
+        className={`absolute size-4.5 transition-all duration-200 ${
+          dark ? "translate-y-0 opacity-100 text-deep" : "-translate-y-4 opacity-0"
         }`}
       />
     </button>
@@ -33,11 +33,11 @@ const OPTIONS: { value: ThemePref; label: string; icon: typeof Sun }[] = [
   { value: "system", label: "Tự động", icon: Monitor },
 ];
 
-/** Bộ chọn 3 lựa chọn (dùng trong menu mobile). */
+/** Bộ chọn giao diện 3 lựa chọn cho menu mobile */
 export function ThemeSwitcher() {
   const { preference, setPreference } = useTheme();
   return (
-    <div role="radiogroup" aria-label="Giao diện" className="grid grid-cols-3 gap-1 rounded-xl bg-pastel p-1 ring-1 ring-line">
+    <div role="radiogroup" aria-label="Giao diện" className="grid grid-cols-3 gap-1 rounded-lg border border-line bg-sub p-1">
       {OPTIONS.map(({ value, label, icon: Icon }) => {
         const active = preference === value;
         return (
@@ -47,11 +47,11 @@ export function ThemeSwitcher() {
             role="radio"
             aria-checked={active}
             onClick={() => setPreference(value)}
-            className={`flex items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-semibold transition-all duration-300 ${
-              active ? "bg-surface text-deep shadow-sm" : "text-muted hover:text-ink"
+            className={`flex items-center justify-center gap-1.5 rounded-md py-1.5 text-xs font-semibold transition-colors ${
+              active ? "bg-surface text-deep shadow-xs" : "text-muted hover:text-ink"
             }`}
           >
-            <Icon className="size-4" /> {label}
+            <Icon className="size-3.5" /> {label}
           </button>
         );
       })}

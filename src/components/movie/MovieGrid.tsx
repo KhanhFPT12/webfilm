@@ -2,7 +2,7 @@ import type { Movie } from "../../types/movie";
 import { GridSkeleton } from "../common/LoadingSkeleton";
 import { MovieCard } from "./MovieCard";
 
-export const GRID_CLASS = "grid grid-cols-2 gap-x-3.5 gap-y-6 sm:grid-cols-3 sm:gap-x-5 md:grid-cols-4 lg:grid-cols-5";
+export const GRID_CLASS = "grid grid-cols-2 gap-x-3.5 gap-y-6 sm:grid-cols-3 sm:gap-x-4.5 sm:gap-y-7 md:grid-cols-4 lg:grid-cols-5";
 
 interface Props {
   movies?: Movie[];

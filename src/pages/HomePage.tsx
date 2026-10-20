@@ -32,26 +32,27 @@ function GenreExplorer() {
       <SectionHeader
         id="genres-title"
         title="Khám phá theo thể loại"
-        subtitle="Chọn một màu cảm xúc cho tối nay"
+        subtitle="Chọn thể loại phim theo tâm trạng tối nay"
         to="/the-loai"
-        linkLabel="Tất cả thể loại"
+        linkLabel="Xem tất cả thể loại"
       />
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        {genres.map((g, i) => {
+        {genres.map((g) => {
           const Icon = GENRE_ICONS[g.slug] ?? Heart;
           return (
             <Link
               key={g.slug}
               to={`/the-loai/${g.slug}`}
-              className="group animate-rise flex items-center gap-3 rounded-2xl border border-line bg-pastel/70 px-4 py-3.5 transition-[background-color,border-color,transform,box-shadow] duration-300 [transition-timing-function:var(--ease-bounce)] hover:-translate-y-1 hover:border-rose hover:bg-surface hover:shadow-[var(--shadow-lift)]"
-              style={{ ["--i" as string]: i }}
+              className="group flex items-center gap-3 rounded-xl border border-line bg-surface p-3 transition-all duration-150 hover:-translate-y-0.5 hover:border-deep/30 hover:shadow-xs"
             >
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface text-deep shadow-sm group-hover:animate-wiggle">
-                <Icon className="size-5" />
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-sub text-deep transition-colors group-hover:bg-pastel/70">
+                <Icon className="size-4.5" />
               </span>
               <span className="min-w-0">
-                <span className="block font-semibold text-ink group-hover:text-deep">{g.name}</span>
-                {g.note && <span className="block truncate text-xs text-muted">{g.note}</span>}
+                <span className="block text-xs sm:text-sm font-semibold text-ink group-hover:text-deep">
+                  {g.name}
+                </span>
+                {g.note && <span className="block truncate text-[11px] text-muted">{g.note}</span>}
               </span>
             </Link>
           );
@@ -67,24 +68,24 @@ function ContinueWatching() {
   if (!items.length) return null;
   return (
     <Reveal as="section" labelledBy="continue-title">
-      <SectionHeader id="continue-title" title="Xem tiếp nhé" to="/lich-su" linkLabel="Lịch sử xem" />
+      <SectionHeader id="continue-title" title="Xem tiếp gần đây" to="/lich-su" linkLabel="Lịch sử xem" />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((h) => (
           <Link
             key={h.slug}
             to={h.episodeSlug ? watchUrl(h.slug, h.episodeSlug, h.serverIndex ?? 0) : `/xem-phim/${h.slug}`}
-            className="group flex items-center gap-3 rounded-2xl border border-line bg-surface p-2.5 shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-1 hover:border-rose hover:shadow-[var(--shadow-lift)]"
+            className="group flex items-center gap-3 rounded-xl border border-line bg-surface p-2.5 shadow-xs transition-all duration-150 hover:-translate-y-0.5 hover:border-deep/30 hover:shadow-sm"
           >
-            <div className="relative h-20 w-14 shrink-0 overflow-hidden rounded-md">
+            <div className="relative h-18 w-13 shrink-0 overflow-hidden rounded-md border border-line bg-sub">
               <PosterImage src={h.poster} fallback={h.posterFallback} alt="" className="size-full" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold text-ink group-hover:text-deep">{h.name}</p>
-              {h.episodeName && <p className="text-sm text-deep">{episodeLabel(h.episodeName)}</p>}
-              <p className="text-xs text-muted">{timeAgo(h.watchedAt)}</p>
+              <p className="truncate text-xs sm:text-sm font-semibold text-ink group-hover:text-deep">{h.name}</p>
+              {h.episodeName && <p className="text-xs font-medium text-deep">{episodeLabel(h.episodeName)}</p>}
+              <p className="mt-0.5 text-[11px] text-muted">{timeAgo(h.watchedAt)}</p>
             </div>
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-pastel text-deep transition-colors group-hover:bg-deep group-hover:text-white">
-              <Play className="size-4 fill-current" />
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-sub text-deep transition-colors group-hover:bg-deep group-hover:text-white">
+              <Play className="ml-0.5 size-3.5 fill-current" />
             </span>
           </Link>
         ))}
@@ -96,38 +97,33 @@ function ContinueWatching() {
 function FavoritesCorner() {
   const { favorites } = useFavorites();
   return (
-    <Reveal as="section" labelledBy="fav-title" className="bg-dots rounded-3xl border border-line bg-surface p-5 sm:p-7">
+    <Reveal as="section" labelledBy="fav-title" className="rounded-2xl border border-line bg-sub/40 p-5 sm:p-7">
       <SectionHeader
         id="fav-title"
-        title={
-          <>
-            Góc phim của Sony <span aria-hidden="true">💗</span>
-          </>
-        }
-        subtitle={favorites.length ? `${favorites.length} bộ phim đang được thương` : undefined}
+        title="Góc phim của Sony"
+        subtitle={favorites.length ? `${favorites.length} bộ phim đang được lưu giữ` : undefined}
         to={favorites.length ? "/yeu-thich" : undefined}
       />
       {favorites.length === 0 ? (
         <EmptyState
-          title="Góc phim còn trống trải quá"
+          title="Góc phim yêu thích còn trống"
           description={
             <>
-              Bấm vào biểu tượng <Heart className="inline size-4 fill-deep text-deep" aria-label="trái tim" /> trên poster bất kỳ để cất bộ
-              phim bạn thích vào đây. Danh sách được lưu ngay trên trình duyệt này.
+              Bấm vào biểu tượng trái tim trên poster phim bất kỳ để lưu lại vào đây. Danh sách được lưu an toàn trên trình duyệt này.
             </>
           }
           action={
             <Link to="/phim-moi" className="btn-primary">
-              Đi tìm phim thương <ArrowRight className="size-4" />
+              Khám phá phim ngay <ArrowRight className="size-4" />
             </Link>
           }
         />
       ) : (
-        <div className="-mx-1 flex snap-x gap-3.5 overflow-x-auto px-1 pb-2 scrollbar-none sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible md:grid-cols-4 lg:grid-cols-5">
+        <div className="-mx-1 flex snap-x gap-3.5 overflow-x-auto px-1 pb-2 scrollbar-none sm:grid sm:grid-cols-3 sm:gap-4.5 sm:overflow-visible md:grid-cols-4 lg:grid-cols-5">
           {favorites.slice(0, 5).map((f) => (
             <div
               key={f.slug}
-              className="w-[42%] min-w-[150px] shrink-0 snap-start sm:w-auto sm:min-w-0 md:[&:nth-child(5)]:hidden lg:[&:nth-child(5)]:block"
+              className="w-[40%] min-w-[140px] shrink-0 snap-start sm:w-auto sm:min-w-0 md:[&:nth-child(5)]:hidden lg:[&:nth-child(5)]:block"
             >
               <MovieCard movie={favoriteToMovie(f)} />
             </div>
@@ -148,13 +144,13 @@ export function HomePage() {
     <>
       <HeroBanner movies={latest.data?.items} loading={latest.loading} error={latest.error} onRetry={latest.reload} />
 
-      <div className="container-page space-y-14 py-10 sm:py-12">
+      <div className="container-page space-y-12 py-8 sm:py-12">
         <ContinueWatching />
 
         <MovieSection
           id="latest-title"
-          title="Mới cập bến rạp hồng"
-          subtitle="Phim vừa được cập nhật trên hệ thống"
+          title="Phim mới cập bến"
+          subtitle="Những tác phẩm vừa được cập nhật trên hệ thống"
           to="/phim-moi"
           movies={latest.data?.items}
           loading={latest.loading}
@@ -166,8 +162,8 @@ export function HomePage() {
 
         <MovieSection
           id="single-title"
-          title="Phim lẻ cho buổi tối thư giãn"
-          subtitle="Trọn vẹn một câu chuyện, không cần chờ tập mới"
+          title="Phim lẻ chọn lọc"
+          subtitle="Trọn vẹn một câu chuyện cho buổi tối thảnh thơi"
           to="/phim-le"
           movies={single.data?.items}
           loading={single.loading}
@@ -177,8 +173,8 @@ export function HomePage() {
 
         <MovieSection
           id="series-title"
-          title="Phim bộ để cày cuối tuần"
-          subtitle="Những bộ phim dài tập vừa có tập mới"
+          title="Phim bộ dài tập"
+          subtitle="Theo dõi những series hấp dẫn nhiều tập"
           to="/phim-bo"
           movies={series.data?.items}
           loading={series.loading}
@@ -188,8 +184,8 @@ export function HomePage() {
 
         <FavoritesCorner />
 
-        <p className="flex items-center justify-center gap-1.5 text-sm text-muted">
-          <History className="size-4" /> Lịch sử xem và danh sách yêu thích chỉ được lưu trên trình duyệt của bạn.
+        <p className="flex items-center justify-center gap-1.5 text-xs text-muted/80">
+          <History className="size-3.5" /> Lịch sử xem và danh sách yêu thích được lưu trên trình duyệt của bạn.
         </p>
       </div>
     </>

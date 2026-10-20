@@ -22,7 +22,6 @@ export function MobileMenu({ open, onClose }: Props) {
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      // Giữ focus trong menu
       if (e.key === "Tab" && panelRef.current) {
         const items = panelRef.current.querySelectorAll<HTMLElement>("a, button, input");
         const first = items[0];
@@ -48,69 +47,107 @@ export function MobileMenu({ open, onClose }: Props) {
   const genres = GENRES.filter((g) => FEATURED_GENRES.includes(g.slug));
 
   return (
-    <div className="fixed inset-0 z-50 lg:hidden" id="mobile-menu">
-      <button type="button" className="absolute inset-0 bg-black/50" aria-label="Đóng menu" onClick={onClose} tabIndex={-1} />
+    <div className="fixed inset-0 z-50 md:hidden" id="mobile-menu">
+      <button
+        type="button"
+        className="absolute inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
+        aria-label="Đóng menu"
+        onClick={onClose}
+        tabIndex={-1}
+      />
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
-        className="absolute inset-y-0 right-0 flex w-[min(86vw,360px)] flex-col overflow-y-auto bg-surface shadow-xl"
+        className="absolute inset-y-0 right-0 flex w-[min(84vw,340px)] flex-col overflow-y-auto border-l border-line bg-surface shadow-xl"
       >
-        <div className="flex items-center justify-between border-b border-line px-4 py-3">
+        <div className="flex h-16 items-center justify-between border-b border-line px-4">
           <Logo onClick={onClose} />
-          <button type="button" className="btn-icon" onClick={onClose} aria-label="Đóng menu">
-            <X className="size-6" />
+          <button
+            type="button"
+            className="btn-icon size-8 text-muted hover:text-ink"
+            onClick={onClose}
+            aria-label="Đóng menu"
+          >
+            <X className="size-5" />
           </button>
         </div>
 
-        <div className="px-4 pt-4">
+        <div className="p-4">
           <SearchBox autoFocus onSubmitted={onClose} />
         </div>
 
-        <nav aria-label="Điều hướng di động" className="px-2 pt-3">
-          {NAV_ITEMS.map((item) => {
-            const active = isNavActive(item, pathname);
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                aria-current={active ? "page" : undefined}
-                className={`flex items-center rounded-lg px-3 py-3 text-base font-semibold ${
-                  active ? "bg-pastel text-deep" : "text-ink hover:bg-blush"
-                }`}
-              >
-                {active && <span className="mr-2.5 h-4 w-1 rounded-full bg-deep" aria-hidden="true" />}
-                {item.label}
-              </Link>
-            );
-          })}
-          <Link to="/quoc-gia" className="flex items-center gap-2 rounded-lg px-3 py-3 text-base font-semibold text-ink hover:bg-blush">
-            <Globe2 className="size-4 text-muted" /> Quốc gia
-          </Link>
+        <nav aria-label="Điều hướng di động" className="px-3">
+          <p className="mb-2 px-3 text-[11px] font-semibold tracking-wider text-muted uppercase">
+            Menu
+          </p>
+          <div className="space-y-1">
+            {NAV_ITEMS.map((item) => {
+              const active = isNavActive(item, pathname);
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  aria-current={active ? "page" : undefined}
+                  className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-pastel/60 text-deep font-semibold"
+                      : "text-ink hover:bg-sub"
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  {active && <span className="size-1.5 rounded-full bg-deep" aria-hidden="true" />}
+                </Link>
+              );
+            })}
+            <Link
+              to="/quoc-gia"
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-ink hover:bg-sub"
+            >
+              <Globe2 className="size-4 text-muted" /> Quốc gia
+            </Link>
+          </div>
         </nav>
 
         <div className="mx-4 my-3 border-t border-line" />
 
-        <div className="px-2">
-          <Link to="/yeu-thich" className="flex items-center gap-2 rounded-lg px-3 py-3 font-semibold text-ink hover:bg-blush">
-            <Heart className="size-4 text-deep" /> Góc phim yêu thích
-          </Link>
-          <Link to="/lich-su" className="flex items-center gap-2 rounded-lg px-3 py-3 font-semibold text-ink hover:bg-blush">
-            <History className="size-4 text-deep" /> Lịch sử xem
-          </Link>
+        <div className="px-3">
+          <p className="mb-2 px-3 text-[11px] font-semibold tracking-wider text-muted uppercase">
+            Cá nhân
+          </p>
+          <div className="space-y-1">
+            <Link
+              to="/yeu-thich"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-ink hover:bg-sub"
+            >
+              <Heart className="size-4 text-deep" /> Góc phim yêu thích
+            </Link>
+            <Link
+              to="/lich-su"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-ink hover:bg-sub"
+            >
+              <History className="size-4 text-deep" /> Lịch sử xem
+            </Link>
+          </div>
         </div>
 
-        <div className="px-4 pt-3">
-          <p className="mb-2 text-xs font-semibold tracking-wider text-muted uppercase">Giao diện</p>
+        <div className="mx-4 my-3 border-t border-line" />
+
+        <div className="px-4">
+          <p className="mb-2 text-[11px] font-semibold tracking-wider text-muted uppercase">Giao diện</p>
           <ThemeSwitcher />
         </div>
 
-        <div className="px-4 pt-5 pb-6">
-          <p className="mb-2 text-xs font-semibold tracking-wider text-muted uppercase">Thể loại nổi bật</p>
-          <div className="flex flex-wrap gap-2">
+        <div className="px-4 pt-4 pb-8">
+          <p className="mb-2 text-[11px] font-semibold tracking-wider text-muted uppercase">Thể loại nổi bật</p>
+          <div className="flex flex-wrap gap-1.5">
             {genres.map((g) => (
-              <Link key={g.slug} to={`/the-loai/${g.slug}`} className="chip text-[13px]">
+              <Link
+                key={g.slug}
+                to={`/the-loai/${g.slug}`}
+                className="chip py-1 text-xs"
+              >
                 {g.name}
               </Link>
             ))}

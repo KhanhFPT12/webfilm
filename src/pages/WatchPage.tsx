@@ -17,9 +17,9 @@ function WatchSkeleton() {
       <span className="sr-only">Đang tải trình phát…</span>
       <div className="skeleton mb-4 h-6 w-1/2 rounded" />
       <div className="skeleton aspect-video w-full rounded-xl" />
-      <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(76px,1fr))] gap-2">
+      <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(72px,1fr))] gap-2">
         {Array.from({ length: 12 }, (_, i) => (
-          <div key={i} className="skeleton h-10 rounded-lg" />
+          <div key={i} className="skeleton h-9 rounded-lg" />
         ))}
       </div>
     </div>
@@ -47,7 +47,6 @@ export function WatchPage() {
     let episodes = movie.servers[serverIndex].episodes;
     let index = wanted ? episodes.findIndex((e) => e.slug === wanted) : 0;
     if (index < 0) {
-      // Tập không có ở server này -> tìm ở server khác.
       const other = movie.servers.findIndex((s) => s.episodes.some((e) => e.slug === wanted));
       if (other >= 0) {
         serverIndex = other;
@@ -56,11 +55,9 @@ export function WatchPage() {
       } else index = 0;
     }
     return { serverIndex, episodes, index, episode: episodes[index], missing: !!tap && episodes[index]?.slug !== tap };
-    // `get` thay đổi mỗi khi lịch sử được ghi; chỉ cần đọc 1 lần khi đổi phim/URL.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movie, tap, svParam, slug]);
 
-  // Chuẩn hoá URL để có thể chia sẻ đúng tập đang xem.
   useEffect(() => {
     if (!movie || !selection?.episode) return;
     if (tap !== selection.episode.slug || svParam !== selection.serverIndex) {
@@ -68,7 +65,6 @@ export function WatchPage() {
     }
   }, [movie, selection, tap, svParam, navigate]);
 
-  // Lưu lịch sử xem (tập + server). Tiến độ thời gian không đọc được từ iframe khác domain.
   useEffect(() => {
     if (!movie || !selection?.episode) return;
     record({
@@ -99,26 +95,26 @@ export function WatchPage() {
         </div>
       ) : (
         <>
-          <div className="container-page py-5 sm:py-7">
+          <div className="container-page py-5 sm:py-6">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <div className="min-w-0">
                 <Link
                   to={`/phim/${movie.slug}`}
-                  className="inline-flex items-center gap-1.5 rounded text-sm font-medium text-plum-300 hover:text-white"
+                  className="inline-flex items-center gap-1.5 rounded text-xs font-medium text-plum-300 transition-colors hover:text-white"
                 >
-                  <ArrowLeft className="size-4" /> Chi tiết phim
+                  <ArrowLeft className="size-3.5" /> Chi tiết phim
                 </Link>
-                <h1 className="mt-1.5 text-xl leading-snug font-bold text-white sm:text-2xl">
+                <h1 className="mt-1 text-xl font-bold text-white sm:text-2xl">
                   {movie.name}
                   {episodeTitle && isSeries(movie) && <span className="text-rose"> · {episodeTitle}</span>}
                 </h1>
-                {movie.originalName && <p className="truncate text-sm text-plum-300">{movie.originalName}</p>}
+                {movie.originalName && <p className="truncate text-xs text-plum-300">{movie.originalName}</p>}
               </div>
               <FavoriteButton movie={movie} className="shrink-0" />
             </div>
 
             {selection?.missing && (
-              <p className="mb-3 rounded-lg border border-plum-700 bg-plum-900 px-3 py-2 text-sm text-amber-200">
+              <p className="mb-3 rounded-lg border border-plum-700 bg-plum-900 px-3 py-2 text-xs text-amber-200">
                 Không tìm thấy tập bạn yêu cầu, đang phát {episodeTitle || "tập đầu tiên"}.
               </p>
             )}
@@ -133,7 +129,7 @@ export function WatchPage() {
               <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl bg-plum-900 px-6 text-center ring-1 ring-plum-700">
                 <Info className="size-8 text-rose" />
                 <p className="font-semibold text-white">Phim chưa có nguồn phát</p>
-                <p className="max-w-md text-sm text-plum-300">API chưa cung cấp tập nào cho phim này. Bạn quay lại sau nhé.</p>
+                <p className="max-w-md text-xs text-plum-300">API chưa cung cấp tập nào cho phim này. Bạn quay lại sau nhé.</p>
               </div>
             )}
 
@@ -141,33 +137,33 @@ export function WatchPage() {
               <div className="mt-4 flex items-center justify-between gap-3">
                 <button
                   type="button"
-                  className="btn border border-plum-700 text-pastel hover:border-rose hover:bg-plum-800 hover:text-white disabled:hover:border-plum-700 disabled:hover:bg-transparent"
+                  className="btn h-9 px-3.5 border border-plum-700 text-xs font-semibold text-pastel hover:border-rose hover:bg-plum-900 hover:text-white disabled:hover:border-plum-700 disabled:hover:bg-transparent"
                   disabled={selection.index <= 0}
                   onClick={() => go(selection.serverIndex, selection.episodes[selection.index - 1].slug)}
                 >
-                  <ChevronLeft className="size-4" /> Tập trước
+                  <ChevronLeft className="size-3.5" /> Tập trước
                 </button>
-                <span className="text-sm text-plum-300">
+                <span className="text-xs text-plum-300">
                   {selection.index + 1} / {selection.episodes.length}
                 </span>
                 <button
                   type="button"
-                  className="btn bg-deep text-white hover:bg-deeper disabled:hover:bg-deep"
+                  className="btn h-9 px-3.5 bg-deep text-xs font-semibold text-white hover:bg-deeper disabled:hover:bg-deep"
                   disabled={selection.index >= selection.episodes.length - 1}
                   onClick={() => go(selection.serverIndex, selection.episodes[selection.index + 1].slug)}
                 >
-                  Tập tiếp <ChevronRight className="size-4" />
+                  Tập tiếp <ChevronRight className="size-3.5" />
                 </button>
               </div>
             )}
           </div>
 
           {selection && (
-            <div className="border-t border-plum-800 bg-plum-900/60">
+            <div className="border-t border-plum-800 bg-plum-900/40">
               <div className="container-page grid gap-8 py-7 lg:grid-cols-[1.3fr_1fr]">
                 <section aria-labelledby="watch-eps">
-                  <h2 id="watch-eps" className="mb-4 flex items-center gap-2 text-lg font-bold text-white">
-                    <ListVideo className="size-5 text-rose" /> Chọn tập
+                  <h2 id="watch-eps" className="mb-3.5 flex items-center gap-2 text-base font-bold text-white">
+                    <ListVideo className="size-4.5 text-rose" /> Chọn tập
                   </h2>
                   <EpisodeList
                     tone="dark"
@@ -184,18 +180,18 @@ export function WatchPage() {
                   />
                 </section>
                 <section aria-labelledby="watch-about" className="rounded-xl border border-plum-800 bg-plum-950/60 p-5">
-                  <h2 id="watch-about" className="font-bold text-white">
+                  <h2 id="watch-about" className="font-bold text-white text-base">
                     Về bộ phim
                   </h2>
-                  <p className="mt-2 text-sm text-plum-300">
+                  <p className="mt-1.5 text-xs text-plum-300">
                     {[movie.year, movie.quality, movie.language, movie.time].filter(Boolean).join(" · ")}
                   </p>
-                  {movie.description && <p className="mt-3 text-sm leading-relaxed text-pastel/85">{truncate(movie.description, 320)}</p>}
+                  {movie.description && <p className="mt-3 text-xs sm:text-sm leading-relaxed text-pastel/85">{truncate(movie.description, 300)}</p>}
                   <Link
                     to={`/phim/${movie.slug}`}
-                    className="mt-4 inline-flex items-center gap-1 rounded text-sm font-semibold text-rose hover:text-white"
+                    className="mt-4 inline-flex items-center gap-1 rounded text-xs font-semibold text-rose hover:text-white"
                   >
-                    Xem thông tin đầy đủ <ChevronRight className="size-4" />
+                    Xem thông tin đầy đủ <ChevronRight className="size-3.5" />
                   </Link>
                 </section>
               </div>

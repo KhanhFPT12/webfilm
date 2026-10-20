@@ -2,34 +2,22 @@ import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Logo } from "../common/Logo";
 
-const linkCls = "rounded text-sm text-pastel/90 transition-colors hover:text-white hover:underline underline-offset-4";
+const linkCls = "text-xs sm:text-sm text-muted transition-colors hover:text-deep";
 
 export function Footer() {
   return (
-    <footer className="relative mt-24 bg-deep text-white">
-      {/* Viền gợn sóng dễ thương phía trên footer */}
-      <svg
-        className="absolute bottom-full left-0 h-6 w-full text-deep sm:h-8"
-        viewBox="0 0 1440 40"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M0 40V20C60 4 120 4 180 20s120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0 120 16 180 0V40z"
-          fill="currentColor"
-        />
-      </svg>
-      <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-        <div>
-          <Logo tone="light" />
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-pastel/90">
-            Một góc rạp phim hồng nhỏ xinh — nơi Sony tìm phim theo tâm trạng, lưu lại những bộ phim thương và xem tiếp từ chỗ đã dừng.
+    <footer className="mt-20 border-t border-line bg-sub/60 text-ink">
+      <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+        <div className="space-y-3">
+          <Logo />
+          <p className="max-w-sm text-xs sm:text-sm leading-relaxed text-muted">
+            Một góc rạp phim nhỏ ấm áp — nơi Sony tìm phim theo cảm xúc mỗi ngày, lưu lại những bộ phim thương và xem tiếp từ chỗ đã dừng.
           </p>
         </div>
 
         <nav aria-label="Khám phá">
-          <h2 className="text-sm font-bold tracking-wider uppercase">Khám phá</h2>
-          <ul className="mt-4 space-y-2.5">
+          <h2 className="text-xs font-bold tracking-wider text-ink uppercase">Khám phá</h2>
+          <ul className="mt-3.5 space-y-2">
             <li>
               <Link className={linkCls} to="/phim-moi">
                 Phim mới cập nhật
@@ -47,20 +35,20 @@ export function Footer() {
             </li>
             <li>
               <Link className={linkCls} to="/the-loai">
-                Thể loại
+                Thể loại phim
               </Link>
             </li>
             <li>
               <Link className={linkCls} to="/quoc-gia">
-                Quốc gia
+                Phim theo quốc gia
               </Link>
             </li>
           </ul>
         </nav>
 
-        <nav aria-label="Của bạn">
-          <h2 className="text-sm font-bold tracking-wider uppercase">Của bạn</h2>
-          <ul className="mt-4 space-y-2.5">
+        <nav aria-label="Cá nhân">
+          <h2 className="text-xs font-bold tracking-wider text-ink uppercase">Cá nhân</h2>
+          <ul className="mt-3.5 space-y-2">
             <li>
               <Link className={linkCls} to="/yeu-thich">
                 Góc phim yêu thích
@@ -68,20 +56,20 @@ export function Footer() {
             </li>
             <li>
               <Link className={linkCls} to="/lich-su">
-                Lịch sử xem
+                Lịch sử xem phim
               </Link>
             </li>
             <li>
               <Link className={linkCls} to="/tim-kiem">
-                Tìm kiếm
+                Tìm kiếm phim
               </Link>
             </li>
           </ul>
         </nav>
 
         <nav aria-label="Thông tin">
-          <h2 className="text-sm font-bold tracking-wider uppercase">Thông tin</h2>
-          <ul className="mt-4 space-y-2.5">
+          <h2 className="text-xs font-bold tracking-wider text-ink uppercase">Thông tin</h2>
+          <ul className="mt-3.5 space-y-2">
             <li>
               <Link className={linkCls} to="/thong-tin/lien-he">
                 Liên hệ &amp; báo lỗi
@@ -89,7 +77,7 @@ export function Footer() {
             </li>
             <li>
               <Link className={linkCls} to="/thong-tin/quyen-rieng-tu">
-                Chính sách quyền riêng tư
+                Chính sách riêng tư
               </Link>
             </li>
             <li>
@@ -106,14 +94,14 @@ export function Footer() {
         </nav>
       </div>
 
-      <div className="border-t border-white/20">
-        <div className="container-page flex flex-col gap-2 pt-5 pb-20 sm:pr-20 sm:pb-5 text-xs text-pastel/90 sm:flex-row sm:items-center sm:justify-between">
+      <div className="border-t border-line/60">
+        <div className="container-page flex flex-col gap-2.5 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
-            Dữ liệu phim từ API công khai NguonC. Đây là website cá nhân, <strong className="font-semibold text-white">không phải</strong>{" "}
+            Dữ liệu phim từ API công khai NguonC. Đây là website cá nhân, <strong className="font-semibold text-ink">không phải</strong>{" "}
             sản phẩm hay dịch vụ của Sony Corporation.
           </p>
-          <p className="flex shrink-0 items-center gap-1">
-            Làm với <Heart className="size-3.5 fill-white text-white" aria-label="yêu thương" /> cho Sony · {new Date().getFullYear()}
+          <p className="flex shrink-0 items-center gap-1.5 font-medium text-ink">
+            Dành riêng cho Sony với <Heart className="size-3.5 fill-deep text-deep" aria-label="yêu thương" /> · {new Date().getFullYear()}
           </p>
         </div>
       </div>

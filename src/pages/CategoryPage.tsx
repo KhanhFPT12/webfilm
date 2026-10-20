@@ -28,13 +28,13 @@ const FORMAT_TABS: { to: string; label: string }[] = [
 function ChipRow({ items, active, label }: { items: { to: string; label: string }[]; active: string; label: string }) {
   return (
     <nav aria-label={label} className="-mx-4 overflow-x-auto px-4 scrollbar-none sm:mx-0 sm:px-0">
-      <ul className="flex gap-2 pb-1 sm:flex-wrap">
+      <ul className="flex gap-1.5 pb-1 sm:flex-wrap">
         {items.map((it) => (
           <li key={it.to} className="shrink-0">
             <Link
               to={it.to}
               aria-current={it.to === active ? "page" : undefined}
-              className={`chip ${it.to === active ? "chip-active" : "bg-surface"}`}
+              className={`chip text-xs ${it.to === active ? "chip-active" : "border-line bg-surface text-ink hover:border-deep/40 hover:text-deep"}`}
             >
               {it.label}
             </Link>
@@ -64,7 +64,7 @@ export function CategoryPage({ mode, listType }: Props) {
   if (mode === "latest") {
     source = { kind: "latest" };
     title = "Phim mới cập nhật";
-    note = "Những bộ phim vừa cập bến rạp hồng, mới nhất đứng đầu.";
+    note = "Những tác phẩm điện ảnh mới nhất vừa được đưa lên hệ thống.";
     activePath = "/phim-moi";
     crumbs = [{ to: activePath, label: "Phim mới" }];
   } else if (mode === "list" && listType) {
@@ -117,9 +117,9 @@ export function CategoryPage({ mode, listType }: Props) {
         { to: activePath, label: `Năm ${year}` },
       ];
       filters = (
-        <label className="inline-flex items-center gap-2 text-sm font-medium text-ink">
-          Năm phát hành
-          <select className="input h-10 w-32" value={year} onChange={(e) => navigate(`/nam/${e.target.value}`)}>
+        <label className="inline-flex items-center gap-2 text-xs font-medium text-ink">
+          Năm phát hành:
+          <select className="h-9 rounded-lg border border-line bg-surface px-2.5 text-xs text-ink outline-none focus:border-deep" value={year} onChange={(e) => navigate(`/nam/${e.target.value}`)}>
             {Array.from({ length: thisYear - MIN_YEAR + 1 }, (_, i) => thisYear - i).map((y) => (
               <option key={y} value={y}>
                 {y}
@@ -153,15 +153,14 @@ export function CategoryPage({ mode, listType }: Props) {
         title={title}
         crumbs={crumbs}
         description={
-          <>
-            {note}
+          <div className="flex flex-wrap items-center gap-2">
+            <span>{note}</span>
             {data && data.totalItems > 0 && (
-              <span className="ml-1 font-medium text-deep">
-                {note ? "· " : ""}
-                {formatNumber(data.totalItems)} phim
+              <span className="font-semibold text-deep">
+                ({formatNumber(data.totalItems)} phim)
               </span>
             )}
-          </>
+          </div>
         }
       >
         {filters}
@@ -173,7 +172,7 @@ export function CategoryPage({ mode, listType }: Props) {
         ) : !loading && data && data.items.length === 0 ? (
           <EmptyState
             title="Chưa có phim nào ở mục này"
-            description={page > 1 ? "Trang này không có phim. Hãy quay lại trang đầu nhé." : "API chưa có phim cho mục này."}
+            description={page > 1 ? "Trang này không có phim. Hãy quay lại trang đầu nhé." : "Dữ liệu hiện chưa có sẵn cho mục này."}
             action={
               page > 1 ? (
                 <button type="button" className="btn-primary" onClick={() => goTo(1)}>
@@ -189,7 +188,7 @@ export function CategoryPage({ mode, listType }: Props) {
         ) : (
           <>
             {data && data.totalPages > 1 && (
-              <p className="mb-5 text-sm text-muted">
+              <p className="mb-4 text-xs text-muted">
                 Trang {page} / {formatNumber(data.totalPages)}
               </p>
             )}

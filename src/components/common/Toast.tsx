@@ -14,7 +14,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const show = useCallback((message: string) => {
     setToast({ id: Date.now(), message });
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => setToast(null), 2600);
+    timer.current = setTimeout(() => setToast(null), 2400);
   }, []);
 
   return (
@@ -24,12 +24,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toast && (
           <div
             key={toast.id}
-            className="animate-toast pointer-events-auto flex items-center gap-2.5 rounded-full bg-surface py-2 pr-5 pl-2 text-sm font-semibold text-ink shadow-[var(--shadow-lift)] ring-1 ring-line"
+            className="animate-toast pointer-events-auto flex items-center gap-2.5 rounded-full border border-line bg-surface py-2 pr-4.5 pl-2.5 text-xs font-medium text-ink shadow-sm"
           >
-            <span className="flex size-7 items-center justify-center rounded-full bg-pastel text-deep">
-              <Heart className="animate-heartbeat size-4 fill-deep" />
+            <span className="flex size-6 items-center justify-center rounded-full bg-pastel text-deep">
+              <Heart className="size-3.5 fill-deep text-deep" />
             </span>
-            {toast.message}
+            <span>{toast.message}</span>
           </div>
         )}
       </div>

@@ -8,23 +8,23 @@ interface Props {
   children?: ReactNode;
 }
 
-/** Dải tiêu đề trang nền hồng pastel. */
+/** Dải tiêu đề trang thanh lịch, tối giản với nền ấm và viền tinh tế. */
 export function PageHeader({ title, description, crumbs, children }: Props) {
   return (
-    <div className="bg-dots border-b border-line bg-pastel">
-      <div className="container-page py-7 sm:py-9">
+    <div className="border-b border-line bg-sub/60">
+      <div className="container-page py-6 sm:py-8">
         {crumbs && crumbs.length > 0 && (
-          <nav aria-label="Breadcrumb" className="mb-2 text-sm text-muted">
+          <nav aria-label="Breadcrumb" className="mb-2.5 text-xs text-muted">
             <ol className="flex flex-wrap items-center gap-1.5">
               <li>
-                <Link to="/" className="rounded hover:text-deep">
+                <Link to="/" className="transition-colors hover:text-deep">
                   Trang chủ
                 </Link>
               </li>
               {crumbs.map((c) => (
                 <li key={c.to} className="flex items-center gap-1.5">
-                  <span aria-hidden="true">/</span>
-                  <Link to={c.to} className="rounded hover:text-deep">
+                  <span className="text-line" aria-hidden="true">/</span>
+                  <Link to={c.to} className="transition-colors hover:text-deep">
                     {c.label}
                   </Link>
                 </li>
@@ -32,14 +32,14 @@ export function PageHeader({ title, description, crumbs, children }: Props) {
             </ol>
           </nav>
         )}
-        <h1 className="animate-rise text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{title}</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{title}</h1>
         {description && (
-          <div className="animate-rise mt-1.5 text-sm text-muted sm:text-base" style={{ ["--i" as string]: 1 }}>
+          <div className="mt-1.5 text-sm text-muted sm:text-[15px]">
             {description}
           </div>
         )}
         {children && (
-          <div className="animate-rise mt-5" style={{ ["--i" as string]: 2 }}>
+          <div className="mt-4">
             {children}
           </div>
         )}

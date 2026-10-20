@@ -1,65 +1,66 @@
 @import "tailwindcss";
 
-/* ============ PINK CINEMA — design tokens ============ */
+/* ============ SONY CINEMA — Editorial Design Tokens ============ */
 @theme {
   --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  --color-blush: #fff5fa; /* hồng nền sáng */
-  --color-pastel: #fce7f3; /* hồng pastel */
-  --color-rose: #f472b6; /* hồng chủ đạo */
-  --color-accent: #ec4899; /* hồng nhấn */
-  --color-deep: #db2777; /* hồng đậm */
-  --color-deeper: #be185d; /* hover của hồng đậm */
-  --color-ink: #3d2435; /* chữ chính */
-  --color-muted: #8b7282; /* chữ phụ */
-  --color-line: #f3d6e5; /* border */
-  --color-surface: #ffffff; /* nền thẻ / hộp (đổi theo chế độ sáng tối) */
+  /* Bảng màu chính: Natural Handcrafted UI */
+  --color-blush: #fffdfd;     /* Nền chính ấm áp, sáng trong */
+  --color-sub: #fff6f9;       /* Nền phụ dịu nhẹ */
+  --color-pastel: #f9dce8;    /* Hồng nhạt cho badge, active state */
+  --color-rose: #e83e80;      /* Dấu ấn nhận diện Sony */
+  --color-accent: #e83e80;    /* Pink accent */
+  --color-deep: #de2b72;      /* Nút hành động chính */
+  --color-deeper: #bf185a;    /* Hover nút hành động */
+  --color-ink: #33232d;       /* Text chính sâu, ấm áp */
+  --color-muted: #857580;     /* Text phụ */
+  --color-line: #eedfe6;      /* Đường viền tinh tế */
+  --color-surface: #ffffff;   /* Nền thẻ, hộp */
 
   /* Khu vực rạp chiếu (trang xem phim) */
-  --color-plum-950: #1a0a14;
-  --color-plum-900: #24101d;
-  --color-plum-800: #331827;
-  --color-plum-700: #4a2539;
-  --color-plum-300: #d9b8ca;
+  --color-plum-950: #140a12;
+  --color-plum-900: #1d0f19;
+  --color-plum-800: #291523;
+  --color-plum-700: #3d2035;
+  --color-plum-300: #d6bccb;
 
-  --shadow-card: 0 1px 2px rgb(61 36 53 / 0.06), 0 4px 14px -6px rgb(219 39 119 / 0.18);
-  --shadow-lift: 0 2px 4px rgb(61 36 53 / 0.06), 0 14px 28px -12px rgb(219 39 119 / 0.35);
-  --dot-color: rgb(244 114 182 / 0.22);
+  --shadow-card: 0 1px 3px rgba(51, 35, 45, 0.04), 0 4px 12px -2px rgba(51, 35, 45, 0.06);
+  --shadow-lift: 0 8px 24px -4px rgba(51, 35, 45, 0.08), 0 2px 6px rgba(51, 35, 45, 0.04);
 
-  --radius-card: 0.875rem;
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-card: 0.75rem;     /* 12px vừa vặn, không bo tròn quá mức */
+  --ease-natural: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* ================= Chế độ tối =================
- * data-theme="dark" (người dùng chọn) hoặc theo hệ điều hành khi chưa chọn.
- * Chỉ đổi giá trị biến màu — mọi component dùng chung token nên tự đổi theo. */
+/* ================= Chế độ tối ================= */
 @layer theme {
   :root[data-theme="dark"] {
-    --color-blush: #160a12;
-    --color-pastel: #26111f;
-    --color-surface: #1f0e1a;
-    --color-ink: #fbe8f2;
-    --color-muted: #c9a7b9;
-    --color-line: #43223a;
-    --color-deeper: #f0609f;
-    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 18px -8px rgb(0 0 0 / 0.6);
-    --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.45), 0 16px 32px -12px rgb(219 39 119 / 0.45);
-    --dot-color: rgb(244 114 182 / 0.12);
+    --color-blush: #140a10;
+    --color-sub: #1a0d16;
+    --color-pastel: #2c1422;
+    --color-surface: #1e101b;
+    --color-ink: #fdf2f7;
+    --color-muted: #b89ea9;
+    --color-line: #381e30;
+    --color-deep: #e83e80;
+    --color-deeper: #f05794;
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.5);
+    --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.3);
     color-scheme: dark;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --color-blush: #160a12;
-      --color-pastel: #26111f;
-      --color-surface: #1f0e1a;
-      --color-ink: #fbe8f2;
-      --color-muted: #c9a7b9;
-      --color-line: #43223a;
-      --color-deeper: #f0609f;
-      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 18px -8px rgb(0 0 0 / 0.6);
-      --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.45), 0 16px 32px -12px rgb(219 39 119 / 0.45);
-      --dot-color: rgb(244 114 182 / 0.12);
+      --color-blush: #140a10;
+      --color-sub: #1a0d16;
+      --color-pastel: #2c1422;
+      --color-surface: #1e101b;
+      --color-ink: #fdf2f7;
+      --color-muted: #b89ea9;
+      --color-line: #381e30;
+      --color-deep: #e83e80;
+      --color-deeper: #f05794;
+      --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.5);
+      --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.3);
       color-scheme: dark;
     }
   }
@@ -73,14 +74,13 @@
   body {
     @apply bg-blush font-sans text-ink antialiased;
     transition:
-      background-color 0.35s ease,
-      color 0.35s ease;
-    font-feature-settings: "ss01";
+      background-color 0.25s ease,
+      color 0.25s ease;
     overflow-x: hidden;
   }
   ::selection {
-    background: var(--color-rose);
-    color: #fff;
+    background: var(--color-pastel);
+    color: var(--color-deep);
   }
   :focus-visible {
     outline: 2px solid var(--color-deep);
@@ -91,7 +91,7 @@
     outline-color: var(--color-rose);
   }
   img {
-    color: transparent; /* ẩn alt text xấu khi ảnh đang tải */
+    color: transparent;
   }
   button:not(:disabled) {
     cursor: pointer;
@@ -109,58 +109,52 @@
 }
 
 @utility container-page {
-  @apply mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-8;
+  @apply mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8;
 }
 
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold whitespace-nowrap select-none disabled:cursor-not-allowed disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold whitespace-nowrap select-none disabled:cursor-not-allowed disabled:opacity-50;
   transition:
-    background-color 0.2s,
-    color 0.2s,
-    border-color 0.2s,
-    box-shadow 0.25s,
-    transform 0.25s var(--ease-bounce);
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.15s var(--ease-natural);
   &:not(:disabled):active {
-    transform: scale(0.95);
+    transform: scale(0.98);
   }
 }
+
 @utility btn-primary {
-  @apply btn relative overflow-hidden bg-deep text-white shadow-[0_6px_16px_-6px_rgb(219_39_119/0.6)] hover:-translate-y-0.5 hover:bg-deeper hover:shadow-[0_10px_22px_-8px_rgb(219_39_119/0.7)] active:bg-[#9d174d] disabled:hover:translate-y-0 disabled:hover:bg-deep;
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.35) 50%, transparent 65%);
-    transform: translateX(-120%);
-    pointer-events: none;
-  }
-  &:not(:disabled):hover::after {
-    animation: shine 0.9s var(--ease-soft);
-  }
+  @apply btn bg-deep text-white shadow-sm hover:bg-deeper active:bg-[#9d174d] disabled:hover:bg-deep;
 }
+
 @utility btn-secondary {
-  @apply btn border border-line bg-surface text-deep hover:-translate-y-0.5 hover:border-rose hover:bg-pastel active:bg-line;
+  @apply btn border border-line bg-surface text-ink hover:border-rose/60 hover:bg-sub hover:text-deep active:bg-pastel/30;
 }
+
 @utility btn-ghost {
-  @apply btn text-ink hover:bg-pastel hover:text-deep active:bg-line;
+  @apply btn text-ink hover:bg-sub hover:text-deep active:bg-pastel/40;
 }
+
 @utility btn-icon {
-  @apply inline-flex size-10 items-center justify-center rounded-xl text-ink transition-[background-color,color,transform] duration-200 hover:bg-pastel hover:text-deep active:scale-90 active:bg-line disabled:opacity-40;
+  @apply inline-flex size-9.5 items-center justify-center rounded-lg text-ink transition-[background-color,color] duration-150 hover:bg-sub hover:text-deep active:scale-95 disabled:opacity-40;
 }
 
 @utility chip {
-  @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-pastel px-3.5 py-1.5 text-sm font-medium text-ink transition-[color,border-color,background-color,transform] duration-200 hover:-translate-y-0.5 hover:border-rose hover:text-deep active:scale-95;
+  @apply inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-1.5 text-sm font-medium text-ink transition-[color,border-color,background-color] duration-150 hover:border-rose/50 hover:text-deep active:scale-[0.98];
 }
+
 @utility chip-active {
-  @apply border-deep bg-deep text-white hover:text-white;
+  @apply border-deep bg-deep text-white hover:border-deep hover:bg-deep hover:text-white;
 }
 
 @utility badge {
-  @apply inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] leading-4 font-semibold tracking-wide;
+  @apply inline-flex items-center rounded px-2 py-0.5 text-[11px] leading-4 font-semibold tracking-wide;
 }
 
 @utility input {
-  @apply h-11 w-full rounded-xl border border-line bg-surface px-3.5 text-sm text-ink placeholder:text-muted transition-colors outline-none focus:border-rose focus:ring-2 focus:ring-pastel;
+  @apply h-10 w-full rounded-lg border border-line bg-surface px-3 text-sm text-ink placeholder:text-muted transition-colors outline-none focus:border-deep focus:ring-1 focus:ring-deep;
 }
 
 @utility section-title {
@@ -179,105 +173,38 @@
   scrollbar-color: var(--color-plum-700) transparent;
 }
 
-/* Nền chấm bi hồng dễ thương */
-@utility bg-dots {
-  background-image: radial-gradient(var(--dot-color) 1.2px, transparent 1.4px);
-  background-size: 18px 18px;
-}
-
-/* ================= Animation ================= */
-@keyframes shine {
-  to {
-    transform: translateX(120%);
-  }
-}
+/* ================= Animations nhẹ nhàng, tinh tế ================= */
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: none;
+    transform: translateY(0);
   }
 }
+
 @keyframes fade-in {
   from {
     opacity: 0;
   }
-}
-@keyframes zoom-fade {
-  from {
-    opacity: 0;
-    transform: scale(1.04);
-  }
-}
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(var(--r, 0deg));
-  }
-  50% {
-    transform: translateY(-10px) rotate(calc(var(--r, 0deg) + 8deg));
-  }
-}
-@keyframes heartbeat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  15% {
-    transform: scale(1.22);
-  }
-  30% {
-    transform: scale(1);
-  }
-  45% {
-    transform: scale(1.14);
-  }
-}
-@keyframes pop {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.35);
-  }
-  70% {
-    transform: scale(0.9);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes burst {
-  from {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(var(--a)) translateY(0) scale(0.6);
-  }
   to {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(var(--a)) translateY(-26px) scale(1);
+    opacity: 1;
   }
 }
-@keyframes wiggle {
-  0%,
-  100% {
-    transform: rotate(0);
-  }
-  25% {
-    transform: rotate(-12deg);
-  }
-  75% {
-    transform: rotate(12deg);
-  }
-}
+
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.9);
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
+
 @keyframes progress {
   from {
     transform: scaleX(0);
@@ -288,42 +215,28 @@
 }
 
 @utility animate-rise {
-  animation: rise 0.6s var(--ease-soft) both;
-  animation-delay: calc(var(--i, 0) * 55ms);
-}
-@utility animate-page {
-  animation: rise 0.45s var(--ease-soft) both;
-}
-@utility animate-fade {
-  animation: fade-in 0.5s ease both;
-}
-@utility animate-zoom-fade {
-  animation: zoom-fade 0.8s var(--ease-soft) both;
-}
-@utility animate-float {
-  animation: float var(--d, 6s) ease-in-out infinite;
-  animation-delay: var(--delay, 0s);
-}
-@utility animate-heartbeat {
-  animation: heartbeat 1.6s ease-in-out infinite;
-}
-@utility animate-pop {
-  animation: pop 0.45s var(--ease-bounce);
-}
-@utility animate-wiggle {
-  animation: wiggle 0.5s ease-in-out;
-}
-@utility animate-toast {
-  animation: toast-in 0.4s var(--ease-bounce) both;
+  animation: rise 0.4s var(--ease-natural) both;
 }
 
-/* Hiện dần khi cuộn tới (Reveal component) */
+@utility animate-page {
+  animation: fade-in 0.3s ease both;
+}
+
+@utility animate-fade {
+  animation: fade-in 0.35s ease both;
+}
+
+@utility animate-toast {
+  animation: toast-in 0.25s var(--ease-natural) both;
+}
+
+/* Reveal khi cuộn tới */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(14px);
   transition:
-    opacity 0.7s var(--ease-soft),
-    transform 0.7s var(--ease-soft);
+    opacity 0.5s var(--ease-natural),
+    transform 0.5s var(--ease-natural);
 }
 .reveal.is-visible {
   opacity: 1;
@@ -335,12 +248,8 @@
     transform: none;
   }
 }
-/* Card trong vùng chưa hiện thì chờ, hiện ra mới lần lượt trồi lên */
-.reveal:not(.is-visible) .animate-rise {
-  animation-play-state: paused;
-}
 
-/* Skeleton: 1 hiệu ứng duy nhất, nhẹ nhàng */
+/* Skeleton Loading tinh tế */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -352,14 +261,14 @@
 .skeleton {
   background: linear-gradient(
     90deg,
-    var(--color-pastel) 0%,
-    color-mix(in srgb, var(--color-pastel) 55%, var(--color-surface)) 50%,
-    var(--color-pastel) 100%
+    var(--color-sub) 0%,
+    color-mix(in srgb, var(--color-sub) 50%, var(--color-surface)) 50%,
+    var(--color-sub) 100%
   );
   background-size: 200% 100%;
-  animation: shimmer 1.4s ease-in-out infinite;
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 .theater .skeleton {
-  background: linear-gradient(90deg, #2b1422 0%, #3a1d2e 50%, #2b1422 100%);
+  background: linear-gradient(90deg, #1d0f19 0%, #291523 50%, #1d0f19 100%);
   background-size: 200% 100%;
 }

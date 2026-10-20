@@ -23,16 +23,16 @@ export function Pagination({ page, totalPages, onChange }: Props) {
     <nav className="mt-10 flex flex-wrap items-center justify-center gap-1.5" aria-label="Phân trang">
       <button
         type="button"
-        className="btn-icon border border-line bg-surface"
+        className="btn-icon size-9 rounded-lg border border-line bg-surface disabled:opacity-30"
         disabled={page <= 1}
         onClick={() => onChange(page - 1)}
         aria-label="Trang trước"
       >
-        <ChevronLeft className="size-5" />
+        <ChevronLeft className="size-4" />
       </button>
       {range(page, totalPages).map((p, i) =>
         p === "gap" ? (
-          <span key={`gap-${i}`} className="px-1 text-muted" aria-hidden="true">
+          <span key={`gap-${i}`} className="px-1 text-xs text-muted" aria-hidden="true">
             …
           </span>
         ) : (
@@ -42,8 +42,10 @@ export function Pagination({ page, totalPages, onChange }: Props) {
             onClick={() => onChange(p)}
             aria-current={p === page ? "page" : undefined}
             aria-label={`Trang ${p}`}
-            className={`h-10 min-w-10 rounded-lg px-2 text-sm font-semibold transition-colors ${
-              p === page ? "bg-deep text-white" : "border border-line bg-surface text-ink hover:border-rose hover:text-deep"
+            className={`h-9 min-w-9 rounded-lg px-2.5 text-xs font-semibold transition-colors ${
+              p === page
+                ? "bg-deep text-white shadow-xs"
+                : "border border-line bg-surface text-ink hover:border-deep/40 hover:text-deep"
             }`}
           >
             {p}
@@ -52,12 +54,12 @@ export function Pagination({ page, totalPages, onChange }: Props) {
       )}
       <button
         type="button"
-        className="btn-icon border border-line bg-surface"
+        className="btn-icon size-9 rounded-lg border border-line bg-surface disabled:opacity-30"
         disabled={page >= totalPages}
         onClick={() => onChange(page + 1)}
         aria-label="Trang sau"
       >
-        <ChevronRight className="size-5" />
+        <ChevronRight className="size-4" />
       </button>
     </nav>
   );

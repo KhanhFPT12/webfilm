@@ -8,7 +8,7 @@ interface Props {
   onSubmitted?: () => void;
 }
 
-/** Ô tìm kiếm ở header: gõ rồi Enter để sang /tim-kiem?q=... */
+/** Ô tìm kiếm ở header: tinh tế, cân đối, phản hồi nhanh */
 export function SearchBox({ className = "", autoFocus, onSubmitted }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,19 +37,19 @@ export function SearchBox({ className = "", autoFocus, onSubmitted }: Props) {
         value={value}
         autoFocus={autoFocus}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Tìm tên phim, tên gốc…"
+        placeholder="Tìm tên phim, diễn viên…"
         autoComplete="off"
         enterKeyHint="search"
-        className="input h-10 rounded-full bg-blush pr-9 pl-9 [&::-webkit-search-cancel-button]:hidden"
+        className="h-9.5 w-full rounded-lg border border-line bg-sub/60 pr-8 pl-9 text-xs text-ink placeholder:text-muted/80 transition-colors outline-none focus:border-deep focus:bg-surface focus:ring-1 focus:ring-deep [&::-webkit-search-cancel-button]:hidden"
       />
       {value && (
         <button
           type="button"
           onClick={() => setValue("")}
-          className="absolute top-1/2 right-1.5 flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-muted hover:bg-pastel hover:text-deep"
+          className="absolute top-1/2 right-1.5 flex size-6 -translate-y-1/2 items-center justify-center rounded text-muted hover:text-deep"
           aria-label="Xoá từ khoá"
         >
-          <X className="size-4" />
+          <X className="size-3.5" />
         </button>
       )}
     </form>

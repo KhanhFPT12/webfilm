@@ -7,44 +7,68 @@ import { FavoriteButton } from "./FavoriteButton";
 interface Props {
   movie: Movie;
   eager?: boolean;
-  /** Thứ tự trong lưới — dùng để các card hiện lần lượt. */
   index?: number;
 }
 
-export function MovieCard({ movie, eager = false, index = 0 }: Props) {
+export function MovieCard({ movie, eager = false }: Props) {
   const meta = [movie.year, movie.language].filter(Boolean).join(" · ");
 
   return (
-    <article className="group animate-rise relative min-w-0" style={{ ["--i" as string]: Math.min(index, 12) }}>
-      <Link to={`/phim/${movie.slug}`} className="block rounded-[var(--radius-card)] focus-visible:outline-offset-4">
-        <div className="relative aspect-[2/3] overflow-hidden rounded-[var(--radius-card)] border border-line bg-pastel shadow-[var(--shadow-card)] transition-[transform,box-shadow] duration-500 [transition-timing-function:var(--ease-bounce)] group-hover:-translate-y-1.5 group-hover:-rotate-1 group-hover:shadow-[var(--shadow-lift)]">
+    <article className="group relative min-w-0">
+      <Link
+        to={`/phim/${movie.slug}`}
+        className="block focus-visible:outline-offset-4"
+        aria-label={`${movie.name}${movie.year ? ` (${movie.year})` : ""}`}
+      >
+        <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-line bg-sub/60 shadow-xs transition-all duration-200 group-hover:-translate-y-1 group-hover:border-deep/30 group-hover:shadow-md">
           <PosterImage
             src={movie.poster}
             fallback={movie.posterFallback}
-            alt={`Poster phim ${movie.name}`}
+            alt=""
             eager={eager}
-            className="absolute inset-0 size-full transition-transform duration-700 group-hover:scale-[1.07]"
+            className="size-full transition-transform duration-300 group-hover:scale-[1.03]"
           />
-          {/* Lớp hồng mỏng + nút play khi rê chuột */}
-          <div className="absolute inset-0 flex items-center justify-center bg-deep/0 transition-colors duration-300 group-hover:bg-deep/20">
-            <span className="flex size-12 scale-50 items-center justify-center rounded-full bg-surface/95 text-deep opacity-0 shadow-lg transition-all duration-300 [transition-timing-function:var(--ease-bounce)] group-hover:scale-100 group-hover:opacity-100">
-              <Play className="ml-0.5 size-5 fill-deep" />
+
+          {/* Hover play overlay */}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <span className="flex size-10 items-center justify-center rounded-full bg-deep text-white shadow-sm transition-transform duration-150 group-hover:scale-100">
+              <Play className="ml-0.5 size-4.5 fill-white" />
             </span>
           </div>
-          {movie.quality && <span className="badge absolute top-2 left-2 bg-surface/95 text-deep shadow-sm">{movie.quality}</span>}
+
+          {/* Nhãn tập / bản phim */}
           {movie.currentEpisode && (
-            <span className="badge absolute bottom-2 left-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-deep px-2 text-white shadow-sm">
+            <span className="badge absolute bottom-2 left-2 max-w-[calc(100%-1rem)] truncate bg-black/75 px-2 py-0.5 text-[10.5px] font-medium text-white backdrop-blur-xs">
               {movie.currentEpisode}
             </span>
           )}
+
+          {/* Nhãn chất lượng */}
+          {movie.quality && !movie.currentEpisode && (
+            <span className="badge absolute top-2 left-2 bg-surface/90 px-1.5 py-0.5 text-[10px] font-semibold text-deep shadow-xs backdrop-blur-xs">
+              {movie.quality}
+            </span>
+          )}
         </div>
-        <h3 className="mt-2.5 line-clamp-2 text-[15px] leading-snug font-semibold text-ink transition-colors group-hover:text-deep">
+
+        <h3 className="mt-2.5 line-clamp-2 text-xs sm:text-[13.5px] font-semibold leading-snug text-ink transition-colors group-hover:text-deep">
           {movie.name}
         </h3>
-        {movie.originalName && <p className="mt-0.5 truncate text-[13px] text-muted">{movie.originalName}</p>}
-        {meta && <p className="mt-0.5 truncate text-xs text-muted">{meta}</p>}
+        {movie.originalName && (
+          <p className="mt-0.5 truncate text-[11.5px] text-muted">
+            {movie.originalName}
+          </p>
+        )}
+        {meta && (
+          <p className="mt-0.5 truncate text-[11px] text-muted/80">
+            {meta}
+          </p>
+        )}
       </Link>
-      <FavoriteButton movie={movie} className="absolute top-2 right-2" />
+
+      <div className="absolute top-2 right-2">
+        <FavoriteButton movie={movie} />
+      </div>
     </article>
   );
 }

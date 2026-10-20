@@ -4,7 +4,6 @@ import { PageHeader } from "../components/common/PageHeader";
 import { useDocumentTitle } from "../hooks/useUtils";
 import { NotFoundPage } from "./NotFoundPage";
 
-/** Email liên hệ cấu hình qua biến môi trường VITE_CONTACT_EMAIL (không bắt buộc). */
 const CONTACT_EMAIL = (import.meta.env.VITE_CONTACT_EMAIL as string | undefined)?.trim();
 
 const PAGES: Record<string, { title: string; body: ReactNode }> = {
@@ -41,10 +40,9 @@ const PAGES: Record<string, { title: string; body: ReactNode }> = {
     title: "Chính sách quyền riêng tư",
     body: (
       <>
-        <p>Website không yêu cầu đăng ký tài khoản và không thu thập thông tin cá nhân.</p>
+        <p>Website không yêu cầu đăng ký tài khoản và không thu thập thông tin cá nhân của người dùng.</p>
         <p>
-          Danh sách yêu thích và lịch sử xem được lưu bằng <strong>LocalStorage</strong> ngay trên trình duyệt của bạn, không gửi lên máy
-          chủ nào. Bạn có thể xoá bất cứ lúc nào tại trang{" "}
+          Danh sách yêu thích và lịch sử xem được lưu bằng <strong>LocalStorage</strong> ngay trên trình duyệt của bạn, hoàn toàn riêng tư và không gửi lên máy chủ nào. Bạn có thể xoá bất cứ lúc nào tại trang{" "}
           <Link className="text-deep underline" to="/yeu-thich">
             Yêu thích
           </Link>
@@ -52,11 +50,10 @@ const PAGES: Record<string, { title: string; body: ReactNode }> = {
           <Link className="text-deep underline" to="/lich-su">
             Lịch sử xem
           </Link>{" "}
-          hoặc bằng cách xoá dữ liệu trang web trong trình duyệt.
+          hoặc bằng cách xoá dữ liệu duyệt web.
         </p>
         <p>
-          Khi xem phim, trình duyệt của bạn kết nối trực tiếp tới máy chủ của nhà cung cấp dữ liệu (phim.nguonc.com, img.nguonc.com) và
-          trình phát nhúng của họ. Các dịch vụ này có chính sách riêng mà website không kiểm soát.
+          Khi xem phim, trình duyệt kết nối trực tiếp tới máy chủ của nhà cung cấp dữ liệu (phim.nguonc.com, img.nguonc.com) và trình phát nhúng của họ.
         </p>
       </>
     ),
@@ -67,8 +64,7 @@ const PAGES: Record<string, { title: string; body: ReactNode }> = {
       <>
         <p>Website là dự án cá nhân, phi thương mại, phục vụ mục đích giải trí và học tập.</p>
         <p>
-          Nội dung phim không do website lưu trữ. Website không vượt qua DRM hay bất kỳ cơ chế bảo vệ bản quyền nào và chỉ hiển thị các
-          nguồn phát mà API công khai cung cấp.
+          Nội dung phim không do website lưu trữ. Website không vượt qua DRM hay bất kỳ cơ chế bảo vệ bản quyền nào và chỉ hiển thị các nguồn phát mà API công khai cung cấp.
         </p>
         <p>Website không phải sản phẩm, dịch vụ hay đối tác của Sony Corporation, Sony Pictures hoặc bất kỳ công ty con nào.</p>
         <p>Người dùng tự chịu trách nhiệm tuân thủ pháp luật về bản quyền tại nơi mình sinh sống.</p>
@@ -92,8 +88,7 @@ const PAGES: Record<string, { title: string; body: ReactNode }> = {
           . Website không tự tạo hay chỉnh sửa dữ liệu phim.
         </p>
         <p>
-          Những trường API không cung cấp (ví dụ điểm đánh giá, lượt xem) sẽ không được hiển thị. Bản quyền phim thuộc về các hãng sản xuất
-          và nhà phát hành tương ứng.
+          Những trường API không cung cấp sẽ không được hiển thị. Bản quyền phim thuộc về các hãng sản xuất và nhà phát hành tương ứng.
         </p>
       </>
     ),
@@ -110,20 +105,24 @@ export function InfoPage() {
     <>
       <PageHeader title={info.title} crumbs={[{ to: `/thong-tin/${page}`, label: info.title }]} />
       <div className="container-page grid gap-8 py-10 md:grid-cols-[220px_1fr]">
-        <nav aria-label="Trang thông tin" className="flex gap-2 overflow-x-auto scrollbar-none md:flex-col">
+        <nav aria-label="Trang thông tin" className="flex gap-1.5 overflow-x-auto scrollbar-none md:flex-col">
           {Object.entries(PAGES).map(([slug, p]) => (
             <NavLink
               key={slug}
               to={`/thong-tin/${slug}`}
               className={({ isActive }) =>
-                `shrink-0 rounded-lg px-3 py-2 text-sm font-medium ${isActive ? "bg-pastel text-deep" : "text-ink hover:bg-pastel/60"}`
+                `shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                  isActive ? "bg-pastel/60 text-deep font-semibold" : "text-ink hover:bg-sub"
+                }`
               }
             >
               {p.title}
             </NavLink>
           ))}
         </nav>
-        <article className="max-w-2xl space-y-4 leading-relaxed text-ink/90">{info.body}</article>
+        <article className="max-w-2xl space-y-4 text-xs sm:text-sm leading-relaxed text-ink/85">
+          {info.body}
+        </article>
       </div>
     </>
   );
