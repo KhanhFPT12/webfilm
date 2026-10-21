@@ -32,15 +32,34 @@ export function Logo({ tone = "default", onClick }: { tone?: "default" | "light"
     <Link
       to="/"
       onClick={onClick}
-      className="group/logo flex shrink-0 items-center gap-2 rounded-lg py-1 focus-visible:outline-offset-4"
-      aria-label="SONY — Nơi xem phim của Sony, về trang chủ"
+      className="group/logo flex shrink-0 items-center gap-2.5 rounded-xl py-1 focus-visible:outline-offset-4"
+      aria-label="SONY Cinema — Nơi xem phim của Sony, về trang chủ"
     >
       <LogoMark tone={tone} />
       <span className="flex flex-col leading-none">
-        <span className={`text-[16px] sm:text-[17px] font-bold tracking-[0.14em] transition-colors ${light ? "text-white" : "text-ink group-hover/logo:text-deep"}`}>
-          SONY
+        <span className="flex items-center gap-1.5">
+          <span
+            className={`text-[17px] font-extrabold tracking-[0.16em] transition-colors ${
+              light ? "text-white" : "text-ink group-hover/logo:text-deep"
+            }`}
+          >
+            SONY
+          </span>
+          <span
+            className={`rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest ${
+              light
+                ? "bg-rose/30 text-rose border border-rose/40"
+                : "bg-pastel/70 text-deep border border-deep/20"
+            }`}
+          >
+            Cinema
+          </span>
         </span>
-        <span className={`mt-0.5 hidden text-[11px] font-normal tracking-wide sm:block ${light ? "text-plum-300" : "text-muted"}`}>
+        <span
+          className={`mt-0.5 hidden text-[11px] font-medium tracking-wide sm:block ${
+            light ? "text-plum-300" : "text-muted"
+          }`}
+        >
           Nơi xem phim của Sony
         </span>
       </span>

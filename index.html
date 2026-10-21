@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#F472B6" />
+    <meta name="theme-color" content="#FFFDFD" />
     <meta name="description" content="Nơi xem phim của Sony — góc rạp phim hồng nhỏ xinh để tìm và xem phim mỗi ngày." />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -19,7 +19,7 @@
           var t = localStorage.getItem("sony.theme");
           var dark = t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
           if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
-          if (dark) document.querySelector("meta[name=theme-color]").setAttribute("content", "#160a12");
+          if (dark) document.querySelector("meta[name=theme-color]").setAttribute("content", "#140a10");
         } catch (e) {}
       })();
     </script>

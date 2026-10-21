@@ -1,6 +1,7 @@
-import { Compass, Play } from "lucide-react";
+import { Eye, Play, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { usePreview } from "../../context/PreviewContext";
 import type { Movie } from "../../types/movie";
 import { truncate } from "../../utils/formatters";
 import { ErrorState } from "../common/ErrorState";
@@ -17,6 +18,7 @@ interface Props {
 const ROTATE_MS = 8000;
 
 export function HeroBanner({ movies, loading, error, onRetry }: Props) {
+  const { openPreview } = usePreview();
   const picks = (movies ?? []).filter((m) => m.backdrop && m.description).slice(0, 5);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -37,46 +39,54 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
 
   return (
     <section
-      className="w-full overflow-hidden border-b border-line bg-sub/40"
+      className="relative w-full overflow-hidden border-b border-line/80 bg-sub/30"
       aria-labelledby="hero-heading"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <div className="container-page py-6 sm:py-8 lg:py-12">
+      {/* Ambient backdrop glow */}
+      {featured?.backdrop && (
+        <div
+          className="pointer-events-none absolute -top-20 -right-20 h-96 w-96 rounded-full bg-deep/15 blur-3xl transition-opacity duration-700 sm:h-[450px] sm:w-[450px]"
+          aria-hidden="true"
+        />
+      )}
+
+      <div className="container-page relative z-10 py-6 sm:py-9 lg:py-12">
         {/* Tiêu đề trang cho thiết bị di động & tablet (< lg) */}
         <div className="mb-4.5 min-w-0 max-w-full lg:hidden">
-          <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-wider text-deep uppercase">
-            <span className="size-1.5 rounded-full bg-deep" aria-hidden="true" />
+          <div className="inline-flex items-center gap-2 rounded-full bg-pastel/50 px-2.5 py-0.5 text-[11px] font-bold tracking-wider text-deep uppercase">
+            <Sparkles className="size-3" />
             <span>Góc phim chọn lọc cho Sony</span>
           </div>
           <h1
             id="hero-heading-mobile"
-            className="mt-1 text-xl font-bold tracking-tight text-ink sm:text-2xl"
+            className="mt-2 text-xl font-extrabold tracking-tight text-ink sm:text-2xl"
           >
-            Chọn một bộ phim cho <span className="text-deep">buổi tối thư giãn</span>.
+            Chọn một bộ phim cho <span className="text-gradient-pink">buổi tối thư giãn</span>.
           </h1>
         </div>
 
         <div className="grid w-full min-w-0 max-w-full items-center gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-12 xl:gap-14">
-          {/* Cột thông tin — Desktop hiển thị tiêu đề và nội dung đầy đủ */}
+          {/* Cột thông tin — Desktop */}
           <div className="order-2 w-full min-w-0 max-w-full lg:order-1">
             <div className="hidden lg:block">
-              <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-deep uppercase">
-                <span className="size-1.5 rounded-full bg-deep" aria-hidden="true" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-deep/20 bg-pastel/50 px-3 py-1 text-xs font-bold tracking-wider text-deep uppercase shadow-xs">
+                <Sparkles className="size-3.5" />
                 <span>Góc phim chọn lọc cho Sony</span>
               </div>
 
               <h1
                 id="hero-heading"
-                className="mt-2.5 text-2xl font-bold tracking-tight text-ink sm:text-3xl lg:text-[34px] lg:leading-tight"
+                className="mt-3 text-2xl font-black tracking-tight text-ink sm:text-3xl lg:text-[36px] lg:leading-tight"
               >
-                Chọn một bộ phim cho <span className="text-deep">buổi tối thư giãn</span>.
+                Chọn một bộ phim cho <span className="text-gradient-pink">buổi tối thư giãn</span>.
               </h1>
             </div>
 
-            {/* Movie Information Card — phong cách editorial */}
+            {/* Movie Information Card */}
             <div className="border-t border-line/80 pt-4 lg:mt-6 lg:pt-5">
               {loading && !featured ? (
                 <div className="space-y-3" aria-hidden="true">
@@ -86,29 +96,34 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
                 </div>
               ) : featured ? (
                 <div key={featured.slug} className="animate-fade">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-deep">
-                      Phim nổi bật hôm nay
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="badge-vip rounded-full px-2.5 py-0.5 text-xs font-bold">
+                      ★ Nổi bật hôm nay
                     </span>
                     {featured.quality && (
-                      <span className="badge border border-line bg-surface text-ink text-[10.5px]">
+                      <span className="badge-quality rounded-md px-2 py-0.5 text-xs font-semibold">
                         {featured.quality}
+                      </span>
+                    )}
+                    {featured.currentEpisode && (
+                      <span className="rounded-md border border-line bg-surface px-2 py-0.5 text-xs font-medium text-muted">
+                        {featured.currentEpisode}
                       </span>
                     )}
                   </div>
 
-                  <h2 className="mt-1.5 line-clamp-2 text-lg font-bold text-ink sm:text-xl lg:text-2xl">
+                  <h2 className="mt-2.5 line-clamp-2 text-xl font-extrabold text-ink sm:text-2xl lg:text-3xl">
                     {featured.name}
                   </h2>
 
                   {featured.originalName && (
-                    <p className="mt-0.5 truncate text-xs text-muted sm:text-sm">
+                    <p className="mt-0.5 truncate text-xs font-medium text-muted sm:text-sm">
                       {featured.originalName}
                     </p>
                   )}
 
                   {metaItems.length > 0 && (
-                    <p className="mt-2 flex flex-wrap items-center gap-x-2 text-xs text-muted sm:text-[13px]">
+                    <p className="mt-2.5 flex flex-wrap items-center gap-x-2 text-xs text-muted sm:text-[13px]">
                       {metaItems.map((item, idx) => (
                         <span key={item} className="inline-flex items-center gap-2">
                           <span>{item}</span>
@@ -119,7 +134,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
                   )}
 
                   {featured.description && (
-                    <p className="mt-2.5 line-clamp-3 max-w-xl text-xs leading-relaxed text-ink/80 sm:text-sm">
+                    <p className="mt-3 line-clamp-3 max-w-xl text-xs leading-relaxed text-ink/80 sm:text-sm">
                       {truncate(featured.description, 240)}
                     </p>
                   )}
@@ -128,32 +143,38 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
             </div>
 
             {/* Các nút hành động */}
-            <div className="mt-5 flex w-full flex-wrap items-center gap-2 sm:gap-2.5 lg:mt-6">
+            <div className="mt-6 flex w-full flex-wrap items-center gap-2.5 sm:gap-3">
               {featured ? (
                 <>
                   <Link
                     to={`/xem-phim/${featured.slug}`}
-                    className="btn-primary h-10 px-4 text-xs font-semibold sm:h-10.5 sm:px-5 sm:text-sm"
+                    className="btn-primary shadow-glow-sm h-10.5 px-5 text-xs font-bold sm:h-11 sm:px-6 sm:text-sm"
                   >
-                    <Play className="size-3.5 fill-white sm:size-4" />
+                    <Play className="size-4 fill-white" />
                     <span>Xem phim ngay</span>
                   </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => openPreview(featured)}
+                    className="btn-secondary h-10.5 px-4 text-xs font-semibold sm:h-11 sm:px-4.5 sm:text-sm"
+                  >
+                    <Eye className="size-4" />
+                    <span>Xem nhanh</span>
+                  </button>
+
                   <Link
                     to={`/phim/${featured.slug}`}
-                    className="btn-secondary h-10 px-3.5 text-xs font-semibold sm:h-10.5 sm:px-4 sm:text-sm"
+                    className="btn-ghost h-10.5 px-3 text-xs font-medium text-muted hover:text-deep sm:h-11 sm:px-3.5 sm:text-sm"
                   >
-                    Thông tin phim
+                    <span>Chi tiết tác phẩm</span>
                   </Link>
                 </>
               ) : (
-                <button type="button" disabled className="btn-primary h-10 px-4 text-xs sm:h-10.5 sm:px-5 sm:text-sm">
+                <button type="button" disabled className="btn-primary h-10.5 px-5 text-xs sm:h-11 sm:px-6 sm:text-sm">
                   <Play className="size-4" /> Xem phim ngay
                 </button>
               )}
-              <Link to="/phim-moi" className="btn-ghost h-10 px-3 text-xs sm:h-10.5 sm:px-3.5 sm:text-sm">
-                <Compass className="size-3.5 text-muted sm:size-4" />
-                <span>Khám phá thêm</span>
-              </Link>
             </div>
           </div>
 

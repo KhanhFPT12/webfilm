@@ -1,5 +1,7 @@
-import { Play } from "lucide-react";
+import { Eye, Play } from "lucide-react";
+import type { MouseEvent } from "react";
 import { Link } from "react-router-dom";
+import { usePreview } from "../../context/PreviewContext";
 import type { Movie } from "../../types/movie";
 import { PosterImage } from "../common/PosterImage";
 import { FavoriteButton } from "./FavoriteButton";
@@ -11,64 +13,94 @@ interface Props {
 }
 
 export function MovieCard({ movie, eager = false }: Props) {
+  const { openPreview } = usePreview();
   const meta = [movie.year, movie.language].filter(Boolean).join(" · ");
 
+  const handleQuickPreview = (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openPreview(movie);
+  };
+
+  const isHighQuality = movie.quality?.toLowerCase().includes("4k") || movie.quality?.toLowerCase().includes("fhd");
+
   return (
-    <article className="group relative min-w-0">
+    <article className="group relative min-w-0 transition-transform duration-200">
       <Link
         to={`/phim/${movie.slug}`}
         className="block focus-visible:outline-offset-4"
         aria-label={`${movie.name}${movie.year ? ` (${movie.year})` : ""}`}
       >
-        <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-line bg-sub/60 shadow-xs transition-all duration-200 group-hover:-translate-y-1 group-hover:border-deep/30 group-hover:shadow-md">
+        <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-line bg-sub/60 shadow-xs transition-all duration-300 group-hover:-translate-y-1.5 group-hover:border-deep/50 group-hover:shadow-glow-sm">
           <PosterImage
             src={movie.poster}
             fallback={movie.posterFallback}
             alt=""
             eager={eager}
-            className="size-full transition-transform duration-300 group-hover:scale-[1.03]"
+            className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
 
-          {/* Hover play overlay */}
-          <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-            <span className="flex size-10 items-center justify-center rounded-full bg-deep text-white shadow-sm transition-transform duration-150 group-hover:scale-100">
-              <Play className="ml-0.5 size-4.5 fill-white" />
+          {/* Hover Action Overlay */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-t from-black/80 via-black/30 to-black/20 opacity-0 backdrop-blur-[2px] transition-all duration-200 group-hover:opacity-100">
+            {/* Main Play Icon */}
+            <span className="flex size-11 items-center justify-center rounded-full bg-deep text-white shadow-glow transition-transform duration-200 group-hover:scale-105 active:scale-95">
+              <Play className="ml-0.5 size-5 fill-white" />
             </span>
+
+            {/* Quick View Button */}
+            <button
+              type="button"
+              onClick={handleQuickPreview}
+              aria-label={`Xem nhanh ${movie.name}`}
+              className="mt-1 flex items-center gap-1.5 rounded-full border border-white/20 bg-white/20 px-3 py-1 text-[11px] font-semibold text-white shadow-sm backdrop-blur-md transition-all hover:bg-white hover:text-ink active:scale-95"
+            >
+              <Eye className="size-3.5" />
+              <span>Xem nhanh</span>
+            </button>
           </div>
 
-          {/* Nhãn tập / bản phim */}
-          {movie.currentEpisode && (
-            <span className="badge absolute bottom-2 left-2 max-w-[calc(100%-1rem)] truncate bg-black/75 px-2 py-0.5 text-[10.5px] font-medium text-white backdrop-blur-xs">
-              {movie.currentEpisode}
+          {/* Nhãn chất lượng Top Left */}
+          {movie.quality && (
+            <span
+              className={`badge absolute top-2 left-2 px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase backdrop-blur-md ${
+                isHighQuality ? "badge-vip" : "badge-quality"
+              }`}
+            >
+              {movie.quality}
             </span>
           )}
 
-          {/* Nhãn chất lượng */}
-          {movie.quality && !movie.currentEpisode && (
-            <span className="badge absolute top-2 left-2 bg-surface/90 px-1.5 py-0.5 text-[10px] font-semibold text-deep shadow-xs backdrop-blur-xs">
-              {movie.quality}
+          {/* Nhãn tập phim Bottom Left */}
+          {movie.currentEpisode && (
+            <span className="badge absolute bottom-2 left-2 max-w-[calc(100%-1rem)] truncate bg-black/80 px-2 py-0.5 text-[10.5px] font-medium text-white backdrop-blur-md ring-1 ring-white/10">
+              {movie.currentEpisode}
             </span>
           )}
         </div>
 
-        <h3 className="mt-2.5 line-clamp-2 text-xs sm:text-[13.5px] font-semibold leading-snug text-ink transition-colors group-hover:text-deep">
-          {movie.name}
-        </h3>
-        {movie.originalName && (
-          <p className="mt-0.5 truncate text-[11.5px] text-muted">
-            {movie.originalName}
-          </p>
-        )}
-        {meta && (
-          <p className="mt-0.5 truncate text-[11px] text-muted/80">
-            {meta}
-          </p>
-        )}
+        {/* Thông tin phim */}
+        <div className="pt-2">
+          <h3 className="line-clamp-2 text-xs font-semibold leading-snug text-ink transition-colors group-hover:text-deep sm:text-[13.5px]">
+            {movie.name}
+          </h3>
+          {movie.originalName && (
+            <p className="mt-0.5 truncate text-[11.5px] text-muted">
+              {movie.originalName}
+            </p>
+          )}
+          {meta && (
+            <p className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted/80">
+              <span>{meta}</span>
+            </p>
+          )}
+        </div>
       </Link>
 
-      <div className="absolute top-2 right-2">
+      {/* Nút yêu thích Top Right */}
+      <div className="absolute top-2 right-2 z-10 transition-transform duration-150 group-hover:scale-105">
         <FavoriteButton movie={movie} />
       </div>
     </article>
   );
 }
+

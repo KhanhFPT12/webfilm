@@ -45,15 +45,17 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur-sm transition-shadow duration-200 ${
-        scrolled ? "shadow-xs" : ""
+      className={`sticky top-0 z-40 border-b transition-all duration-200 ${
+        scrolled
+          ? "border-line bg-surface/90 shadow-md backdrop-blur-md"
+          : "border-line/70 bg-surface/80 backdrop-blur-md"
       }`}
     >
       <div className="container-page flex h-16 items-center justify-between gap-2 sm:gap-4 lg:gap-6">
         <Logo />
 
         {/* Desktop Navigation */}
-        <nav aria-label="Điều hướng chính" className="mx-auto hidden items-center gap-1 lg:flex">
+        <nav aria-label="Điều hướng chính" className="mx-auto hidden items-center gap-1.5 lg:flex">
           {NAV_ITEMS.map((item) => {
             const active = isNavActive(item, pathname);
             return (
@@ -61,16 +63,16 @@ export function Header() {
                 key={item.to}
                 to={item.to}
                 aria-current={active ? "page" : undefined}
-                className={`relative px-3 py-1.5 text-[14px] transition-colors ${
+                className={`relative rounded-xl px-3.5 py-1.5 text-[14px] transition-all duration-150 ${
                   active
-                    ? "font-semibold text-deep"
-                    : "font-medium text-ink/80 hover:text-deep"
+                    ? "font-semibold text-deep bg-pastel/40 shadow-xs"
+                    : "font-medium text-ink/80 hover:bg-sub hover:text-deep"
                 }`}
               >
                 <span>{item.label}</span>
                 {active && (
                   <span
-                    className="absolute inset-x-3 -bottom-4.5 h-[2px] rounded-full bg-deep"
+                    className="absolute inset-x-3 -bottom-4.5 h-[2.5px] rounded-full bg-deep shadow-glow-sm"
                     aria-hidden="true"
                   />
                 )}
@@ -80,11 +82,11 @@ export function Header() {
         </nav>
 
         {/* Actions Toolbar */}
-        <div className="flex shrink-0 items-center gap-1 sm:gap-1.5">
-          <SearchBox className="hidden w-56 lg:block xl:w-64" />
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <SearchBox className="hidden w-64 lg:block xl:w-72" />
           <Link
             to="/tim-kiem"
-            className="btn-icon size-9 lg:hidden"
+            className="btn-icon size-9.5 rounded-xl lg:hidden"
             aria-label="Tìm kiếm phim"
           >
             <Search className="size-4.5" />
@@ -102,7 +104,7 @@ export function Header() {
 
           <button
             type="button"
-            className="btn-icon size-9 lg:hidden"
+            className="btn-icon size-9.5 rounded-xl lg:hidden"
             aria-label="Mở menu"
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"

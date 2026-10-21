@@ -7,6 +7,7 @@ import { PosterImage } from "../components/common/PosterImage";
 import { useToast } from "../components/common/Toast";
 import { EpisodeList, watchUrl } from "../components/movie/EpisodeList";
 import { FavoriteButton } from "../components/movie/FavoriteButton";
+import { MovieRatingWidget } from "../components/movie/MovieRatingWidget";
 import { RelatedMovies } from "../components/movie/RelatedMovies";
 import { useMovieDetail } from "../hooks/useMovies";
 import { useDocumentTitle } from "../hooks/useUtils";
@@ -101,59 +102,69 @@ export function MovieDetailPage() {
 
   return (
     <>
-      {/* Hero chi tiết phim — Tinh tế, không chấm bi, không gradient thô */}
+      {/* Hero chi tiết phim — Phong cách Cinema hiện đại */}
       <section className="relative overflow-hidden border-b border-line bg-sub/50">
         {movie.backdrop && (
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 opacity-15 lg:block" aria-hidden="true">
-            <PosterImage src={movie.backdrop} fallback={movie.backdropFallback} alt="" eager className="size-full" />
-            <div className="absolute inset-0 bg-gradient-to-r from-sub/90 via-sub/50 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.16]" aria-hidden="true">
+            <PosterImage src={movie.backdrop} fallback={movie.backdropFallback} alt="" eager className="size-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-sub via-sub/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-sub via-sub/80 to-transparent" />
           </div>
         )}
 
-        <div className="container-page relative grid gap-7 py-8 sm:py-10 md:grid-cols-[220px_1fr] md:gap-10 lg:grid-cols-[260px_1fr]">
+        <div className="container-page relative z-10 grid gap-7 py-8 sm:py-12 md:grid-cols-[230px_1fr] md:gap-10 lg:grid-cols-[280px_1fr]">
           {/* Cột poster */}
-          <div className="mx-auto w-44 sm:w-52 md:w-full">
-            <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
+          <div className="mx-auto w-48 sm:w-56 md:w-full">
+            <div className="relative aspect-[2/3] overflow-hidden rounded-2xl border border-line bg-surface shadow-md transition-all hover:shadow-glow-sm">
               <PosterImage
                 src={movie.poster}
                 fallback={movie.posterFallback}
                 alt={`Poster ${movie.name}`}
                 eager
-                className="size-full"
+                className="size-full object-cover"
               />
             </div>
           </div>
 
           {/* Cột thông tin */}
           <div className="min-w-0">
-            <nav aria-label="Breadcrumb" className="mb-2 text-xs text-muted">
+            <nav aria-label="Breadcrumb" className="mb-2.5 flex items-center gap-1.5 text-xs text-muted">
               <Link to="/" className="transition-colors hover:text-deep">
                 Trang chủ
               </Link>
-              <span className="mx-1.5 text-line" aria-hidden="true">
+              <span className="text-line" aria-hidden="true">
                 /
               </span>
               <Link to={series ? "/phim-bo" : "/phim-le"} className="transition-colors hover:text-deep">
                 {series ? "Phim bộ" : "Phim lẻ"}
               </Link>
+              <span className="text-line" aria-hidden="true">
+                /
+              </span>
+              <span className="truncate text-ink font-medium max-w-[200px]">{movie.name}</span>
             </nav>
 
-            <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl lg:text-[34px] lg:leading-snug">
+            <h1 className="text-2xl font-black tracking-tight text-ink sm:text-3xl lg:text-[36px] lg:leading-tight">
               {movie.name}
             </h1>
             {movie.originalName && (
-              <p className="mt-1 text-sm text-muted sm:text-base">{movie.originalName}</p>
+              <p className="mt-1 text-sm font-medium text-muted sm:text-base">{movie.originalName}</p>
             )}
 
             {badges.length > 0 && (
-              <div className="mt-3.5 flex flex-wrap gap-1.5">
-                {badges.map((b) => (
-                  <span key={b} className="badge border border-line bg-surface text-ink text-xs">
+              <div className="mt-3.5 flex flex-wrap items-center gap-2">
+                {movie.quality && (
+                  <span className="badge-quality rounded-md px-2 py-0.5 text-xs font-bold">
+                    {movie.quality}
+                  </span>
+                )}
+                {badges.filter((b) => b !== movie.quality).map((b) => (
+                  <span key={b} className="badge rounded-md border border-line bg-surface/90 text-ink text-xs font-medium">
                     {b}
                   </span>
                 ))}
                 {movie.currentEpisode && (
-                  <span className="badge bg-deep text-white text-xs">
+                  <span className="badge-vip rounded-md px-2.5 py-0.5 text-xs font-bold">
                     {movie.currentEpisode}
                   </span>
                 )}
@@ -167,7 +178,7 @@ export function MovieDetailPage() {
                   to={
                     resume ? watchUrl(movie.slug, resume.episodeSlug!, resume.serverIndex ?? 0) : watchUrl(movie.slug, firstEpisode.slug, 0)
                   }
-                  className="btn-primary h-11 px-5 text-sm"
+                  className="btn-primary shadow-glow-sm h-11 px-6 text-sm font-bold"
                 >
                   <Play className="size-4 fill-white" />
                   <span>{resume && series ? `Xem tiếp ${episodeLabel(resume.episodeName ?? "")}` : "Xem phim ngay"}</span>
@@ -182,7 +193,7 @@ export function MovieDetailPage() {
             </div>
 
             {/* Bảng metadata phim */}
-            <dl className="mt-6 divide-y divide-line/60 rounded-xl border border-line bg-surface/80 px-4 py-1 shadow-xs">
+            <dl className="mt-6 divide-y divide-line/60 rounded-2xl border border-line bg-surface/90 px-4 py-1.5 shadow-xs backdrop-blur-md">
               {movie.genres.length > 0 && (
                 <InfoRow icon={<Tags className="size-4" />} label="Thể loại">
                   <TaxonomyLinks items={movie.genres} base="/the-loai" />
@@ -195,7 +206,7 @@ export function MovieDetailPage() {
               )}
               {movie.year && (
                 <InfoRow icon={<CalendarDays className="size-4" />} label="Năm phát hành">
-                  <Link to={`/nam/${movie.year}`} className="font-medium text-deep hover:underline">
+                  <Link to={`/nam/${movie.year}`} className="font-semibold text-deep hover:underline">
                     {movie.year}
                   </Link>
                 </InfoRow>
@@ -227,22 +238,27 @@ export function MovieDetailPage() {
 
       {/* Nội dung chi tiết & Danh sách tập */}
       <div className="container-page space-y-12 py-10">
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr]">
-          <section aria-labelledby="desc-title">
-            <h2 id="desc-title" className="section-title flex items-center gap-2.5">
-              <span className="h-4.5 w-1 rounded-full bg-deep" aria-hidden="true" />
-              <span>Nội dung phim</span>
-            </h2>
-            {movie.description ? (
-              <p className="mt-4 text-sm leading-relaxed whitespace-pre-line text-ink/85 sm:text-[15px]">
-                {movie.description}
-              </p>
-            ) : (
-              <p className="mt-4 flex items-center gap-2 text-sm text-muted">
-                <Info className="size-4" /> Phim chưa có tóm tắt nội dung.
-              </p>
-            )}
-          </section>
+        <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr]">
+          <div className="space-y-8">
+            <section aria-labelledby="desc-title">
+              <h2 id="desc-title" className="section-title flex items-center gap-2.5">
+                <span className="h-4.5 w-1 rounded-full bg-deep" aria-hidden="true" />
+                <span>Nội dung phim</span>
+              </h2>
+              {movie.description ? (
+                <p className="mt-4 text-sm leading-relaxed whitespace-pre-line text-ink/85 sm:text-[15px]">
+                  {movie.description}
+                </p>
+              ) : (
+                <p className="mt-4 flex items-center gap-2 text-sm text-muted">
+                  <Info className="size-4" /> Phim chưa có tóm tắt nội dung.
+                </p>
+              )}
+            </section>
+
+            {/* Interactive Community Rating Widget */}
+            <MovieRatingWidget slug={movie.slug} movieName={movie.name} />
+          </div>
 
           <section aria-labelledby="eps-title">
             <h2 id="eps-title" className="section-title flex items-center gap-2.5">

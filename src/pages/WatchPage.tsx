@@ -120,13 +120,22 @@ export function WatchPage() {
             )}
 
             {selection ? (
-              <VideoPlayer
-                key={`${selection.serverIndex}-${selection.episode.slug}`}
-                url={selection.episode.embed}
-                title={`${movie.name} ${episodeTitle}`}
-              />
+              <div className="relative">
+                {/* Ambient backlighting glow effect */}
+                <div
+                  className="pointer-events-none absolute -inset-2 sm:-inset-4 rounded-3xl bg-deep/25 blur-2xl opacity-70 transition-opacity duration-500"
+                  aria-hidden="true"
+                />
+                <div className="relative z-10 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10">
+                  <VideoPlayer
+                    key={`${selection.serverIndex}-${selection.episode.slug}`}
+                    url={selection.episode.embed}
+                    title={`${movie.name} ${episodeTitle}`}
+                  />
+                </div>
+              </div>
             ) : (
-              <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl bg-plum-900 px-6 text-center ring-1 ring-plum-700">
+              <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-2xl bg-plum-900 px-6 text-center ring-1 ring-plum-700">
                 <Info className="size-8 text-rose" />
                 <p className="font-semibold text-white">Phim chưa có nguồn phát</p>
                 <p className="max-w-md text-xs text-plum-300">API chưa cung cấp tập nào cho phim này. Bạn quay lại sau nhé.</p>
