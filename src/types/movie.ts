@@ -92,6 +92,8 @@ export interface Movie {
   director?: string;
   casts?: string;
   modified?: string;
+  tmdbScore?: string;
+  genres?: (TaxonomyItem | string)[];
 }
 
 export interface TaxonomyItem {
