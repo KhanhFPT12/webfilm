@@ -3,6 +3,8 @@ import {
   getCountryView,
   getGenreMovies,
   getGenreView,
+  getLanguageMovies,
+  getLanguageView,
   getLatestMovies,
   getLatestView,
   getListMovies,
@@ -93,6 +95,8 @@ export const useLatestMovies = (apiPage = 1) => useQuery(`latest:${apiPage}`, ()
 export const useListMovies = (type: ListType, apiPage = 1) => useQuery(`list:${type}:${apiPage}`, () => getListMovies(type, apiPage));
 export const useGenreMovies = (slug: string | undefined, apiPage = 1) =>
   useQuery(slug ? `genre:${slug}:${apiPage}` : null, () => getGenreMovies(slug!, apiPage));
+export const useLanguageMovies = (slug = "long-tieng", apiPage = 1) =>
+  useQuery(`language:${slug}:${apiPage}`, () => getLanguageMovies(slug, apiPage));
 export const useMovieDetail = (slug: string | undefined) => useQuery(slug ? `detail:${slug}` : null, () => getMovieDetail(slug!));
 
 export type CatalogSource =
@@ -100,7 +104,8 @@ export type CatalogSource =
   | { kind: "list"; type: ListType }
   | { kind: "genre"; slug: string }
   | { kind: "country"; slug: string }
-  | { kind: "year"; year: string };
+  | { kind: "year"; year: string }
+  | { kind: "language"; slug: string };
 
 export function useCatalog(source: CatalogSource | null, page: number) {
   const key = source ? `view:${JSON.stringify(source)}:${page}` : null;
@@ -116,6 +121,8 @@ export function useCatalog(source: CatalogSource | null, page: number) {
         return getCountryView(source!.slug, page);
       case "year":
         return getYearView(source!.year, page);
+      case "language":
+        return getLanguageView(source!.slug, page);
     }
   });
 }

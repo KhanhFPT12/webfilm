@@ -106,3 +106,12 @@ export const resolveCountry = (name: string) => lookup(name, COUNTRIES, COUNTRY_
 
 export const findGenre = (slug?: string) => GENRES.find((g) => g.slug === slug);
 export const findCountry = (slug?: string) => COUNTRIES.find((c) => c.slug === slug);
+
+export const LANGUAGES: Category[] = [
+  { slug: "long-tieng", name: "Lồng tiếng", note: "Kho phim có lồng tiếng Việt chuẩn, dễ theo dõi cho mọi lứa tuổi" },
+  { slug: "thuyet-minh", name: "Thuyết minh", note: "Phim có giọng đọc thuyết minh tiếng Việt truyền cảm" },
+  { slug: "vietsub", name: "Vietsub", note: "Phim có phụ đề tiếng Việt nguyên bản" },
+];
+
+export const findLanguage = (slug?: string) => LANGUAGES.find((l) => l.slug === slug);
+

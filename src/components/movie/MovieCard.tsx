@@ -14,7 +14,9 @@ interface Props {
 
 export function MovieCard({ movie, eager = false }: Props) {
   const { openPreview } = usePreview();
-  const meta = [movie.year, movie.language].filter(Boolean).join(" · ");
+  const langLower = movie.language?.toLowerCase() ?? "";
+  const isDubbed = langLower.includes("lồng tiếng");
+  const isVoiceover = !isDubbed && langLower.includes("thuyết minh");
 
   const handleQuickPreview = (e: MouseEvent) => {
     e.preventDefault();
@@ -76,6 +78,18 @@ export function MovieCard({ movie, eager = false }: Props) {
               {movie.currentEpisode}
             </span>
           )}
+
+          {/* Nhãn Lồng tiếng / Thuyết minh */}
+          {isDubbed && (
+            <span className="badge absolute bottom-2 right-2 bg-amber-500 font-extrabold text-black px-1.5 py-0.5 text-[9.5px] tracking-wide uppercase shadow-md">
+              Lồng tiếng
+            </span>
+          )}
+          {isVoiceover && (
+            <span className="badge absolute bottom-2 right-2 bg-emerald-600 font-bold text-white px-1.5 py-0.5 text-[9.5px] tracking-wide uppercase shadow-md">
+              Thuyết minh
+            </span>
+          )}
         </div>
 
         {/* Thông tin phim */}
@@ -88,11 +102,23 @@ export function MovieCard({ movie, eager = false }: Props) {
               {movie.originalName}
             </p>
           )}
-          {meta && (
-            <p className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted/80">
-              <span>{meta}</span>
-            </p>
-          )}
+          <p className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] text-muted/80">
+            {movie.year && <span>{movie.year}</span>}
+            {movie.year && movie.language && <span>·</span>}
+            {movie.language && (
+              <span
+                className={
+                  isDubbed
+                    ? "font-bold text-amber-600 dark:text-amber-400"
+                    : isVoiceover
+                      ? "font-semibold text-emerald-600 dark:text-emerald-400"
+                      : ""
+                }
+              >
+                {movie.language}
+              </span>
+            )}
+          </p>
         </div>
       </Link>
 

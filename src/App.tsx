@@ -20,6 +20,8 @@ export default function App() {
         <Route path="phim-moi" element={<CategoryPage key="latest" mode="latest" />} />
         <Route path="phim-le" element={<CategoryPage key="phim-le" mode="list" listType="phim-le" />} />
         <Route path="phim-bo" element={<CategoryPage key="phim-bo" mode="list" listType="phim-bo" />} />
+        <Route path="phim-long-tieng" element={<CategoryPage key="long-tieng" mode="language" />} />
+        <Route path="ngon-ngu/:slug" element={<CategoryPage mode="language" />} />
         <Route path="tv-shows" element={<CategoryPage key="tv-shows" mode="list" listType="tv-shows" />} />
         <Route path="the-loai" element={<TaxonomyPage kind="genre" />} />
         <Route path="the-loai/:slug" element={<CategoryPage mode="genre" />} />

@@ -157,6 +157,11 @@ export function QuickPreviewModal() {
                 {m.currentEpisode}
               </span>
             )}
+            {m.language?.toLowerCase().includes("lồng tiếng") && (
+              <span className="rounded-md bg-amber-500 font-extrabold text-black px-2 py-0.5 text-xs shadow-xs">
+                Lồng tiếng
+              </span>
+            )}
             {metaList.map((item) => (
               <span
                 key={item}

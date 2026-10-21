@@ -10,6 +10,7 @@ export const NAV_ITEMS: NavItem[] = [
   { to: "/phim-moi", label: "Phim mới", match: ["/phim-moi"] },
   { to: "/phim-le", label: "Phim lẻ", match: ["/phim-le"] },
   { to: "/phim-bo", label: "Phim bộ", match: ["/phim-bo"] },
+  { to: "/phim-long-tieng", label: "Lồng tiếng", match: ["/phim-long-tieng", "/ngon-ngu"] },
   { to: "/the-loai", label: "Thể loại", match: ["/the-loai", "/quoc-gia", "/nam"] },
 ];
 

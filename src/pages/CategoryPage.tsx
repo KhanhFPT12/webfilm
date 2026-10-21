@@ -7,11 +7,11 @@ import { Pagination } from "../components/common/Pagination";
 import { MovieGrid } from "../components/movie/MovieGrid";
 import { useCatalog, type CatalogSource } from "../hooks/useMovies";
 import { useDocumentTitle } from "../hooks/useUtils";
-import { COUNTRIES, GENRES, LIST_TYPES, MIN_YEAR, currentYear, findCountry, findGenre, type ListType } from "../utils/catalog";
+import { COUNTRIES, GENRES, LANGUAGES, LIST_TYPES, MIN_YEAR, currentYear, findCountry, findGenre, findLanguage, type ListType } from "../utils/catalog";
 import { formatNumber } from "../utils/formatters";
 import { NotFoundPage } from "./NotFoundPage";
 
-type Mode = "latest" | "list" | "genre" | "country" | "year";
+type Mode = "latest" | "list" | "genre" | "country" | "year" | "language";
 
 interface Props {
   mode: Mode;
@@ -22,6 +22,7 @@ const FORMAT_TABS: { to: string; label: string }[] = [
   { to: "/phim-moi", label: "Mới cập nhật" },
   { to: "/phim-le", label: "Phim lẻ" },
   { to: "/phim-bo", label: "Phim bộ" },
+  { to: "/phim-long-tieng", label: "Lồng tiếng" },
   { to: "/tv-shows", label: "TV Shows" },
 ];
 
@@ -127,6 +128,34 @@ export function CategoryPage({ mode, listType }: Props) {
             ))}
           </select>
         </label>
+      );
+    }
+  } else if (mode === "language") {
+    const slug = params.slug ?? "long-tieng";
+    const lang = findLanguage(slug);
+    if (!lang) {
+      invalid = "Mục ngôn ngữ này không tồn tại hoặc chưa được API hỗ trợ.";
+    } else {
+      source = { kind: "language", slug: lang.slug };
+      title = `Phim ${lang.name.toLowerCase()}`;
+      note = lang.note;
+      activePath = lang.slug === "long-tieng" && !params.slug ? "/phim-long-tieng" : `/ngon-ngu/${lang.slug}`;
+      crumbs = [
+        { to: "/phim-long-tieng", label: "Lồng tiếng" },
+        ...(lang.slug !== "long-tieng" ? [{ to: activePath, label: lang.name }] : []),
+      ];
+      filters = (
+        <div className="space-y-2">
+          <ChipRow label="Định dạng phim" active={activePath === "/phim-long-tieng" ? "/phim-long-tieng" : ""} items={FORMAT_TABS} />
+          <ChipRow
+            label="Chọn ngôn ngữ"
+            active={activePath}
+            items={LANGUAGES.map((l) => ({
+              to: l.slug === "long-tieng" ? "/phim-long-tieng" : `/ngon-ngu/${l.slug}`,
+              label: l.name,
+            }))}
+          />
+        </div>
       );
     }
   }

@@ -147,6 +147,10 @@ export const getGenreView = (slug: string, page = 1) => fetchViewPage(`/films/th
 /** GET /films/quoc-gia/{slug}?page=N */
 export const getCountryView = (slug: string, page = 1) => fetchViewPage(`/films/quoc-gia/${encodeURIComponent(slug)}`, page);
 
+/** GET /films/ngon-ngu/{slug}?page=N */
+export const getLanguageMovies = (slug: string, apiPage = 1) => fetchApiPage(`/films/ngon-ngu/${encodeURIComponent(slug)}`, apiPage);
+export const getLanguageView = (slug: string, page = 1) => fetchViewPage(`/films/ngon-ngu/${encodeURIComponent(slug)}`, page);
+
 /** GET /films/nam-phat-hanh/{year}?page=N */
 export const getYearView = (year: string, page = 1) => fetchViewPage(`/films/nam-phat-hanh/${encodeURIComponent(year)}`, page);
 

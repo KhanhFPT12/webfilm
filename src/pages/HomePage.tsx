@@ -12,7 +12,7 @@ import { MovieSection } from "../components/movie/MovieSection";
 import { TopTrendingSection } from "../components/movie/TopTrendingSection";
 import { watchUrl } from "../components/movie/EpisodeList";
 import { favoriteToMovie, useFavorites } from "../hooks/useFavorites";
-import { useLatestMovies, useListMovies } from "../hooks/useMovies";
+import { useLanguageMovies, useLatestMovies, useListMovies } from "../hooks/useMovies";
 import { useDocumentTitle } from "../hooks/useUtils";
 import { useWatchHistory } from "../hooks/useWatchHistory";
 import { FEATURED_GENRES, GENRES } from "../utils/catalog";
@@ -145,6 +145,7 @@ export function HomePage() {
   const latest = useLatestMovies(1);
   const single = useListMovies("phim-le", 1);
   const series = useListMovies("phim-bo", 1);
+  const dubbed = useLanguageMovies("long-tieng", 1);
 
   return (
     <>
@@ -165,6 +166,18 @@ export function HomePage() {
           loading={latest.loading}
           error={latest.error}
           onRetry={latest.reload}
+        />
+
+        {/* Phim Lồng Tiếng Đặc Sắc */}
+        <MovieSection
+          id="dubbed-title"
+          title="Phim lồng tiếng đặc sắc"
+          subtitle="Kho phim có lồng tiếng Việt chuẩn, dễ xem cho mọi lứa tuổi"
+          to="/phim-long-tieng"
+          movies={dubbed.data?.items}
+          loading={dubbed.loading}
+          error={dubbed.error}
+          onRetry={dubbed.reload}
         />
 
         <GenreExplorer />
