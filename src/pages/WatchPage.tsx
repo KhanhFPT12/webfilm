@@ -16,10 +16,10 @@ function WatchSkeleton() {
     <div className="container-page py-6" role="status">
       <span className="sr-only">Đang tải trình phát…</span>
       <div className="skeleton mb-4 h-6 w-1/2 rounded" />
-      <div className="skeleton aspect-video w-full rounded-xl" />
+      <div className="skeleton aspect-video w-full rounded-md" />
       <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(72px,1fr))] gap-2">
         {Array.from({ length: 12 }, (_, i) => (
-          <div key={i} className="skeleton h-9 rounded-lg" />
+          <div key={i} className="skeleton h-9 rounded" />
         ))}
       </div>
     </div>
@@ -36,7 +36,7 @@ export function WatchPage() {
   const tap = params.get("tap");
   const svParam = Number.parseInt(params.get("sv") ?? "0", 10) || 0;
 
-  // Xác định server + tập từ URL; nếu thiếu thì tiếp tục từ lịch sử hoặc tập đầu.
+  // Xác định server + tập từ URL
   const selection = useMemo(() => {
     if (!movie || movie.servers.length === 0) return null;
     const resume = slug ? get(slug) : undefined;
@@ -55,16 +55,9 @@ export function WatchPage() {
       } else index = 0;
     }
     return { serverIndex, episodes, index, episode: episodes[index], missing: !!tap && episodes[index]?.slug !== tap };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [movie, tap, svParam, slug]);
+  }, [movie, tap, svParam, slug, get, params]);
 
-  useEffect(() => {
-    if (!movie || !selection?.episode) return;
-    if (tap !== selection.episode.slug || svParam !== selection.serverIndex) {
-      navigate(watchUrl(movie.slug, selection.episode.slug, selection.serverIndex), { replace: true });
-    }
-  }, [movie, selection, tap, svParam, navigate]);
-
+  // Lưu lịch sử xem
   useEffect(() => {
     if (!movie || !selection?.episode) return;
     record({
@@ -86,7 +79,7 @@ export function WatchPage() {
   const go = (serverIndex: number, episodeSlug: string) => navigate(watchUrl(movie!.slug, episodeSlug, serverIndex));
 
   return (
-    <div className="theater bg-plum-950 text-pastel">
+    <div className="theater bg-[#09090d] text-ink">
       {loading && !movie ? (
         <WatchSkeleton />
       ) : error || !movie ? (
@@ -100,45 +93,38 @@ export function WatchPage() {
               <div className="min-w-0">
                 <Link
                   to={`/phim/${movie.slug}`}
-                  className="inline-flex items-center gap-1.5 rounded text-xs font-medium text-plum-300 transition-colors hover:text-white"
+                  className="inline-flex items-center gap-1.5 rounded text-xs font-medium text-muted transition-colors hover:text-white"
                 >
                   <ArrowLeft className="size-3.5" /> Chi tiết phim
                 </Link>
                 <h1 className="mt-1 text-xl font-bold text-white sm:text-2xl">
                   {movie.name}
-                  {episodeTitle && isSeries(movie) && <span className="text-rose"> · {episodeTitle}</span>}
+                  {episodeTitle && isSeries(movie) && <span className="text-deep"> · {episodeTitle}</span>}
                 </h1>
-                {movie.originalName && <p className="truncate text-xs text-plum-300">{movie.originalName}</p>}
+                {movie.originalName && <p className="truncate text-xs text-muted">{movie.originalName}</p>}
               </div>
               <FavoriteButton movie={movie} className="shrink-0" />
             </div>
 
             {selection?.missing && (
-              <p className="mb-3 rounded-lg border border-plum-700 bg-plum-900 px-3 py-2 text-xs text-amber-200">
+              <p className="mb-3 rounded border border-line bg-sub px-3 py-2 text-xs text-amber-300">
                 Không tìm thấy tập bạn yêu cầu, đang phát {episodeTitle || "tập đầu tiên"}.
               </p>
             )}
 
             {selection ? (
-              <div className="relative">
-                {/* Ambient backlighting glow effect */}
-                <div
-                  className="pointer-events-none absolute -inset-2 sm:-inset-4 rounded-3xl bg-deep/25 blur-2xl opacity-70 transition-opacity duration-500"
-                  aria-hidden="true"
+              <div className="relative overflow-hidden rounded-md border border-line bg-black shadow-2xl">
+                <VideoPlayer
+                  key={`${selection.serverIndex}-${selection.episode.slug}`}
+                  url={selection.episode.embed}
+                  title={`${movie.name} ${episodeTitle}`}
                 />
-                <div className="relative z-10 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10">
-                  <VideoPlayer
-                    key={`${selection.serverIndex}-${selection.episode.slug}`}
-                    url={selection.episode.embed}
-                    title={`${movie.name} ${episodeTitle}`}
-                  />
-                </div>
               </div>
             ) : (
-              <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-2xl bg-plum-900 px-6 text-center ring-1 ring-plum-700">
-                <Info className="size-8 text-rose" />
+              <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-md bg-sub px-6 text-center border border-line">
+                <Info className="size-8 text-deep" />
                 <p className="font-semibold text-white">Phim chưa có nguồn phát</p>
-                <p className="max-w-md text-xs text-plum-300">API chưa cung cấp tập nào cho phim này. Bạn quay lại sau nhé.</p>
+                <p className="max-w-md text-xs text-muted">API chưa cung cấp tập nào cho phim này. Bạn quay lại sau nhé.</p>
               </div>
             )}
 
@@ -146,33 +132,34 @@ export function WatchPage() {
               <div className="mt-4 flex items-center justify-between gap-3">
                 <button
                   type="button"
-                  className="btn h-9 px-3.5 border border-plum-700 text-xs font-semibold text-pastel hover:border-rose hover:bg-plum-900 hover:text-white disabled:hover:border-plum-700 disabled:hover:bg-transparent"
+                  className="btn h-9 px-3.5 border border-line bg-surface text-xs font-semibold text-muted hover:border-deep hover:text-white disabled:opacity-40"
                   disabled={selection.index <= 0}
                   onClick={() => go(selection.serverIndex, selection.episodes[selection.index - 1].slug)}
                 >
                   <ChevronLeft className="size-3.5" /> Tập trước
                 </button>
-                <span className="text-xs text-plum-300">
-                  {selection.index + 1} / {selection.episodes.length}
+                <span className="text-xs text-muted font-medium">
+                  Tập {selection.index + 1} / {selection.episodes.length}
                 </span>
                 <button
                   type="button"
-                  className="btn h-9 px-3.5 bg-deep text-xs font-semibold text-white hover:bg-deeper disabled:hover:bg-deep"
+                  className="btn-play h-9 px-4 text-xs font-bold text-black disabled:opacity-40"
                   disabled={selection.index >= selection.episodes.length - 1}
                   onClick={() => go(selection.serverIndex, selection.episodes[selection.index + 1].slug)}
                 >
-                  Tập tiếp <ChevronRight className="size-3.5" />
+                  <span>Tập tiếp</span>
+                  <ChevronRight className="size-3.5" />
                 </button>
               </div>
             )}
           </div>
 
           {selection && (
-            <div className="border-t border-plum-800 bg-plum-900/40">
+            <div className="border-t border-line bg-sub/40">
               <div className="container-page grid gap-8 py-7 lg:grid-cols-[1.3fr_1fr]">
                 <section aria-labelledby="watch-eps">
                   <h2 id="watch-eps" className="mb-3.5 flex items-center gap-2 text-base font-bold text-white">
-                    <ListVideo className="size-4.5 text-rose" /> Chọn tập
+                    <ListVideo className="size-4.5 text-deep" /> Chọn tập phát sóng
                   </h2>
                   <EpisodeList
                     tone="dark"
@@ -188,17 +175,17 @@ export function WatchPage() {
                     activeEpisode={selection.episode.slug}
                   />
                 </section>
-                <section aria-labelledby="watch-about" className="rounded-xl border border-plum-800 bg-plum-950/60 p-5">
+                <section aria-labelledby="watch-about" className="rounded-lg border border-line bg-surface p-5">
                   <h2 id="watch-about" className="font-bold text-white text-base">
-                    Về bộ phim
+                    Về tác phẩm
                   </h2>
-                  <p className="mt-1.5 text-xs text-plum-300">
+                  <p className="mt-1.5 text-xs text-muted">
                     {[movie.year, movie.quality, movie.language, movie.time].filter(Boolean).join(" · ")}
                   </p>
-                  {movie.description && <p className="mt-3 text-xs sm:text-sm leading-relaxed text-pastel/85">{truncate(movie.description, 300)}</p>}
+                  {movie.description && <p className="mt-3 text-xs sm:text-sm leading-relaxed text-muted">{truncate(movie.description, 300)}</p>}
                   <Link
                     to={`/phim/${movie.slug}`}
-                    className="mt-4 inline-flex items-center gap-1 rounded text-xs font-semibold text-rose hover:text-white"
+                    className="mt-4 inline-flex items-center gap-1 rounded text-xs font-semibold text-deep hover:underline"
                   >
                     Xem thông tin đầy đủ <ChevronRight className="size-3.5" />
                   </Link>
@@ -209,7 +196,7 @@ export function WatchPage() {
         </>
       )}
       {movie && (
-        <div className="bg-blush text-ink">
+        <div className="bg-blush text-ink border-t border-line">
           <div className="container-page py-10">
             <RelatedMovies movie={movie} />
           </div>

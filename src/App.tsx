@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import { CategoryPage } from "./pages/CategoryPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
+import { FilterPage } from "./pages/FilterPage";
 import { HistoryPage } from "./pages/HistoryPage";
 import { HomePage } from "./pages/HomePage";
 import { InfoPage } from "./pages/InfoPage";
@@ -17,6 +18,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="tim-kiem" element={<SearchPage />} />
+        <Route path="loc-phim" element={<FilterPage />} />
         <Route path="phim-moi" element={<CategoryPage key="latest" mode="latest" />} />
         <Route path="phim-le" element={<CategoryPage key="phim-le" mode="list" listType="phim-le" />} />
         <Route path="phim-bo" element={<CategoryPage key="phim-bo" mode="list" listType="phim-bo" />} />

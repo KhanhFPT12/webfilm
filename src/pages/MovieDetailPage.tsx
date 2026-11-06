@@ -33,7 +33,7 @@ function TaxonomyLinks({ items, base }: { items: TaxonomyItem[]; base: string })
           <Link
             key={t.name}
             to={`${base}/${t.slug}`}
-            className="rounded border border-line bg-surface px-2 py-0.5 text-xs font-medium text-ink transition-colors hover:border-deep/40 hover:text-deep"
+            className="rounded border border-line bg-surface px-2 py-0.5 text-xs font-medium text-ink transition-colors hover:border-deep/60 hover:text-deep"
           >
             {t.name}
           </Link>
@@ -58,13 +58,21 @@ function ShareButton({ movie }: { movie: MovieDetail }) {
       }
       await navigator.clipboard.writeText(url);
       toast.show("Đã sao chép liên kết phim vào bộ nhớ tạm");
-    } catch (e) {
-      if ((e as Error)?.name !== "AbortError") toast.show("Bạn hãy sao chép link trên thanh địa chỉ trình duyệt nhé");
+    } catch {
+      toast.show("Đã sao chép liên kết phim!");
     }
   };
+
   return (
-    <button type="button" className="btn-secondary h-11 px-4 text-sm" onClick={share}>
-      <Share2 className="size-4" /> Chia sẻ
+    <button
+      type="button"
+      onClick={share}
+      aria-label="Chia sẻ phim"
+      className="btn-secondary h-11 px-4 text-sm"
+      title="Chia sẻ liên kết phim"
+    >
+      <Share2 className="size-4" />
+      <span>Chia sẻ</span>
     </button>
   );
 }
@@ -72,37 +80,42 @@ function ShareButton({ movie }: { movie: MovieDetail }) {
 export function MovieDetailPage() {
   const { slug } = useParams();
   const { data: movie, loading, error, reload } = useMovieDetail(slug);
-  const { get } = useWatchHistory();
   const [serverIndex, setServerIndex] = useState(0);
-  useEffect(() => setServerIndex(0), [slug]);
-  useDocumentTitle(movie?.name ?? (loading ? "Đang tải…" : "Chi tiết phim"));
+  const { get } = useWatchHistory();
 
-  if (loading && !movie) return <DetailSkeleton />;
+  useDocumentTitle(movie ? `${movie.name} · SONY CINEMA` : undefined);
+
+  useEffect(() => setServerIndex(0), [slug]);
+
+  if (loading) {
+    return (
+      <div className="container-page py-8">
+        <DetailSkeleton />
+      </div>
+    );
+  }
+
   if (error || !movie) {
     return (
       <div className="container-page py-12">
-        <ErrorState error={error ?? new Error("Không tải được thông tin phim.")} onRetry={reload} />
+        <ErrorState error={error ?? new Error("Không tìm thấy phim")} onRetry={reload} />
       </div>
     );
   }
 
   const series = isSeries(movie);
   const firstEpisode = movie.servers[0]?.episodes[0];
-  const history = get(movie.slug);
-  const resume = history?.episodeSlug ? history : undefined;
+  const episodeCount = movie.servers[serverIndex]?.episodes.length ?? 0;
   const directors = splitPeople(movie.director);
   const casts = splitPeople(movie.casts);
-  const episodeCount = movie.servers[0]?.episodes.length ?? 0;
-  const status =
-    movie.currentEpisode && movie.totalEpisodes
-      ? `${movie.currentEpisode}${series ? ` · ${movie.totalEpisodes} tập` : ""}`
-      : movie.currentEpisode;
+  const resume = slug ? get(slug) : undefined;
+  const status = movie.currentEpisode || (series ? "Đang cập nhật" : undefined);
 
   const badges = [movie.quality, movie.language, movie.year].filter(Boolean) as string[];
 
   return (
     <>
-      {/* Hero chi tiết phim — Phong cách Cinema hiện đại */}
+      {/* Hero chi tiết phim */}
       <section className="relative overflow-hidden border-b border-line bg-sub/50">
         {movie.backdrop && (
           <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.16]" aria-hidden="true">
@@ -115,7 +128,7 @@ export function MovieDetailPage() {
         <div className="container-page relative z-10 grid gap-7 py-8 sm:py-12 md:grid-cols-[230px_1fr] md:gap-10 lg:grid-cols-[280px_1fr]">
           {/* Cột poster */}
           <div className="mx-auto w-48 sm:w-56 md:w-full">
-            <div className="relative aspect-[2/3] overflow-hidden rounded-2xl border border-line bg-surface shadow-md transition-all hover:shadow-glow-sm">
+            <div className="relative aspect-[2/3] overflow-hidden rounded-lg border border-line bg-surface shadow-md">
               <PosterImage
                 src={movie.poster}
                 fallback={movie.posterFallback}
@@ -154,17 +167,17 @@ export function MovieDetailPage() {
             {badges.length > 0 && (
               <div className="mt-3.5 flex flex-wrap items-center gap-2">
                 {movie.quality && (
-                  <span className="badge-quality rounded-md px-2 py-0.5 text-xs font-bold">
+                  <span className="badge-quality rounded px-2 py-0.5 text-xs font-bold">
                     {movie.quality}
                   </span>
                 )}
                 {badges.filter((b) => b !== movie.quality).map((b) => (
-                  <span key={b} className="badge rounded-md border border-line bg-surface/90 text-ink text-xs font-medium">
+                  <span key={b} className="badge rounded border border-line bg-surface/90 text-ink text-xs font-medium">
                     {b}
                   </span>
                 ))}
                 {movie.currentEpisode && (
-                  <span className="badge-vip rounded-md px-2.5 py-0.5 text-xs font-bold">
+                  <span className="badge-vip rounded px-2.5 py-0.5 text-xs font-bold">
                     {movie.currentEpisode}
                   </span>
                 )}
@@ -178,13 +191,13 @@ export function MovieDetailPage() {
                   to={
                     resume ? watchUrl(movie.slug, resume.episodeSlug!, resume.serverIndex ?? 0) : watchUrl(movie.slug, firstEpisode.slug, 0)
                   }
-                  className="btn-primary shadow-glow-sm h-11 px-6 text-sm font-bold"
+                  className="btn-play h-11 px-6 text-sm font-bold flex items-center gap-2"
                 >
-                  <Play className="size-4 fill-white" />
+                  <Play className="size-4.5 fill-black text-black" />
                   <span>{resume && series ? `Xem tiếp ${episodeLabel(resume.episodeName ?? "")}` : "Xem phim ngay"}</span>
                 </Link>
               ) : (
-                <button type="button" disabled className="btn-primary h-11 px-5 text-sm" title="Phim chưa có nguồn phát">
+                <button type="button" disabled className="btn-secondary h-11 px-5 text-sm" title="Phim chưa có nguồn phát">
                   <Play className="size-4" /> Chưa có tập để xem
                 </button>
               )}
@@ -193,7 +206,7 @@ export function MovieDetailPage() {
             </div>
 
             {/* Bảng metadata phim */}
-            <dl className="mt-6 divide-y divide-line/60 rounded-2xl border border-line bg-surface/90 px-4 py-1.5 shadow-xs backdrop-blur-md">
+            <dl className="mt-6 divide-y divide-line/60 rounded-lg border border-line bg-surface px-4 py-1.5 shadow-xs">
               {movie.genres.length > 0 && (
                 <InfoRow icon={<Tags className="size-4" />} label="Thể loại">
                   <TaxonomyLinks items={movie.genres} base="/the-loai" />
@@ -276,7 +289,7 @@ export function MovieDetailPage() {
                   activeEpisode={resume?.serverIndex === serverIndex ? resume?.episodeSlug : undefined}
                 />
               ) : (
-                <p className="rounded-xl border border-dashed border-line bg-surface px-4 py-8 text-center text-sm text-muted">
+                <p className="rounded-lg border border-dashed border-line bg-surface px-4 py-8 text-center text-sm text-muted">
                   API chưa cung cấp nguồn phát cho phim này. Bạn quay lại sau nhé.
                 </p>
               )}

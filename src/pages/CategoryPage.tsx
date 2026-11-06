@@ -4,6 +4,7 @@ import { EmptyState } from "../components/common/EmptyState";
 import { ErrorState } from "../components/common/ErrorState";
 import { PageHeader } from "../components/common/PageHeader";
 import { Pagination } from "../components/common/Pagination";
+import { MovieFilter } from "../components/movie/MovieFilter";
 import { MovieGrid } from "../components/movie/MovieGrid";
 import { useCatalog, type CatalogSource } from "../hooks/useMovies";
 import { useDocumentTitle } from "../hooks/useUtils";
@@ -195,7 +196,21 @@ export function CategoryPage({ mode, listType }: Props) {
         {filters}
       </PageHeader>
 
-      <div className="container-page py-8 sm:py-10">
+      <div className="container-page py-6 sm:py-8 space-y-6">
+        {/* Bộ lọc phim phong cách RoPhim */}
+        <MovieFilter
+          key={`${mode}-${params.slug || params.year || listType || ""}`}
+          initialValues={{
+            country: mode === "country" ? params.slug : "all",
+            genre: mode === "genre" ? params.slug : "all",
+            type: mode === "list" ? listType : "all",
+            year: mode === "year" ? params.year : "all",
+            audio: mode === "language" ? (params.slug || "long-tieng") : "all",
+            sort: "latest",
+          }}
+          collapsible={true}
+          isOpen={false}
+        />
         {error ? (
           <ErrorState error={error} onRetry={reload} />
         ) : !loading && data && data.items.length === 0 ? (

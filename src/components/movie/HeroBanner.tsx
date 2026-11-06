@@ -37,7 +37,7 @@ export const DOCTOR_X_FEATURED: Movie = {
   time: "60 phút/tập",
 };
 
-/** Component hiển thị logo tiêu đề cách điệu BÁC SĨ X: MAFIA ÁO TRẮNG giống chuẩn screenshot */
+/** Tiêu đề cách điệu BÁC SĨ X: MAFIA ÁO TRẮNG */
 function DoctorXTitle() {
   return (
     <div className="select-none py-1">
@@ -47,19 +47,16 @@ function DoctorXTitle() {
         </span>
         <span className="relative inline-flex items-center justify-center text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-black italic text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-100 to-slate-400 drop-shadow-[0_0_18px_rgba(255,255,255,0.45)] transform -skew-x-6">
           X
-          <span className="absolute inset-0 text-white/20 blur-[1px]" aria-hidden="true">
-            X
-          </span>
         </span>
       </div>
-      <div className="text-sm sm:text-base md:text-xl lg:text-[23px] font-black uppercase tracking-[0.24em] text-neutral-200 drop-shadow-[0_3px_10px_rgba(0,0,0,0.9)] mt-0.5">
+      <div className="text-sm sm:text-base md:text-xl lg:text-[22px] font-black uppercase tracking-[0.22em] text-neutral-200 drop-shadow-[0_3px_10px_rgba(0,0,0,0.9)] mt-0.5">
         MAFIA ÁO TRẮNG
       </div>
     </div>
   );
 }
 
-/** Hiển thị tiêu đề chuẩn cinema cho các phim khác khi chuyển slide */
+/** Hiển thị tiêu đề chuẩn cinema cho các phim khác */
 function DynamicTitle({ name }: { name: string }) {
   const parts = name.split(/:\s*|\s+-\s+/);
   if (parts.length > 1) {
@@ -68,7 +65,7 @@ function DynamicTitle({ name }: { name: string }) {
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] font-black uppercase tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] leading-[1.1]">
           {parts[0].trim()}
         </h1>
-        <div className="text-sm sm:text-base md:text-xl lg:text-[22px] font-extrabold uppercase tracking-[0.16em] text-neutral-200 drop-shadow-[0_3px_10px_rgba(0,0,0,0.9)] mt-1 line-clamp-1">
+        <div className="text-sm sm:text-base md:text-xl lg:text-[20px] font-extrabold uppercase tracking-[0.16em] text-neutral-200 drop-shadow-[0_3px_10px_rgba(0,0,0,0.9)] mt-1 line-clamp-1">
           {parts.slice(1).join(" - ").trim()}
         </div>
       </div>
@@ -76,7 +73,7 @@ function DynamicTitle({ name }: { name: string }) {
   }
 
   return (
-    <h1 className="select-none text-2xl sm:text-3xl md:text-4xl lg:text-[48px] font-black uppercase tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] leading-[1.1] line-clamp-2">
+    <h1 className="select-none text-2xl sm:text-3xl md:text-4xl lg:text-[46px] font-black uppercase tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] leading-[1.1] line-clamp-2">
       {name}
     </h1>
   );
@@ -87,8 +84,6 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
   const { isFavorite, toggle } = useFavorites();
   const toast = useToast();
 
-  // Xây dựng danh sách 6 phim nổi bật:
-  // Đặt Doctor X vào vị trí index = 2 (phần tử thứ 3), 2 phim trước và 3 phim sau, khớp chính xác 1:1 với ảnh chụp người dùng gửi!
   const picks = useMemo(() => {
     const valid = (movies ?? []).filter((m) => m.slug !== DOCTOR_X_FEATURED.slug && (m.backdrop || m.poster));
     const firstTwo = valid.slice(0, 2);
@@ -102,7 +97,6 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
     return list.slice(0, 6);
   }, [movies]);
 
-  // Khởi tạo index = 2 (Doctor X) nếu danh sách có ít nhất 3 phim, ngược lại index = 0
   const [index, setIndex] = useState(() => (picks.length > 2 ? 2 : 0));
   const [paused, setPaused] = useState(false);
   const [genresMap, setGenresMap] = useState<Record<string, string[]>>({});
@@ -113,7 +107,6 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
   const reduceMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const autoplay = picks.length > 1 && !paused && !reduceMotion;
 
-  // Tự động xoay vòng slide
   useEffect(() => {
     if (!autoplay) return;
     const t = setTimeout(() => {
@@ -122,7 +115,6 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
     return () => clearTimeout(t);
   }, [autoplay, index, picks.length]);
 
-  // Tải chi tiết thể loại cho phim hiện tại nếu chưa có
   useEffect(() => {
     if (!featured || featured.slug === DOCTOR_X_FEATURED.slug) return;
     if (genresMap[featured.slug]) return;
@@ -150,7 +142,6 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
     toast.show(added ? `Đã lưu “${featured.name}” vào góc yêu thích` : `Đã bỏ “${featured.name}” khỏi yêu thích`);
   };
 
-  // Lấy danh sách thể loại hiển thị
   const displayGenres = useMemo(() => {
     if (featured.slug === DOCTOR_X_FEATURED.slug) {
       return ["Hình Sự", "Chính Kịch", "Bí Ẩn"];
@@ -166,7 +157,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
 
   if (loading && !featured) {
     return (
-      <div className="relative min-h-[520px] sm:min-h-[580px] w-full bg-[#0c0d14] flex items-center" aria-busy="true">
+      <div className="relative min-h-[520px] sm:min-h-[580px] w-full bg-[#0c0c12] flex items-center" aria-busy="true">
         <div className="skeleton size-full absolute inset-0 opacity-30" />
       </div>
     );
@@ -182,7 +173,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-[#0c0d14] text-white select-none"
+      className="relative w-full overflow-hidden bg-[#0c0c12] text-white select-none"
       aria-label="Phim nổi bật"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -190,7 +181,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
       onBlur={() => setPaused(false)}
     >
       {/* Khung Hero chiều cao điện ảnh chuẩn */}
-      <div className="relative min-h-[520px] sm:min-h-[560px] md:min-h-[600px] lg:min-h-[640px] xl:min-h-[680px] w-full flex items-center">
+      <div className="relative min-h-[500px] sm:min-h-[560px] md:min-h-[600px] lg:min-h-[640px] xl:min-h-[680px] w-full flex items-center">
         {/* Ảnh nền Artwork Full-Bleed tràn viền */}
         <div className="absolute inset-0 size-full overflow-hidden">
           {featured.backdrop || featured.poster ? (
@@ -207,13 +198,13 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
 
           {/* Gradient Overlay phía bên trái làm nổi bật chữ */}
           <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0c0d14] via-[#0c0d14]/85 to-transparent w-full md:w-[76%] lg:w-[65%]"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0c0c12] via-[#0c0c12]/85 to-transparent w-full md:w-[76%] lg:w-[65%]"
             aria-hidden="true"
           />
 
           {/* Gradient mềm ở mép dưới để chuyển mượt vào nội dung trang */}
           <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0c0d14] via-[#0c0d14]/60 to-transparent"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0c0c12] via-[#0c0c12]/60 to-transparent"
             aria-hidden="true"
           />
 
@@ -234,9 +225,9 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
               <DynamicTitle name={featured.name} />
             )}
 
-            {/* Tên tiếng Anh / Tên gốc (Màu vàng kim ấm áp) */}
+            {/* Tên tiếng Anh / Tên gốc */}
             {featured.originalName && (
-              <p className="mt-1.5 text-xs sm:text-sm md:text-base font-semibold text-[#f5c518] tracking-wide drop-shadow-sm">
+              <p className="mt-1.5 text-xs sm:text-sm md:text-base font-semibold text-[#f5c518] tracking-wide">
                 {featured.originalName}
               </p>
             )}
@@ -244,33 +235,33 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
             {/* Hàng huy hiệu Metadata: TMDB, Năm, Số tập */}
             <div className="mt-3.5 flex flex-wrap items-center gap-2 sm:gap-2.5">
               {/* TMDB Badge */}
-              <div className="inline-flex items-center rounded-md bg-[#01b4e4] px-2 py-0.5 text-xs font-black text-white shadow-sm">
+              <div className="inline-flex items-center rounded bg-[#01b4e4] px-2 py-0.5 text-xs font-black text-white shadow-sm">
                 <span className="tracking-wide mr-1.5">TMDB</span>
                 <span className="font-bold">{featured.tmdbScore ?? "9.0"}</span>
               </div>
 
               {/* Year Badge */}
               {featured.year && (
-                <span className="rounded-md border border-white/20 bg-black/40 px-2.5 py-0.5 text-xs font-semibold text-white/90 backdrop-blur-xs">
+                <span className="rounded border border-white/20 bg-black/60 px-2.5 py-0.5 text-xs font-semibold text-white">
                   {featured.year}
                 </span>
               )}
 
               {/* Episode Badge */}
               {featured.currentEpisode && (
-                <span className="rounded-md border border-white/20 bg-black/40 px-2.5 py-0.5 text-xs font-semibold text-white/90 backdrop-blur-xs">
+                <span className="rounded border border-white/20 bg-black/60 px-2.5 py-0.5 text-xs font-semibold text-white">
                   {featured.currentEpisode}
                 </span>
               )}
             </div>
 
-            {/* Hàng Thể loại Phim (Genres Tags) */}
+            {/* Hàng Thể loại Phim */}
             {displayGenres.length > 0 && (
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 {displayGenres.map((genre) => (
                   <span
                     key={genre}
-                    className="rounded-md border border-white/10 bg-white/10 px-3 py-1 text-xs font-medium text-white/90 backdrop-blur-xs transition-colors hover:bg-white/20 cursor-default"
+                    className="rounded border border-white/15 bg-black/50 px-2.5 py-0.5 text-xs font-medium text-white/90"
                   >
                     {genre}
                   </span>
@@ -280,49 +271,53 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
 
             {/* Đoạn tóm tắt nội dung phim */}
             {featured.description && (
-              <p className="mt-3.5 line-clamp-3 max-w-xl text-xs sm:text-sm md:text-[14px] leading-relaxed text-white/80 drop-shadow-sm font-normal">
+              <p className="mt-3.5 line-clamp-3 max-w-xl text-xs sm:text-sm md:text-[14px] leading-relaxed text-neutral-300 font-normal">
                 {truncate(cleanText(featured.description), 230)}
               </p>
             )}
 
-            {/* 3 Nút Hành Động Tròn: Xem phim (Vàng) - Yêu thích (Kính) - Thông tin (Kính) */}
-            <div className="mt-6 flex items-center gap-3 sm:gap-3.5">
-              {/* Nút Xem phim tròn màu vàng nổi bật */}
+            {/* Hàng nút hành động chuẩn Streaming: Xem ngay (Vàng) - Yêu thích - Chi tiết */}
+            <div className="mt-6 flex items-center gap-2.5 sm:gap-3">
+              {/* Nút Xem phim màu vàng nổi bật */}
               <Link
                 to={`/xem-phim/${featured.slug}`}
                 aria-label={`Xem phim ${featured.name}`}
-                title="Xem phim ngay"
-                className="group flex size-12 sm:size-13 items-center justify-center rounded-full bg-[#f5c518] text-black shadow-lg shadow-black/50 transition-all duration-200 hover:scale-105 hover:bg-[#ffcf25] active:scale-95"
+                className="btn-play h-11 px-5 sm:px-6 rounded-md text-sm sm:text-base font-bold flex items-center gap-2"
               >
-                <Play className="size-5 sm:size-6 fill-black text-black ml-0.5 transition-transform group-hover:scale-110" />
+                <Play className="size-4.5 fill-black text-black" />
+                <span>Xem ngay</span>
               </Link>
 
-              {/* Nút Trái tim / Yêu thích tròn hiệu ứng kính */}
+              {/* Nút Yêu thích */}
               <button
                 type="button"
                 onClick={handleToggleFavorite}
                 aria-pressed={isFav}
                 aria-label={isFav ? "Bỏ khỏi yêu thích" : "Lưu vào yêu thích"}
                 title={isFav ? "Bỏ khỏi yêu thích" : "Lưu vào yêu thích"}
-                className="flex size-11 sm:size-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/20 hover:border-white/30 active:scale-95"
+                className={`btn h-11 px-3.5 sm:px-4 rounded-md text-xs sm:text-sm font-semibold border transition-colors ${
+                  isFav
+                    ? "border-deep bg-deep/20 text-white"
+                    : "border-white/20 bg-black/60 text-white hover:bg-black/90 hover:border-white/40"
+                }`}
               >
                 <Heart
-                  className={`size-5 transition-colors ${
-                    isFav ? "fill-red-500 text-red-500" : "text-white"
-                  }`}
+                  className={`size-4 ${isFav ? "fill-deep text-deep" : "text-white"}`}
                   strokeWidth={2}
                 />
+                <span className="hidden sm:inline">{isFav ? "Đã lưu" : "Yêu thích"}</span>
               </button>
 
-              {/* Nút Thông tin tròn hiệu ứng kính */}
+              {/* Nút Chi tiết */}
               <button
                 type="button"
                 onClick={() => openPreview(featured)}
                 aria-label={`Xem thông tin ${featured.name}`}
                 title="Xem nhanh thông tin phim"
-                className="flex size-11 sm:size-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/20 hover:border-white/30 active:scale-95"
+                className="btn h-11 px-3.5 sm:px-4 rounded-md text-xs sm:text-sm font-semibold border border-white/20 bg-black/60 text-white hover:bg-black/90 hover:border-white/40 transition-colors"
               >
-                <Info className="size-5 text-white" strokeWidth={2.2} />
+                <Info className="size-4 text-white" strokeWidth={2.2} />
+                <span className="hidden sm:inline">Chi tiết</span>
               </button>
             </div>
           </div>
@@ -344,10 +339,10 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
                   onClick={() => setIndex(i)}
                   aria-label={`Chọn phim ${m.name}`}
                   aria-pressed={isActive}
-                  className={`relative aspect-video w-16 sm:w-20 md:w-24 lg:w-28 shrink-0 overflow-hidden rounded-lg sm:rounded-xl transition-all duration-300 ${
+                  className={`relative aspect-video w-16 sm:w-20 md:w-24 lg:w-28 shrink-0 overflow-hidden rounded-md transition-all duration-200 ${
                     isActive
-                      ? "border-2 border-white ring-2 ring-white/35 shadow-2xl scale-105 sm:scale-110 z-10 opacity-100"
-                      : "border border-white/20 opacity-55 hover:opacity-100 hover:scale-105"
+                      ? "border-2 border-play shadow-lg scale-105 z-10 opacity-100"
+                      : "border border-white/20 opacity-60 hover:opacity-100 hover:scale-105"
                   }`}
                 >
                   <PosterImage
@@ -361,7 +356,7 @@ export function HeroBanner({ movies, loading, error, onRetry }: Props) {
                   {isActive && autoplay && (
                     <span
                       key={`bar-${index}`}
-                      className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-white shadow-xs"
+                      className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-play"
                       style={{ animation: `progress ${ROTATE_MS}ms linear forwards` }}
                     />
                   )}

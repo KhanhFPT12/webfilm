@@ -1,29 +1,32 @@
 <!doctype html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#FFFDFD" />
-    <meta name="description" content="Nơi xem phim của Sony — góc rạp phim hồng nhỏ xinh để tìm và xem phim mỗi ngày." />
+    <meta name="theme-color" content="#0C0C12" />
+    <meta name="description" content="SONY CINEMA — Nền tảng xem phim chất lượng cao, cập nhật nhanh chóng các bộ phim chiếu rạp, phim bộ và lồng tiếng đặc sắc." />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" as="image" href="/logo.webp" type="image/webp" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://img.nguonc.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <script>
-      // Áp chế độ sáng/tối trước khi vẽ trang để không bị nháy màu.
+      // Áp chế độ giao diện trước khi render tránh nhấp nháy màn hình
       (function () {
         try {
           var t = localStorage.getItem("sony.theme");
-          var dark = t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
-          if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
-          if (dark) document.querySelector("meta[name=theme-color]").setAttribute("content", "#140a10");
+          var isLight = t === "light";
+          var theme = isLight ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", theme);
+          document.documentElement.style.colorScheme = theme;
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute("content", isLight ? "#F8F7FA" : "#0C0C12");
         } catch (e) {}
       })();
     </script>
-    <title>SONY · Nơi xem phim của Sony</title>
+    <title>SONY CINEMA · Nơi xem phim của Sony</title>
   </head>
   <body>
     <div id="root"></div>

@@ -18,7 +18,6 @@ export function QuickPreviewModal() {
       if (e.key === "Escape") closePreview();
     };
 
-    // Lock body scroll
     const origOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
@@ -67,26 +66,26 @@ export function QuickPreviewModal() {
       aria-label={`Xem nhanh ${m.name}`}
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5"
     >
-      {/* Backdrop */}
+      {/* Backdrop mờ tối */}
       <div
-        className="fixed inset-0 bg-black/75 backdrop-blur-md transition-opacity duration-200"
+        className="fixed inset-0 bg-black/80 transition-opacity duration-200"
         onClick={closePreview}
         aria-hidden="true"
       />
 
       {/* Modal Dialog Card */}
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-line/80 bg-surface shadow-2xl transition-all duration-300 animate-rise sm:max-w-3xl">
+      <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border border-line bg-surface shadow-2xl transition-all duration-200 animate-rise sm:max-w-3xl">
         {/* Close Button */}
         <button
           type="button"
           onClick={closePreview}
           aria-label="Đóng cửa sổ xem nhanh"
-          className="absolute top-3 right-3 z-20 flex size-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-transform hover:scale-110 hover:bg-black/80"
+          className="absolute top-3 right-3 z-20 flex size-8 items-center justify-center rounded-full bg-black/70 text-white transition-colors hover:bg-black"
         >
-          <X className="size-4.5" />
+          <X className="size-4" />
         </button>
 
-        {/* Media Header Banner (16:9 or 21:9) */}
+        {/* Media Header Banner */}
         <div className="relative aspect-video w-full max-h-[290px] overflow-hidden bg-sub sm:max-h-[340px]">
           <PosterImage
             src={m.backdrop ?? m.poster}
@@ -96,12 +95,12 @@ export function QuickPreviewModal() {
           />
 
           {/* Vignette Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-black/30" />
 
           {/* Top highlight badge */}
-          <div className="absolute top-3.5 left-4 z-10 flex items-center gap-1.5 rounded-full bg-deep/90 px-3 py-1 text-[11px] font-semibold text-white shadow-sm backdrop-blur-md">
+          <div className="absolute top-3.5 left-4 z-10 flex items-center gap-1.5 rounded bg-deep px-2.5 py-0.5 text-[11px] font-bold text-white shadow-xs">
             <Sparkles className="size-3" />
-            <span>Xem nhanh phim</span>
+            <span>Xem nhanh</span>
           </div>
 
           {/* Floating Actions on Artwork */}
@@ -122,22 +121,22 @@ export function QuickPreviewModal() {
                 type="button"
                 onClick={() => toggle(m)}
                 aria-label={fav ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
-                className={`flex size-10 items-center justify-center rounded-full border transition-transform duration-150 active:scale-90 ${
+                className={`flex size-9 items-center justify-center rounded-full border transition-transform duration-150 active:scale-90 ${
                   fav
-                    ? "border-rose bg-deep text-white shadow-glow-sm"
-                    : "border-white/30 bg-black/40 text-white backdrop-blur-md hover:bg-black/60"
+                    ? "border-deep bg-deep text-white"
+                    : "border-white/30 bg-black/60 text-white hover:bg-black/90"
                 }`}
               >
-                <Heart className={`size-4.5 ${fav ? "fill-white" : ""}`} />
+                <Heart className={`size-4 ${fav ? "fill-white" : ""}`} />
               </button>
 
               <button
                 type="button"
                 onClick={handleShare}
                 aria-label="Chia sẻ phim"
-                className="flex size-10 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur-md transition-transform duration-150 hover:bg-black/60 active:scale-90"
+                className="flex size-9 items-center justify-center rounded-full border border-white/30 bg-black/60 text-white transition-transform duration-150 hover:bg-black/90 active:scale-90"
               >
-                <Share2 className="size-4" />
+                <Share2 className="size-3.5" />
               </button>
             </div>
           </div>
@@ -148,24 +147,24 @@ export function QuickPreviewModal() {
           {/* Metadata Badges */}
           <div className="flex flex-wrap items-center gap-2">
             {m.quality && (
-              <span className="badge-quality rounded-md px-2 py-0.5 text-xs font-semibold">
+              <span className="badge-quality rounded px-2 py-0.5 text-xs font-semibold">
                 {m.quality}
               </span>
             )}
             {m.currentEpisode && (
-              <span className="badge-vip rounded-md px-2 py-0.5 text-xs font-bold">
+              <span className="badge-vip rounded px-2 py-0.5 text-xs font-bold">
                 {m.currentEpisode}
               </span>
             )}
             {m.language?.toLowerCase().includes("lồng tiếng") && (
-              <span className="rounded-md bg-amber-500 font-extrabold text-black px-2 py-0.5 text-xs shadow-xs">
+              <span className="rounded bg-amber-500 font-extrabold text-black px-2 py-0.5 text-xs shadow-xs">
                 Lồng tiếng
               </span>
             )}
             {metaList.map((item) => (
               <span
                 key={item}
-                className="rounded-md border border-line bg-sub/60 px-2 py-0.5 text-xs font-medium text-muted"
+                className="rounded border border-line bg-sub px-2 py-0.5 text-xs font-medium text-muted"
               >
                 {item}
               </span>
@@ -174,7 +173,7 @@ export function QuickPreviewModal() {
 
           {/* Description */}
           {m.description && (
-            <p className="mt-3.5 line-clamp-4 text-xs leading-relaxed text-ink/80 sm:text-sm">
+            <p className="mt-3.5 line-clamp-4 text-xs leading-relaxed text-muted sm:text-sm">
               {m.description}
             </p>
           )}
@@ -184,16 +183,16 @@ export function QuickPreviewModal() {
             <Link
               to={`/xem-phim/${m.slug}`}
               onClick={closePreview}
-              className="btn-primary shadow-glow-sm h-11 px-6 text-sm font-semibold"
+              className="btn-play h-10 px-5 text-sm font-bold flex items-center gap-2"
             >
-              <Play className="size-4 fill-white" />
+              <Play className="size-4 fill-black text-black" />
               <span>Xem phim ngay</span>
             </Link>
 
             <Link
               to={`/phim/${m.slug}`}
               onClick={closePreview}
-              className="btn-secondary h-11 px-5 text-sm font-semibold"
+              className="btn-secondary h-10 px-4 text-sm font-semibold"
             >
               <Info className="size-4" />
               <span>Chi tiết tác phẩm</span>

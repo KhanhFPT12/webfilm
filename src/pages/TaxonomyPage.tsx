@@ -1,4 +1,4 @@
-import { CalendarDays, Globe2, Tags } from "lucide-react";
+import { CalendarDays, Globe2, SlidersHorizontal, Tags } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PageHeader } from "../components/common/PageHeader";
 import { useDocumentTitle } from "../hooks/useUtils";
@@ -28,6 +28,9 @@ export function TaxonomyPage({ kind }: Props) {
           </Link>
           <Link to="/quoc-gia" aria-current={!isGenre ? "page" : undefined} className={`chip text-xs ${!isGenre ? "chip-active" : "border-line bg-surface text-ink hover:border-deep/40 hover:text-deep"}`}>
             <Globe2 className="size-3.5" /> Quốc gia
+          </Link>
+          <Link to="/loc-phim" className="chip text-xs border-amber-500/50 bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:border-amber-500">
+            <SlidersHorizontal className="size-3.5" /> Bộ lọc phim
           </Link>
         </div>
       </PageHeader>

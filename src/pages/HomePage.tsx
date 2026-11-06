@@ -1,11 +1,11 @@
-import { ArrowRight, Ghost, Heart, History, Laugh, Rabbit, Rocket, Swords, Play } from "lucide-react";
+import { ArrowRight, Ghost, Heart, History, Laugh, Play, Rabbit, Rocket, Swords } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { EmptyState } from "../components/common/EmptyState";
+import { PlatformFeatures } from "../components/common/PlatformFeatures";
 import { PosterImage } from "../components/common/PosterImage";
 import { Reveal } from "../components/common/Reveal";
 import { SectionHeader } from "../components/common/SectionHeader";
-import { PlatformFeatures } from "../components/common/PlatformFeatures";
 import { HeroBanner } from "../components/movie/HeroBanner";
 import { MovieCard } from "../components/movie/MovieCard";
 import { MovieSection } from "../components/movie/MovieSection";
@@ -38,17 +38,17 @@ function GenreExplorer() {
         to="/the-loai"
         linkLabel="Xem tất cả thể loại"
       />
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
         {genres.map((g) => {
           const Icon = GENRE_ICONS[g.slug] ?? Heart;
           return (
             <Link
               key={g.slug}
               to={`/the-loai/${g.slug}`}
-              className="group flex items-center gap-3 rounded-2xl border border-line bg-surface p-3.5 transition-all duration-200 hover:-translate-y-1 hover:border-deep/50 hover:shadow-glow-sm"
+              className="group flex items-center gap-3 rounded-md border border-line bg-surface p-3 transition-colors hover:border-deep/60 hover:bg-sub"
             >
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-sub text-deep transition-all group-hover:bg-deep group-hover:text-white group-hover:shadow-glow-sm">
-                <Icon className="size-5" />
+              <span className="flex size-9 shrink-0 items-center justify-center rounded bg-sub text-deep transition-colors group-hover:bg-deep group-hover:text-white">
+                <Icon className="size-4.5" />
               </span>
               <span className="min-w-0">
                 <span className="block text-xs font-bold text-ink transition-colors group-hover:text-deep sm:text-sm">
@@ -70,19 +70,19 @@ function ContinueWatching() {
   if (!items.length) return null;
   return (
     <Reveal as="section" labelledBy="continue-title">
-      <SectionHeader id="continue-title" title="Xem tiếp gần đây" to="/lich-su" linkLabel="Lịch sử xem" />
+      <SectionHeader id="continue-title" title="Xem tiếp gần đây" to="/lich-su" linkLabel="Xem toàn bộ lịch sử" />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((h) => (
           <Link
             key={h.slug}
             to={h.episodeSlug ? watchUrl(h.slug, h.episodeSlug, h.serverIndex ?? 0) : `/xem-phim/${h.slug}`}
-            className="group flex items-center gap-3 rounded-2xl border border-line bg-surface p-2.5 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-deep/40 hover:shadow-glow-sm"
+            className="group flex items-center gap-3 rounded-md border border-line bg-surface p-2.5 transition-colors hover:border-deep/60 hover:bg-sub"
           >
-            <div className="relative h-20 w-14 shrink-0 overflow-hidden rounded-xl border border-line bg-sub">
+            <div className="relative h-18 w-13 shrink-0 overflow-hidden rounded border border-line bg-sub">
               <PosterImage src={h.poster} fallback={h.posterFallback} alt="" className="size-full object-cover" />
-              {/* Progress bar simulation */}
-              <div className="absolute inset-x-0 bottom-0 h-1.5 bg-black/60 backdrop-blur-xs">
-                <div className="h-full w-3/4 rounded-full bg-deep shadow-glow-sm" />
+              {/* Thanh tiến trình xem tiếp màu vàng kim */}
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-black/80">
+                <div className="h-full w-3/4 rounded-full bg-play" />
               </div>
             </div>
             <div className="min-w-0 flex-1">
@@ -90,8 +90,8 @@ function ContinueWatching() {
               {h.episodeName && <p className="mt-0.5 text-xs font-semibold text-deep">{episodeLabel(h.episodeName)}</p>}
               <p className="mt-1 text-[11px] text-muted">{timeAgo(h.watchedAt)}</p>
             </div>
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-sub text-deep transition-all group-hover:scale-105 group-hover:bg-deep group-hover:text-white group-hover:shadow-glow-sm">
-              <Play className="ml-0.5 size-4 fill-current" />
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-sub text-muted transition-colors group-hover:bg-play group-hover:text-black">
+              <Play className="ml-0.5 size-3.5 fill-current" />
             </span>
           </Link>
         ))}
@@ -103,7 +103,7 @@ function ContinueWatching() {
 function FavoritesCorner() {
   const { favorites } = useFavorites();
   return (
-    <Reveal as="section" labelledBy="fav-title" className="rounded-2xl border border-line bg-sub/40 p-5 sm:p-7">
+    <Reveal as="section" labelledBy="fav-title" className="rounded-lg border border-line bg-surface/50 p-5 sm:p-6">
       <SectionHeader
         id="fav-title"
         title="Góc phim của Sony"
@@ -119,7 +119,7 @@ function FavoritesCorner() {
             </>
           }
           action={
-            <Link to="/phim-moi" className="btn-primary shadow-glow-sm">
+            <Link to="/phim-moi" className="btn-primary">
               Khám phá phim ngay <ArrowRight className="size-4" />
             </Link>
           }
@@ -154,9 +154,10 @@ export function HomePage() {
       <div className="container-page space-y-12 py-8 sm:py-12">
         <ContinueWatching />
 
-        {/* Top 10 Trending Section */}
+        {/* Top 10 Thịnh Hành */}
         <TopTrendingSection movies={latest.data?.items} loading={latest.loading} />
 
+        {/* Phim mới cập bến */}
         <MovieSection
           id="latest-title"
           title="Phim mới cập bến"
@@ -182,6 +183,7 @@ export function HomePage() {
 
         <GenreExplorer />
 
+        {/* Phim lẻ chọn lọc */}
         <MovieSection
           id="single-title"
           title="Phim lẻ chọn lọc"
@@ -193,6 +195,7 @@ export function HomePage() {
           onRetry={single.reload}
         />
 
+        {/* Phim bộ dài tập */}
         <MovieSection
           id="series-title"
           title="Phim bộ dài tập"
@@ -204,12 +207,12 @@ export function HomePage() {
           onRetry={series.reload}
         />
 
-        {/* Platform Experience Value Props */}
+        {/* Giới thiệu tính năng nền tảng */}
         <PlatformFeatures />
 
         <FavoritesCorner />
 
-        <p className="flex items-center justify-center gap-1.5 text-xs text-muted/80">
+        <p className="flex items-center justify-center gap-1.5 text-xs text-muted">
           <History className="size-3.5 text-deep" /> Lịch sử xem và danh sách yêu thích được lưu an toàn trên trình duyệt của bạn.
         </p>
       </div>

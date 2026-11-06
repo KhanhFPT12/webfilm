@@ -32,7 +32,7 @@ export function FavoriteButton({ movie, variant = "overlay", className = "" }: P
         aria-pressed={active}
         className={`${
           active
-            ? "btn border border-deep/40 bg-pastel/50 text-deep hover:bg-pastel"
+            ? "btn border border-deep/40 bg-deep/15 text-white hover:bg-deep/25"
             : "btn-secondary"
         } ${className}`}
       >
@@ -52,12 +52,12 @@ export function FavoriteButton({ movie, variant = "overlay", className = "" }: P
       aria-pressed={active}
       aria-label={label}
       title={active ? "Bỏ yêu thích" : "Yêu thích"}
-      className={`flex size-8.5 items-center justify-center rounded-full bg-surface/90 shadow-sm backdrop-blur-xs ring-1 ring-black/5 transition-transform duration-150 active:scale-90 ${
-        active ? "text-deep" : "text-muted hover:text-deep"
+      className={`flex size-8 items-center justify-center rounded-full bg-black/75 border border-white/15 shadow-sm transition-transform duration-150 active:scale-90 hover:border-deep hover:bg-black ${
+        active ? "text-deep" : "text-white/80 hover:text-white"
       } ${className}`}
     >
       <Heart
-        className={`size-4 transition-colors ${active ? "fill-deep text-deep" : ""}`}
+        className={`size-3.5 transition-colors ${active ? "fill-deep text-deep" : ""}`}
         strokeWidth={2}
       />
     </button>

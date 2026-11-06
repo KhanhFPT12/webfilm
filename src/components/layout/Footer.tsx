@@ -2,16 +2,16 @@ import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Logo } from "../common/Logo";
 
-const linkCls = "text-xs sm:text-sm text-muted transition-colors hover:text-deep";
+const linkCls = "text-xs text-muted transition-colors hover:text-white";
 
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-line bg-sub/60 text-ink">
+    <footer className="mt-20 border-t border-line bg-[#0c0c12] text-ink">
       <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div className="space-y-3">
           <Logo />
-          <p className="max-w-sm text-xs sm:text-sm leading-relaxed text-muted">
-            Một góc rạp phim nhỏ ấm áp — nơi Sony tìm phim theo cảm xúc mỗi ngày, lưu lại những bộ phim thương và xem tiếp từ chỗ đã dừng.
+          <p className="max-w-sm text-xs leading-relaxed text-muted">
+            SONY CINEMA — Nền tảng xem phim chất lượng cao, lưu giữ những tác phẩm yêu thích và tiếp tục hành trình điện ảnh bất cứ lúc nào.
           </p>
         </div>
 
@@ -25,12 +25,17 @@ export function Footer() {
             </li>
             <li>
               <Link className={linkCls} to="/phim-le">
-                Phim lẻ
+                Phim lẻ chọn lọc
               </Link>
             </li>
             <li>
               <Link className={linkCls} to="/phim-bo">
-                Phim bộ
+                Phim bộ dài tập
+              </Link>
+            </li>
+            <li>
+              <Link className={linkCls} to="/phim-long-tieng">
+                Phim lồng tiếng
               </Link>
             </li>
             <li>
@@ -64,6 +69,11 @@ export function Footer() {
                 Tìm kiếm phim
               </Link>
             </li>
+            <li>
+              <Link className={linkCls} to="/loc-phim">
+                Bộ lọc nâng cao
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -72,7 +82,7 @@ export function Footer() {
           <ul className="mt-3.5 space-y-2">
             <li>
               <Link className={linkCls} to="/thong-tin/lien-he">
-                Liên hệ &amp; báo lỗi
+                Liên hệ &amp; Báo lỗi
               </Link>
             </li>
             <li>
@@ -87,7 +97,7 @@ export function Footer() {
             </li>
             <li>
               <Link className={linkCls} to="/thong-tin/nguon-du-lieu">
-                Nguồn dữ liệu &amp; bản quyền
+                Nguồn dữ liệu &amp; Bản quyền
               </Link>
             </li>
           </ul>
@@ -97,11 +107,10 @@ export function Footer() {
       <div className="border-t border-line/60">
         <div className="container-page flex flex-col gap-2.5 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
-            Dữ liệu phim từ API công khai NguonC. Đây là website cá nhân, <strong className="font-semibold text-ink">không phải</strong>{" "}
-            sản phẩm hay dịch vụ của Sony Corporation.
+            Dữ liệu phim từ API công khai NguonC. Đây là website phi thương mại, phục vụ nhu cầu giải trí cá nhân.
           </p>
           <p className="flex shrink-0 items-center gap-1.5 font-medium text-ink">
-            Dành riêng cho Sony với <Heart className="size-3.5 fill-deep text-deep" aria-label="yêu thương" /> · {new Date().getFullYear()}
+            SONY CINEMA · Thiết kế trải nghiệm điện ảnh <Heart className="size-3.5 fill-deep text-deep" aria-label="yêu thương" />
           </p>
         </div>
       </div>

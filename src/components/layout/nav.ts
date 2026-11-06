@@ -1,8 +1,10 @@
 export interface NavItem {
   to: string;
   label: string;
-  /** Các tiền tố đường dẫn được coi là đang active. */
+  /** Các tiền tố đường dẫn được coi là đang active */
   match: string[];
+  /** Danh sách có menu con nếu có */
+  hasDropdown?: boolean;
 }
 
 export const NAV_ITEMS: NavItem[] = [
@@ -11,10 +13,10 @@ export const NAV_ITEMS: NavItem[] = [
   { to: "/phim-le", label: "Phim lẻ", match: ["/phim-le"] },
   { to: "/phim-bo", label: "Phim bộ", match: ["/phim-bo"] },
   { to: "/phim-long-tieng", label: "Lồng tiếng", match: ["/phim-long-tieng", "/ngon-ngu"] },
-  { to: "/the-loai", label: "Thể loại", match: ["/the-loai", "/quoc-gia", "/nam"] },
+  { to: "/the-loai", label: "Thể loại", match: ["/the-loai", "/quoc-gia", "/nam"], hasDropdown: true },
 ];
 
-export function isNavActive(item: NavItem, pathname: string) {
+export function isNavActive(item: NavItem, pathname: string): boolean {
   if (item.to === "/") return pathname === "/";
   return item.match.some((m) => pathname === m || pathname.startsWith(`${m}/`));
 }
